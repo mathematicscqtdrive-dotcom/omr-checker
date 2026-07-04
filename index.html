@@ -436,7 +436,6 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <div class="akl" id="akList">
         <div class="emp"><span class="ei">⏳</span><p>Loading...</p></div>
       </div>
-      <!-- DANGER ZONE -->
       <div class="dzone">
         <h4>🚨 Danger Zone</h4>
         <p>Permanently delete data. These actions cannot be undone.</p>
@@ -444,6 +443,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
           <button class="btn dn" onclick="clearLeaderboard()">🗑️ Clear Leaderboard</button>
           <button class="btn dn" onclick="clearAllKeys()">🔑 Clear All Keys</button>
           <button class="btn dn" onclick="clearEverything()">💣 Clear Everything</button>
+          <button class="btn ol" onclick="lockAdmin()">🔒 Lock Admin</button>
         </div>
       </div>
     </div>
@@ -475,13 +475,30 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   </div>
 </div>
 
+<!-- ADMIN PASSWORD MODAL -->
+<div class="mov" id="admMod">
+  <div class="modal" style="max-width:380px">
+    <button class="mcl" onclick="closeAdmMod()">✕</button>
+    <div style="text-align:center;margin-bottom:1.2rem">
+      <div style="font-size:2.5rem;margin-bottom:.5rem">🔒</div>
+      <h3 style="margin-bottom:.3rem">Admin Access</h3>
+      <p style="color:var(--gl);font-size:.85rem">Enter password to continue</p>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="admPass" class="fi" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkAdm()">
+    </div>
+    <button class="btn pr bl" onclick="checkAdm()">🔓 Unlock</button>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
 <footer>© 2024 OMR Scanner Pro — Firebase Cloud 🔥 | All Question Types Supported</footer>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer,where}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",
@@ -497,13 +514,29 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 
 const S={
-  user:null,keys:[],curRes:null,qb:[],qbId:0,
+  user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,
   cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0}}
 };
 
 const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000;
 const DEF_MARKS={scq:{c:3,w:-1,u:0},mcq:{c:4,w:-2,p:1,u:0},match:{c:3,w:-1,u:0},matrix:{c:1,w:0,u:0},num:{c:4,w:0,u:0}};
 const TYPE_LBL={scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
+const ADM_PASS='delta';
+
+// ─── TOAST ──────────────────────────────────────────────
+window.toast=function(msg,type='inf'){
+  const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);
+};
+
+function fbErr(err){
+  const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'User not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Password too weak','auth/invalid-credential':'Invalid credentials','auth/network-request-failed':'Network error'};
+  return m[err.code]||err.message||'Error occurred';
+}
 
 // ─── AUTH ───────────────────────────────────────────────
 onAuthStateChanged(auth,async u=>{
@@ -556,6 +589,7 @@ window.doReg=async function(){
 
 window.logout=async function(){
   await signOut(auth);
+  S.admOk=false;
   toast('Logged out','inf');
 };
 
@@ -578,6 +612,11 @@ function updUserUI(){
 
 // ─── NAVIGATION ─────────────────────────────────────────
 window.go=function(id){
+  if(id==='admin'&&!S.admOk){
+    document.getElementById('admMod').classList.add('show');
+    setTimeout(()=>document.getElementById('admPass').focus(),100);
+    return;
+  }
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.getElementById(id)?.classList.add('on');
   document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));
@@ -588,6 +627,33 @@ window.go=function(id){
   if(id==='admin'){loadKeys().then(renderAKList);}
   if(id==='home')loadHomeStats();
   window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ─── ADMIN PASSWORD GATE ────────────────────────────────
+window.checkAdm=function(){
+  const p=document.getElementById('admPass').value;
+  if(p===ADM_PASS){
+    S.admOk=true;
+    document.getElementById('admPass').value='';
+    document.getElementById('admMod').classList.remove('show');
+    toast('Admin access granted 🔓','ok');
+    go('admin');
+  }else{
+    toast('Wrong password ❌','er');
+    document.getElementById('admPass').value='';
+    document.getElementById('admPass').focus();
+  }
+};
+
+window.closeAdmMod=function(){
+  document.getElementById('admMod').classList.remove('show');
+  document.getElementById('admPass').value='';
+};
+
+window.lockAdmin=function(){
+  S.admOk=false;
+  toast('Admin locked 🔒','inf');
+  go('home');
 };
 
 // ─── KEYS ────────────────────────────────────────────────
@@ -745,7 +811,7 @@ window.delAK=async function(id){
   }catch(e){toast('Error: '+e.message,'er')}
 };
 
-// ─── DANGER ZONE: CLEAR FUNCTIONS ────────────────────────
+// ─── DANGER ZONE ────────────────────────────────────────
 async function bulkDelete(colName){
   const snap=await getDocs(collection(db,colName));
   let count=0;
@@ -805,7 +871,7 @@ window.clearEverything=async function(){
   }catch(e){toast('Error: '+e.message,'er')}
 };
 
-// ─── MANUAL ENTRY ────────────────────────────────────────
+// ─── MANUAL ENTRY ───────────────────────────────────────
 window.genManual=function(){
   const eid=document.getElementById('manExam').value;
   const g=document.getElementById('manGrid');
@@ -852,7 +918,7 @@ window.clearManual=function(){
   document.getElementById('manResCont').style.display='none';
 };
 
-window.submitManual=function(){
+window.submitManual=async function(){
   const nm=document.getElementById('manName').value.trim();
   const eid=document.getElementById('manExam').value;
   if(!nm)return toast('Enter your name','wa');
@@ -875,9 +941,20 @@ window.submitManual=function(){
   document.getElementById('manResCont').style.display='block';
   document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});
   toast('Graded successfully!','ok');
+
+  // Save to Firebase leaderboard
+  try{
+    await addDoc(collection(db,'results'),{
+      name:res.name,examId:res.examId,examName:res.examName,
+      total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,
+      marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,
+      userId:res.userId,createdAt:serverTimestamp()
+    });
+    S.cache.lb={data:null,ts:0,key:''};
+    S.cache.stats={data:null,ts:0};
+  }catch(e){console.error('Save error:',e)}
 };
 
-// ─── GRADING ─────────────────────────────────────────────
 function gradeAll(userAns,key,name){
   let c=0,w=0,sk=0,marks=0,max=0;
   const det=[];
@@ -951,212 +1028,150 @@ function gradeAll(userAns,key,name){
   return r;
 }
 
-// ─── SHOW RESULT ─────────────────────────────────────────
-function showResult(r,contId){
-  const cont=document.getElementById(contId);
-  const offset=283-(283*(r.pct/100));
-  const scoreColor=r.pct>=75?'var(--ok)':r.pct>=40?'var(--warn)':'var(--no)';
-  const uid=`sc_${Date.now()}`;
-
+function showResult(r,containerId){
+  const cont=document.getElementById(containerId);
+  const offset=283-(r.pct/100)*283;
   cont.innerHTML=`
     <div class="rh">
       <div class="scirc">
         <svg viewBox="0 0 100 100">
           <circle class="scbg" cx="50" cy="50" r="45"/>
-          <circle class="scf" id="${uid}" cx="50" cy="50" r="45" style="stroke:${scoreColor}"/>
+          <circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/>
         </svg>
         <div class="sct">
           <span class="scv">${r.pct}%</span>
-          <span class="scl">${r.marks}/${r.max}</span>
+          <span class="scl">Score</span>
         </div>
       </div>
-      <div style="flex:1">
-        <h2 style="margin-bottom:.3rem">${r.name}</h2>
-        <p style="color:var(--gl);margin-bottom:1rem;font-size:.9rem">${r.examName}</p>
-        <div class="rst">
-          <div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div>
-          <div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div>
-          <div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div>
-        </div>
+      <div class="rst">
+        <div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div>
+        <div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div>
+        <div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div>
+        <div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div>
       </div>
     </div>
     <div class="agrid">
-      ${r.details.map(d=>{
-        const tc=d.type==='scq'?'var(--p)':d.type==='mcq'?'var(--s)':d.type==='match'?'var(--warn)':d.type==='matrix'?'var(--gold)':'var(--ok)';
-        const ttc=d.type==='matrix'?'#000':'#fff';
-        return `<div class="ai ${d.st}">
-          <span class="qn">Q${d.q}</span>
-          <span style="padding:2px 6px;border-radius:4px;font-size:.65rem;font-weight:700;background:${tc};color:${ttc}">${TYPE_LBL[d.type]}</span>
-          <div class="qa" style="flex:1;min-width:0">
-            <div style="font-size:.7rem;color:var(--gl)">You: <span style="color:var(--w)">${d.u}</span></div>
-            <div style="font-size:.7rem;color:var(--gl)">Ans: <span style="color:var(--ok)">${d.a}</span></div>
-          </div>
-          <span class="qi">${d.marks>0?'+':''}${d.marks}</span>
-        </div>`;
-      }).join('')}
+      ${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}
     </div>
     <div class="racts">
-      <button class="btn pr" onclick="saveResult()">☁️ Save to Leaderboard</button>
       <button class="btn ol" onclick="go('leader')">🏆 View Leaderboard</button>
-      <button class="btn ol" onclick="clearManual()">🔄 Try Again</button>
-    </div>`;
-
-  setTimeout(()=>{
-    const circle=document.getElementById(uid);
-    if(circle)circle.style.strokeDashoffset=offset;
-  },100);
+      <button class="btn pr" onclick="clearManual()">🔄 Try Again</button>
+    </div>
+  `;
 }
 
-// ─── SAVE RESULT ─────────────────────────────────────────
-window.saveResult=async function(){
-  if(!S.curRes)return toast('No result to save','wa');
-  if(!S.user)return toast('Login to save to leaderboard','wa');
-  try{
-    await addDoc(collection(db,'results'),{
-      ...S.curRes,
-      userId:S.user.uid,
-      userName:S.user.displayName||S.user.email,
-      createdAt:serverTimestamp()
-    });
-    S.cache.lb.ts=0;
-    S.cache.stats.ts=0;
-    toast('Saved to leaderboard! 🎉','ok');
-  }catch(e){toast('Error: '+e.message,'er')}
-};
-
-// ─── LEADERBOARD ─────────────────────────────────────────
+// ─── LEADERBOARD ────────────────────────────────────────
 async function loadLB(force){
-  const examF=document.getElementById('lExam')?.value||'all';
-  const timeF=document.getElementById('lTime')?.value||'all';
-  const cacheKey=examF+'_'+timeF;
+  const eid=document.getElementById('lExam')?.value||'all';
+  const tf=document.getElementById('lTime')?.value||'all';
+  const cacheKey=`${eid}_${tf}`;
   const now=Date.now();
 
   if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){
     renderLB(S.cache.lb.data);return;
   }
 
-  document.getElementById('lbBody').innerHTML=`<tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr>`;
-
   try{
-    const snap=await getDocs(query(collection(db,'results'),orderBy('marks','desc'),limit(200)));
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));
     let data=snap.docs.map(d=>({id:d.id,...d.data()}));
 
-    if(examF!=='all')data=data.filter(r=>r.examId===examF);
+    if(eid!=='all')data=data.filter(r=>r.examId===eid);
 
-    if(timeF!=='all'){
-      const now2=new Date();
+    if(tf!=='all'){
+      const nowD=new Date();
+      let cutoff;
+      if(tf==='today'){cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());}
+      else if(tf==='week'){cutoff=new Date(nowD-7*86400000);}
+      else if(tf==='month'){cutoff=new Date(nowD-30*86400000);}
       data=data.filter(r=>{
-        if(!r.createdAt)return true;
-        const d=r.createdAt.toDate();
-        if(timeF==='today')return d.toDateString()===now2.toDateString();
-        if(timeF==='week')return(now2-d)/(1000*60*60*24)<=7;
-        if(timeF==='month')return d.getMonth()===now2.getMonth()&&d.getFullYear()===now2.getFullYear();
-        return true;
+        const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);
+        return d>=cutoff;
       });
     }
 
-    S.cache.lb={data,ts:Date.now(),key:cacheKey};
+    data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));
+
+    S.cache.lb={data,ts:now,key:cacheKey};
     renderLB(data);
   }catch(e){
-    document.getElementById('lbBody').innerHTML=`<tr><td colspan="6" class="emp"><span class="ei">⚠️</span><p>Error loading</p></td></tr>`;
     console.error(e);
+    document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading leaderboard</p></td></tr>';
   }
 }
+window.loadLB=loadLB;
 
 function renderLB(data){
-  [0,1,2].forEach(i=>{
-    const pos=i===0?1:i===1?2:3;
-    const r=data[i];
+  const body=document.getElementById('lbBody');
+
+  // Podium
+  const top3=data.slice(0,3);
+  [1,2,3].forEach(i=>{
+    const r=top3[i-1];
+    const av=document.getElementById('pav'+i);
+    const nm=document.getElementById('pn'+i);
+    const sc=document.getElementById('ps'+i);
     if(r){
-      const nm=r.name||r.userName||'—';
-      const short=nm.length>12?nm.slice(0,12)+'…':nm;
-      const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-      document.getElementById(`pn${pos}`).textContent=short;
-      document.getElementById(`ps${pos}`).textContent=`${r.marks}/${r.max} (${r.pct}%)`;
-      document.getElementById(`pav${pos}`).textContent=ini;
+      av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+      nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;
+      sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;
     }else{
-      document.getElementById(`pn${pos}`).textContent='—';
-      document.getElementById(`ps${pos}`).textContent='—';
-      document.getElementById(`pav${pos}`).textContent='?';
+      av.textContent='?';nm.textContent='—';sc.textContent='—';
     }
   });
 
-  const tbody=document.getElementById('lbBody');
   if(!data.length){
-    tbody.innerHTML=`<tr><td colspan="6" class="emp"><span class="ei">🏜️</span><p>No results yet. Be the first!</p></td></tr>`;
+    body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions yet</p></td></tr>';
     return;
   }
-  tbody.innerHTML=data.map((r,i)=>{
+
+  body.innerHTML=data.slice(0,100).map((r,i)=>{
     const rank=i+1;
-    const rb=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
-    const nm=r.name||r.userName||'Unknown';
-    const date=r.createdAt?r.createdAt.toDate().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
-    const isMe=S.user&&r.userId===S.user.uid;
-    return `<tr style="${isMe?'background:rgba(99,102,241,.08)':''}">
-      <td><span class="rb ${rb}">${rank}</span></td>
-      <td>${nm}${isMe?' <span style="font-size:.7rem;color:var(--pl)">(you)</span>':''}</td>
-      <td style="color:var(--gl)">${r.examName||'—'}</td>
-      <td><strong style="color:var(--pl)">${r.marks}</strong><span style="color:var(--g)">/${r.max}</span> <span style="color:var(--gl);font-size:.8rem">(${r.pct}%)</span></td>
-      <td>
-        <span style="color:var(--ok)">✅${r.correct}</span>
-        <span style="color:var(--no);margin:0 6px">❌${r.wrong}</span>
-        <span style="color:var(--warn)">⏭️${r.skipped}</span>
-      </td>
-      <td style="color:var(--gl);font-size:.82rem">${date}</td>
+    const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
+    const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());
+    const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    return `<tr>
+      <td><span class="rb ${rc}">${rank}</span></td>
+      <td><b>${r.name}</b></td>
+      <td>${r.examName||'—'}</td>
+      <td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td>
+      <td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td>
+      <td style="color:var(--gl);font-size:.82rem">${dt}</td>
     </tr>`;
   }).join('');
 }
 
-// ─── HOME STATS ──────────────────────────────────────────
+// ─── HOME STATS ─────────────────────────────────────────
 async function loadHomeStats(){
   const now=Date.now();
   if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){
-    renderHomeStats(S.cache.stats.data);return;
+    applyStats(S.cache.stats.data);return;
   }
   try{
-    const[resSnap,userSnap]=await Promise.all([
+    const [resSnap,usrSnap]=await Promise.all([
       getCountFromServer(collection(db,'results')),
       getCountFromServer(collection(db,'users'))
     ]);
-    const totalScans=resSnap.data().count;
-    const totalUsers=userSnap.data().count;
-    const recSnap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(50)));
-    const recs=recSnap.docs.map(d=>d.data());
-    const avg=recs.length?Math.round(recs.reduce((s,r)=>s+(r.pct||0),0)/recs.length):0;
-    const stats={totalScans,totalUsers,avg};
-    S.cache.stats={data:stats,ts:now};
-    renderHomeStats(stats);
+    const subs=resSnap.data().count;
+    const usrs=usrSnap.data().count;
+
+    let avg='—';
+    if(subs>0){
+      const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));
+      const arr=rs.docs.map(d=>d.data().pct||0);
+      if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';
+    }
+    const data={subs,usrs,avg};
+    S.cache.stats={data,ts:now};
+    applyStats(data);
   }catch(e){console.error(e)}
 }
 
-function renderHomeStats(stats){
-  document.getElementById('hScans').textContent=stats.totalScans||0;
-  document.getElementById('hUsers').textContent=stats.totalUsers||0;
-  document.getElementById('hAvg').textContent=(stats.avg||0)+'%';
+function applyStats(d){
+  document.getElementById('hScans').textContent=d.subs||0;
+  document.getElementById('hUsers').textContent=d.usrs||0;
+  document.getElementById('hAvg').textContent=d.avg||'—';
 }
 
-// ─── UTILITIES ───────────────────────────────────────────
-function toast(msg,type='inf'){
-  const t=document.getElementById('toasts');
-  const d=document.createElement('div');
-  d.className=`toast ${type}`;
-  const icons={ok:'✅',er:'❌',wa:'⚠️',inf:'ℹ️'};
-  d.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
-  t.appendChild(d);
-  setTimeout(()=>d.remove(),4000);
-}
-
-function fbErr(e){
-  const m={
-    'auth/user-not-found':'User not found',
-    'auth/wrong-password':'Wrong password',
-    'auth/email-already-in-use':'Email already registered',
-    'auth/weak-password':'Password too weak',
-    'auth/invalid-email':'Invalid email',
-    'auth/invalid-credential':'Invalid email or password'
-  };
-  return m[e.code]||e.message||'Something went wrong';
-}
 </script>
 </body>
 </html>
