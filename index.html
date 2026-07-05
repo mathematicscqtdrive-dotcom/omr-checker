@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMR Scanner Pro</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -81,12 +84,12 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .ai.no{border-color:var(--no);background:rgba(239,68,68,.08)}
 .ai.sk{border-color:var(--warn);background:rgba(245,158,11,.08)}
 .ai .qn{font-weight:700;min-width:32px;color:var(--gl)}
-.ai .qa{font-weight:600;font-size:.82rem}
+.ai .qa{font-weight:600;font-size:.82rem;flex:1}
 .ai .qi{margin-left:auto;font-weight:700}
 .ai.ok .qi{color:var(--ok)}
 .ai.no .qi{color:var(--no)}
 .ai.sk .qi{color:var(--warn)}
-.racts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.racts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
 .mconf{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding:1.2rem;background:var(--d2);border-radius:var(--r);border:1px solid var(--d3)}
 .mgrid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;max-height:600px;overflow-y:auto;padding-right:6px}
 .mq{padding:12px 14px;background:var(--d2);border-radius:8px;border:1px solid var(--d3)}
@@ -213,12 +216,64 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .dzone h4{color:var(--no);margin-bottom:.4rem;font-size:.95rem}
 .dzone p{color:var(--gl);margin-bottom:1rem;font-size:.85rem}
 .dzone-acts{display:flex;gap:.8rem;flex-wrap:wrap}
+
+/* ── NEW: Analytics & Charts ── */
+.analytics-section{margin-top:1.5rem}
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.chart-box{background:var(--d2);border:1px solid var(--d3);border-radius:16px;padding:1.5rem}
+.chart-box h3{font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--pl)}
+.chart-wrap{position:relative;height:260px}
+.qa-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.qa-table th{padding:8px 12px;text-align:left;font-size:.72rem;text-transform:uppercase;color:var(--gl);font-weight:700;border-bottom:2px solid var(--d3)}
+.qa-table td{padding:8px 12px;border-bottom:1px solid var(--d3)}
+.qa-bar-wrap{display:flex;align-items:center;gap:8px;min-width:120px}
+.qa-bar{height:8px;border-radius:4px;min-width:4px;transition:.6s}
+.qa-bar.ok{background:var(--ok)}
+.qa-bar.no{background:var(--no)}
+.qa-bar.sk{background:var(--warn)}
+.diff-badge{padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:700}
+.diff-easy{background:rgba(16,185,129,.2);color:var(--ok)}
+.diff-med{background:rgba(245,158,11,.2);color:var(--warn)}
+.diff-hard{background:rgba(239,68,68,.2);color:var(--no)}
+.diff-skip{background:rgba(100,116,139,.2);color:var(--gl)}
+.exp-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.exp-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit;font-size:.88rem;transition:.2s}
+.exp-pdf{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+.exp-pdf:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(239,68,68,.4)}
+.exp-excel{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
+.exp-excel:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(16,185,129,.4)}
+.exp-csv{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+.exp-csv:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(245,158,11,.4)}
+
+/* ── Analytics Tab (Admin) ── */
+.atabs{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--d);padding:4px;border-radius:10px;width:fit-content}
+.atab{padding:8px 16px;border-radius:8px;border:none;background:0 0;color:var(--gl);font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.atab.on{background:var(--p);color:#fff}
+.qa-analysis{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem}
+.qa-card{background:var(--d2);border:1px solid var(--d3);border-radius:12px;padding:1rem}
+.qa-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.qa-card-num{font-weight:800;color:var(--pl)}
+.qa-mini-bars{display:flex;flex-direction:column;gap:4px}
+.qa-mini-bar-row{display:flex;align-items:center;gap:8px;font-size:.75rem}
+.qa-mini-bar-row span:first-child{width:50px;color:var(--gl)}
+.qa-mini-bar-bg{flex:1;height:6px;background:var(--d3);border-radius:3px;overflow:hidden}
+.qa-mini-bar-fill{height:100%;border-radius:3px;transition:.6s}
+.qa-mini-bar-row span:last-child{width:36px;text-align:right;font-weight:600}
+
+/* ── Global Analytics (Admin) ── */
+.ga-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:1.5rem}
+.ga-chart-box{background:var(--d2);border:1px solid var(--d3);border-radius:16px;padding:1.5rem}
+.ga-chart-box h4{font-size:.95rem;font-weight:700;margin-bottom:1rem;color:var(--pl)}
+.ga-chart-wrap{position:relative;height:220px}
+
 footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-top:1px solid var(--d3);margin-top:2rem}
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;text-align:center}
   .hacts{justify-content:center}
   .stats-row{justify-content:center}
   .adm{grid-template-columns:1fr}
+  .analytics-grid{grid-template-columns:1fr}
+  .ga-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   .ntabs{display:none}
@@ -237,6 +292,8 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   .lf .fs{width:100%}
   .toasts{right:8px;top:70px}
   .toast{min-width:auto}
+  .analytics-grid{grid-template-columns:1fr}
+  .qa-analysis{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -249,19 +306,15 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 </div>
 
 <nav>
-  <div class="brand">
-    <div class="dot"></div>
-    <span>OMR Scanner Pro</span>
-  </div>
+  <div class="brand"><div class="dot"></div><span>OMR Scanner Pro</span></div>
   <div class="ntabs" id="navTabs">
     <button class="tab on" onclick="go('home')">🏠 Home</button>
     <button class="tab" onclick="go('manual')">✏️ Manual Entry</button>
     <button class="tab" onclick="go('leader')">🏆 Leaderboard</button>
+    <button class="tab" onclick="go('analytics')">📊 Analytics</button>
     <button class="tab" onclick="go('admin')">⚙️ Admin</button>
   </div>
-  <div id="uarea">
-    <button class="btn pr" onclick="showAuth()">🔑 Login</button>
-  </div>
+  <div id="uarea"><button class="btn pr" onclick="showAuth()">🔑 Login</button></div>
   <button class="ham" onclick="document.getElementById('mmenu').classList.toggle('show')">☰</button>
 </nav>
 
@@ -269,6 +322,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   <button class="tab" onclick="go('home');document.getElementById('mmenu').classList.remove('show')">🏠 Home</button>
   <button class="tab" onclick="go('manual');document.getElementById('mmenu').classList.remove('show')">✏️ Manual Entry</button>
   <button class="tab" onclick="go('leader');document.getElementById('mmenu').classList.remove('show')">🏆 Leaderboard</button>
+  <button class="tab" onclick="go('analytics');document.getElementById('mmenu').classList.remove('show')">📊 Analytics</button>
   <button class="tab" onclick="go('admin');document.getElementById('mmenu').classList.remove('show')">⚙️ Admin</button>
 </div>
 
@@ -305,26 +359,13 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 
 <!-- MANUAL ENTRY -->
 <section id="manual" class="sec">
-  <div class="sh">
-    <h2>✏️ Manual Entry</h2>
-    <p>Enter answers for any question type</p>
-  </div>
+  <div class="sh"><h2>✏️ Manual Entry</h2><p>Enter answers for any question type</p></div>
   <div style="max-width:880px;margin:0 auto">
     <div class="mconf">
-      <div class="fg">
-        <label>Your Name</label>
-        <input type="text" id="manName" class="fi" placeholder="Enter name">
-      </div>
-      <div class="fg">
-        <label>Select Exam</label>
-        <select id="manExam" class="fs" onchange="genManual()">
-          <option value="">Select Exam</option>
-        </select>
-      </div>
+      <div class="fg"><label>Your Name</label><input type="text" id="manName" class="fi" placeholder="Enter name"></div>
+      <div class="fg"><label>Select Exam</label><select id="manExam" class="fs" onchange="genManual()"><option value="">Select Exam</option></select></div>
     </div>
-    <div class="mgrid" id="manGrid">
-      <div class="qb-empty">Select an exam above to load questions</div>
-    </div>
+    <div class="mgrid" id="manGrid"><div class="qb-empty">Select an exam above to load questions</div></div>
     <div class="macts" id="manActs" style="display:none">
       <button class="btn pr lg" onclick="submitManual()">✅ Submit & Grade</button>
       <button class="btn ol" onclick="clearManual()">🧹 Clear All</button>
@@ -335,15 +376,10 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 
 <!-- LEADERBOARD -->
 <section id="leader" class="sec">
-  <div class="sh">
-    <h2>🏆 Leaderboard</h2>
-    <div style="margin-top:.5rem"><span class="live"><span class="livdot"></span>Live</span></div>
-  </div>
+  <div class="sh"><h2>🏆 Leaderboard</h2><div style="margin-top:.5rem"><span class="live"><span class="livdot"></span>Live</span></div></div>
   <div style="max-width:960px;margin:0 auto">
     <div class="lf">
-      <select id="lExam" class="fs" onchange="loadLB(true)">
-        <option value="all">All Exams</option>
-      </select>
+      <select id="lExam" class="fs" onchange="loadLB(true)"><option value="all">All Exams</option></select>
       <select id="lTime" class="fs" onchange="loadLB(true)">
         <option value="all">All Time</option>
         <option value="today">Today</option>
@@ -353,58 +389,48 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <button class="btn ol sm" onclick="loadLB(true)">🔄 Refresh</button>
     </div>
     <div class="podium">
-      <div class="pi p2">
-        <div class="pav" id="pav2">?</div>
-        <div class="pname" id="pn2">—</div>
-        <div class="pscore" id="ps2">—</div>
-        <div class="pstand"><span>2</span></div>
-      </div>
-      <div class="pi p1">
-        <div class="pcrown">👑</div>
-        <div class="pav" id="pav1">?</div>
-        <div class="pname" id="pn1">—</div>
-        <div class="pscore" id="ps1">—</div>
-        <div class="pstand"><span>1</span></div>
-      </div>
-      <div class="pi p3">
-        <div class="pav" id="pav3">?</div>
-        <div class="pname" id="pn3">—</div>
-        <div class="pscore" id="ps3">—</div>
-        <div class="pstand"><span>3</span></div>
-      </div>
+      <div class="pi p2"><div class="pav" id="pav2">?</div><div class="pname" id="pn2">—</div><div class="pscore" id="ps2">—</div><div class="pstand"><span>2</span></div></div>
+      <div class="pi p1"><div class="pcrown">👑</div><div class="pav" id="pav1">?</div><div class="pname" id="pn1">—</div><div class="pscore" id="ps1">—</div><div class="pstand"><span>1</span></div></div>
+      <div class="pi p3"><div class="pav" id="pav3">?</div><div class="pname" id="pn3">—</div><div class="pscore" id="ps3">—</div><div class="pstand"><span>3</span></div></div>
     </div>
     <div class="ltw">
       <table class="lt">
-        <thead>
-          <tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr>
-        </thead>
-        <tbody id="lbBody">
-          <tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr>
-        </tbody>
+        <thead><tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr></thead>
+        <tbody id="lbBody"><tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr></tbody>
       </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEW: ANALYTICS SECTION ══ -->
+<section id="analytics" class="sec">
+  <div class="sh"><h2>📊 Analytics</h2><p>Question-wise analysis, performance charts & export</p></div>
+  <div style="max-width:1100px;margin:0 auto">
+
+    <!-- Exam selector -->
+    <div class="lf" style="margin-bottom:1.5rem">
+      <select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px">
+        <option value="">Select Exam to Analyse</option>
+      </select>
+      <button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button>
+    </div>
+
+    <div id="anContent">
+      <div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>
     </div>
   </div>
 </section>
 
 <!-- ADMIN -->
 <section id="admin" class="sec">
-  <div class="sh">
-    <h2>⚙️ Admin — Answer Key Builder</h2>
-    <p>Create test patterns with all question types (saved to cloud ☁️)</p>
-  </div>
+  <div class="sh"><h2>⚙️ Admin — Answer Key Builder</h2><p>Create test patterns with all question types (saved to cloud ☁️)</p></div>
   <div class="adm">
     <div class="box">
       <h3>➕ Build New Test</h3>
       <div class="qb-card">
         <div class="qb-grid">
-          <div class="fg">
-            <label>Exam Name</label>
-            <input type="text" class="fi" id="qbName" placeholder="e.g., JEE Mock Test 1">
-          </div>
-          <div class="fg">
-            <label>Duration (mins)</label>
-            <input type="number" class="fi" id="qbDur" placeholder="180">
-          </div>
+          <div class="fg"><label>Exam Name</label><input type="text" class="fi" id="qbName" placeholder="e.g., JEE Mock Test 1"></div>
+          <div class="fg"><label>Duration (mins)</label><input type="number" class="fi" id="qbDur" placeholder="180"></div>
         </div>
       </div>
       <div class="qb-card">
@@ -424,18 +450,14 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       </div>
       <div class="qb-card">
         <h3>Questions (<span id="qbTotal">0</span>) <span id="qbStatsInline" style="font-size:.8rem;font-weight:400;color:var(--gl)"></span></h3>
-        <div id="qbList" class="qb-qlist">
-          <p class="qb-empty">No questions added yet.</p>
-        </div>
+        <div id="qbList" class="qb-qlist"><p class="qb-empty">No questions added yet.</p></div>
         <div class="qb-stats" id="qbStats" style="display:none"></div>
       </div>
       <button class="btn pr lg bl" onclick="qbSave()">💾 Save to Cloud</button>
     </div>
     <div class="box">
       <h3>📋 Existing Keys <span id="akCount" style="color:var(--gl);font-size:.8rem;font-weight:400"></span></h3>
-      <div class="akl" id="akList">
-        <div class="emp"><span class="ei">⏳</span><p>Loading...</p></div>
-      </div>
+      <div class="akl" id="akList"><div class="emp"><span class="ei">⏳</span><p>Loading...</p></div></div>
       <div class="dzone">
         <h4>🚨 Danger Zone</h4>
         <p>Permanently delete data. These actions cannot be undone.</p>
@@ -493,12 +515,12 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 </div>
 
 <div class="toasts" id="toasts"></div>
-<footer>© 2024 OMR Scanner Pro — Firebase Cloud 🔥 | All Question Types Supported</footer>
+<footer>© 2024 OMR Scanner Pro — Firebase Cloud 🔥 | Analytics + Export Enabled</footer>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer,where}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",
@@ -515,10 +537,11 @@ const db=getFirestore(app);
 
 const S={
   user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,
-  cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0}}
+  charts:{},anData:null,
+  cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}}
 };
 
-const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000;
+const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000,CACHE_AN=120000;
 const DEF_MARKS={scq:{c:3,w:-1,u:0},mcq:{c:4,w:-2,p:1,u:0},match:{c:3,w:-1,u:0},matrix:{c:1,w:0,u:0},num:{c:4,w:0,u:0}};
 const TYPE_LBL={scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
 const ADM_PASS='delta';
@@ -538,14 +561,11 @@ function fbErr(err){
   return m[err.code]||err.message||'Error occurred';
 }
 
-// ─── AUTH ───────────────────────────────────────────────
+// ─── AUTH ────────────────────────────────────────────────
 onAuthStateChanged(auth,async u=>{
-  S.user=u||null;
-  updUserUI();
+  S.user=u||null;updUserUI();
   document.getElementById('loadScr').style.display='none';
-  await loadKeys();
-  fillDDs();
-  loadHomeStats();
+  await loadKeys();fillDDs();loadHomeStats();
 });
 
 window.showAuth=()=>document.getElementById('authMod').classList.add('show');
@@ -561,11 +581,8 @@ window.doLogin=async function(){
   const e=document.getElementById('lEmail').value.trim();
   const p=document.getElementById('lPass').value;
   if(!e||!p)return toast('Fill all fields','wa');
-  try{
-    await signInWithEmailAndPassword(auth,e,p);
-    document.getElementById('authMod').classList.remove('show');
-    toast('Welcome back!','ok');
-  }catch(err){toast(fbErr(err),'er')}
+  try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}
+  catch(err){toast(fbErr(err),'er')}
 };
 
 window.doReg=async function(){
@@ -581,146 +598,95 @@ window.doReg=async function(){
     await updateProfile(cred.user,{displayName:n});
     await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});
     document.getElementById('authMod').classList.remove('show');
-    toast('Welcome, '+n+'!','ok');
-    S.cache.stats.ts=0;
-    loadHomeStats();
+    toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();
   }catch(err){toast(fbErr(err),'er')}
 };
 
-window.logout=async function(){
-  await signOut(auth);
-  S.admOk=false;
-  toast('Logged out','inf');
-};
+window.logout=async function(){await signOut(auth);S.admOk=false;toast('Logged out','inf');};
 
 function updUserUI(){
   const a=document.getElementById('uarea');
   if(S.user){
     const nm=S.user.displayName||S.user.email;
     const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    a.innerHTML=`
-      <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--d2);border-radius:50px;cursor:pointer" onclick="logout()">
-        <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div>
-        <span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span>
-        <span style="color:var(--g)">🚪</span>
-      </div>`;
+    a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--d2);border-radius:50px;cursor:pointer" onclick="logout()">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div>
+      <span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span>
+      <span style="color:var(--g)">🚪</span></div>`;
     document.getElementById('manName').value=nm;
   }else{
     a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;
   }
 }
 
-// ─── NAVIGATION ─────────────────────────────────────────
+// ─── NAVIGATION ──────────────────────────────────────────
 window.go=function(id){
   if(id==='admin'&&!S.admOk){
     document.getElementById('admMod').classList.add('show');
-    setTimeout(()=>document.getElementById('admPass').focus(),100);
-    return;
+    setTimeout(()=>document.getElementById('admPass').focus(),100);return;
   }
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   document.getElementById(id)?.classList.add('on');
   document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));
-  const map={home:0,manual:1,leader:2,admin:3};
+  const map={home:0,manual:1,leader:2,analytics:3,admin:4};
   const tabs=document.querySelectorAll('#navTabs .tab');
   if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');
   if(id==='leader')loadLB();
   if(id==='admin'){loadKeys().then(renderAKList);}
   if(id==='home')loadHomeStats();
+  if(id==='analytics')loadAnalytics();
   window.scrollTo({top:0,behavior:'smooth'});
 };
 
-// ─── ADMIN PASSWORD GATE ────────────────────────────────
+// ─── ADMIN PASSWORD ───────────────────────────────────────
 window.checkAdm=function(){
   const p=document.getElementById('admPass').value;
-  if(p===ADM_PASS){
-    S.admOk=true;
-    document.getElementById('admPass').value='';
-    document.getElementById('admMod').classList.remove('show');
-    toast('Admin access granted 🔓','ok');
-    go('admin');
-  }else{
-    toast('Wrong password ❌','er');
-    document.getElementById('admPass').value='';
-    document.getElementById('admPass').focus();
-  }
+  if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin access granted 🔓','ok');go('admin');}
+  else{toast('Wrong password ❌','er');document.getElementById('admPass').value='';document.getElementById('admPass').focus();}
 };
+window.closeAdmMod=function(){document.getElementById('admMod').classList.remove('show');document.getElementById('admPass').value='';};
+window.lockAdmin=function(){S.admOk=false;toast('Admin locked 🔒','inf');go('home');};
 
-window.closeAdmMod=function(){
-  document.getElementById('admMod').classList.remove('show');
-  document.getElementById('admPass').value='';
-};
-
-window.lockAdmin=function(){
-  S.admOk=false;
-  toast('Admin locked 🔒','inf');
-  go('home');
-};
-
-// ─── KEYS ────────────────────────────────────────────────
+// ─── KEYS ─────────────────────────────────────────────────
 async function loadKeys(force){
   const now=Date.now();
-  if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){
-    S.keys=S.cache.keys.data;fillDDs();return;
-  }
+  if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){S.keys=S.cache.keys.data;fillDDs();return;}
   try{
     const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));
     S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));
-    S.cache.keys={data:S.keys,ts:now};
-    fillDDs();
+    S.cache.keys={data:S.keys,ts:now};fillDDs();
   }catch(e){console.error(e)}
 }
 
 function fillDDs(){
-  ['manExam','lExam'].forEach(id=>{
-    const s=document.getElementById(id);
-    if(!s)return;
+  ['manExam','lExam','anExam'].forEach(id=>{
+    const s=document.getElementById(id);if(!s)return;
     const v=s.value;
-    s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':'<option value="">Select Exam</option>';
+    s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'?'<option value="">Select Exam to Analyse</option>':'<option value="">Select Exam</option>';
     S.keys.forEach(k=>{
       const o=document.createElement('option');
-      const qc=k.questions?k.questions.length:0;
-      o.value=k.id;
-      o.textContent=`${k.name} (${qc}Q)`;
-      s.appendChild(o);
+      o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);
     });
     if(v)s.value=v;
   });
 }
 
-// ─── QUESTION BUILDER ────────────────────────────────────
+// ─── QUESTION BUILDER ─────────────────────────────────────
 window.qbAdd=function(){
   const t=document.getElementById('qbType').value;
   const c=parseInt(document.getElementById('qbCount').value)||1;
-  for(let i=0;i<c;i++){
-    S.qbId++;
-    S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});
-  }
+  for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}
   qbRender();
 };
-
-function defAns(t){
-  return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';
-}
-
-window.qbClear=function(){
-  if(!S.qb.length)return;
-  if(!confirm('Clear all questions?'))return;
-  S.qb=[];S.qbId=0;qbRender();
-};
-
-window.qbDel=function(id){S.qb=S.qb.filter(q=>q.id!==id);qbRender()};
+function defAns(t){return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';}
+window.qbClear=function(){if(!S.qb.length)return;if(!confirm('Clear all questions?'))return;S.qb=[];S.qbId=0;qbRender();};
+window.qbDel=function(id){S.qb=S.qb.filter(q=>q.id!==id);qbRender();};
 
 function qbRender(){
   const l=document.getElementById('qbList');
   document.getElementById('qbTotal').textContent=S.qb.length;
-  if(!S.qb.length){
-    l.innerHTML='<p class="qb-empty">No questions added yet.</p>';
-    document.getElementById('qbStats').style.display='none';
-    document.getElementById('qbStatsInline').textContent='';
-    return;
-  }
-  l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');
-  qbUpdStats();
+  if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions added yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}
+  l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();
 }
 
 function qbCard(q,n){
@@ -730,11 +696,7 @@ function qbCard(q,n){
   else if(q.type==='match')body=`<span class="qb-lbl">Match Column I → Column II</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k} →</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">Select</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;
   else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix Match (click to toggle)</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;
   else if(q.type==='num')body=`<span class="qb-lbl">Numerical Answer Setup</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" placeholder="Value e.g. 3.14" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="± Tol" oninput="qbTol(${q.id},this.value)"></div>`;
-
-  const marks=q.type==='mcq'
-    ?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`
-    :`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong -</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;
-
+  const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong -</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;
   return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;
 }
 
@@ -751,11 +713,9 @@ function qbFind(id){return S.qb.find(q=>q.id===id)}
 function qbUpdStats(){
   if(!S.qb.length)return;
   const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);
-  const byType={};
-  S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);
+  const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);
   document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;
-  const el=document.getElementById('qbStats');
-  el.style.display='grid';
+  const el=document.getElementById('qbStats');el.style.display='grid';
   el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max Marks</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;
 }
 
@@ -773,23 +733,16 @@ window.qbSave=async function(){
   try{
     const dur=parseInt(document.getElementById('qbDur').value)||0;
     await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});
-    document.getElementById('qbName').value='';
-    document.getElementById('qbDur').value='';
-    S.qb=[];S.qbId=0;qbRender();
-    S.cache.keys.ts=0;
-    await loadKeys(true);
-    renderAKList();
-    toast('"'+nm+'" saved to cloud!','ok');
+    document.getElementById('qbName').value='';document.getElementById('qbDur').value='';
+    S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;
+    await loadKeys(true);renderAKList();toast('"'+nm+'" saved to cloud!','ok');
   }catch(e){toast('Error: '+e.message,'er')}
 };
 
 function renderAKList(){
   const l=document.getElementById('akList');
   document.getElementById('akCount').textContent=`(${S.keys.length})`;
-  if(!S.keys.length){
-    l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No answer keys yet</p></div>';
-    return;
-  }
+  if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No answer keys yet</p></div>';return;}
   l.innerHTML=S.keys.map(k=>{
     const canDel=S.user&&k.createdBy===S.user.uid;
     const qc=k.questions?k.questions.length:0;
@@ -802,89 +755,43 @@ function renderAKList(){
 window.delAK=async function(id){
   if(!S.user)return toast('Login required','wa');
   if(!confirm('Delete this answer key?'))return;
-  try{
-    await deleteDoc(doc(db,'answerKeys',id));
-    S.cache.keys.ts=0;
-    await loadKeys(true);
-    renderAKList();
-    toast('Deleted','inf');
-  }catch(e){toast('Error: '+e.message,'er')}
+  try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}
+  catch(e){toast('Error: '+e.message,'er')}
 };
 
-// ─── DANGER ZONE ────────────────────────────────────────
+// ─── DANGER ZONE ──────────────────────────────────────────
 async function bulkDelete(colName){
-  const snap=await getDocs(collection(db,colName));
-  let count=0;
-  for(const d of snap.docs){
-    await deleteDoc(doc(db,colName,d.id));
-    count++;
-  }
-  return count;
+  const snap=await getDocs(collection(db,colName));let count=0;
+  for(const d of snap.docs){await deleteDoc(doc(db,colName,d.id));count++;}return count;
 }
-
 window.clearLeaderboard=async function(){
   if(!S.user)return toast('Login required','wa');
   if(!confirm('⚠️ Delete ALL leaderboard entries?\nThis cannot be undone!'))return;
-  if(!confirm('Are you REALLY sure? All scores will be permanently deleted!'))return;
-  try{
-    toast('Clearing leaderboard...','inf');
-    const count=await bulkDelete('results');
-    S.cache.lb={data:null,ts:0,key:''};
-    S.cache.stats={data:null,ts:0};
-    S.curRes=null;
-    loadLB(true);
-    loadHomeStats();
-    toast(`Leaderboard cleared! ${count} entries deleted 🧹`,'ok');
-  }catch(e){toast('Error: '+e.message,'er')}
+  if(!confirm('Are you REALLY sure?'))return;
+  try{toast('Clearing leaderboard...','inf');const count=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.curRes=null;loadLB(true);loadHomeStats();toast(`Leaderboard cleared! ${count} entries deleted 🧹`,'ok');}
+  catch(e){toast('Error: '+e.message,'er')}
 };
-
 window.clearAllKeys=async function(){
   if(!S.user)return toast('Login required','wa');
-  if(!confirm('⚠️ Delete ALL answer keys?\nThis cannot be undone!'))return;
-  if(!confirm('Are you REALLY sure? All exam keys will be permanently deleted!'))return;
-  try{
-    toast('Clearing answer keys...','inf');
-    const count=await bulkDelete('answerKeys');
-    S.cache.keys={data:null,ts:0};
-    S.keys=[];
-    fillDDs();
-    renderAKList();
-    toast(`All answer keys cleared! ${count} keys deleted 🧹`,'ok');
-  }catch(e){toast('Error: '+e.message,'er')}
+  if(!confirm('⚠️ Delete ALL answer keys?'))return;if(!confirm('Are you REALLY sure?'))return;
+  try{toast('Clearing answer keys...','inf');const count=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`All answer keys cleared! ${count} keys deleted 🧹`,'ok');}
+  catch(e){toast('Error: '+e.message,'er')}
 };
-
 window.clearEverything=async function(){
   if(!S.user)return toast('Login required','wa');
-  if(!confirm('💣 DELETE EVERYTHING?\nAll leaderboard entries AND all answer keys will be permanently deleted!'))return;
-  if(!confirm('FINAL WARNING: This will wipe ALL data. Continue?'))return;
-  try{
-    toast('Clearing everything...','inf');
-    const c1=await bulkDelete('results');
-    const c2=await bulkDelete('answerKeys');
-    S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0}};
-    S.keys=[];S.curRes=null;
-    fillDDs();
-    renderAKList();
-    loadLB(true);
-    loadHomeStats();
-    toast(`Everything cleared! ${c1} results + ${c2} keys deleted 💣`,'ok');
-  }catch(e){toast('Error: '+e.message,'er')}
+  if(!confirm('💣 DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING: Continue?'))return;
+  try{toast('Clearing everything...','inf');const c1=await bulkDelete('results');const c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}};S.keys=[];S.curRes=null;fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`Everything cleared! ${c1} results + ${c2} keys deleted 💣`,'ok');}
+  catch(e){toast('Error: '+e.message,'er')}
 };
 
-// ─── MANUAL ENTRY ───────────────────────────────────────
+// ─── MANUAL ENTRY ─────────────────────────────────────────
 window.genManual=function(){
   const eid=document.getElementById('manExam').value;
-  const g=document.getElementById('manGrid');
-  const acts=document.getElementById('manActs');
+  const g=document.getElementById('manGrid');const acts=document.getElementById('manActs');
   document.getElementById('manResCont').style.display='none';
-  if(!eid){
-    g.innerHTML='<div class="qb-empty">Select an exam above to load questions</div>';
-    acts.style.display='none';return;
-  }
-  const key=S.keys.find(k=>k.id===eid);
-  if(!key)return;
-  acts.style.display='flex';
-  g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');
+  if(!eid){g.innerHTML='<div class="qb-empty">Select an exam above to load questions</div>';acts.style.display='none';return;}
+  const key=S.keys.find(k=>k.id===eid);if(!key)return;
+  acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');
 };
 
 function manCard(q,n,i){
@@ -902,12 +809,7 @@ window.manSel=function(i,v,btn,type){
   if(type==='mcq')btn.classList.toggle('sel');
   else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
 };
-
-window.manMtx=function(i,r,c,el){
-  el.classList.toggle('sel');
-  el.textContent=el.classList.contains('sel')?'✓':'';
-};
-
+window.manMtx=function(i,r,c,el){el.classList.toggle('sel');el.textContent=el.classList.contains('sel')?'✓':'';};
 window.clearManual=function(){
   document.querySelectorAll('.mq').forEach(mq=>{
     mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));
@@ -923,9 +825,7 @@ window.submitManual=async function(){
   const eid=document.getElementById('manExam').value;
   if(!nm)return toast('Enter your name','wa');
   if(!eid)return toast('Select an exam','wa');
-  const key=S.keys.find(k=>k.id===eid);
-  if(!key)return toast('Key not found','er');
-
+  const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');
   const userAns=[];
   document.querySelectorAll('.mq').forEach(mq=>{
     const t=mq.dataset.type;
@@ -935,99 +835,48 @@ window.submitManual=async function(){
     else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}
     else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}
   });
-
   const res=gradeAll(userAns,key,nm);
   showResult(res,'manResCont');
   document.getElementById('manResCont').style.display='block';
   document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});
   toast('Graded successfully!','ok');
-
-  // Save to Firebase leaderboard
   try{
-    await addDoc(collection(db,'results'),{
-      name:res.name,examId:res.examId,examName:res.examName,
-      total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,
-      marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,
-      userId:res.userId,createdAt:serverTimestamp()
-    });
-    S.cache.lb={data:null,ts:0,key:''};
-    S.cache.stats={data:null,ts:0};
+    await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});
+    S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.an={data:null,ts:0,key:''};
   }catch(e){console.error('Save error:',e)}
 };
 
+// ─── GRADING ──────────────────────────────────────────────
 function gradeAll(userAns,key,name){
-  let c=0,w=0,sk=0,marks=0,max=0;
-  const det=[];
-
+  let c=0,w=0,sk=0,marks=0,max=0;const det=[];
   key.questions.forEach((q,i)=>{
-    const u=userAns[i];
-    const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;
-    max+=cm;
-    let st='sk',got=um,uDisp='–',aDisp='';
-
+    const u=userAns[i];const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;
+    max+=cm;let st='sk',got=um,uDisp='–',aDisp='';
     if(q.type==='scq'){
       aDisp=q.answer;
-      if(!u){st='sk';sk++;}
-      else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}
-      else{st='no';got=wm;w++;uDisp=u;}
+      if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}
     }else if(q.type==='mcq'){
       aDisp=q.answer.join(',');
       if(!u||!u.length){st='sk';sk++;}
-      else{
-        const cor=q.answer,uArr=Array.isArray(u)?u:[u];
-        const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));
-        const anyW=uArr.some(x=>!cor.includes(x));
-        if(allC){st='ok';got=cm;c++;}
-        else if(!anyW){got=uArr.length*pm;st='ok';c++;}
-        else{st='no';got=wm;w++;}
-        uDisp=uArr.join(',');
-      }
+      else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}
     }else if(q.type==='match'){
       aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');
-      if(!u){st='sk';sk++;}
-      else{
-        const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));
-        if(allC){st='ok';got=cm;c++;}
-        else{st='no';got=wm;w++;}
-        uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');
-      }
+      if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}
     }else if(q.type==='matrix'){
       aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');
-      if(!u){st='sk';sk++;}
-      else{
-        let rowsC=0;
-        ['A','B','C','D'].forEach(r=>{
-          const ua=[...(u[r]||[])].sort().join('');
-          const ka=[...q.answer[r]].sort().join('');
-          if(ua===ka)rowsC++;
-        });
-        got=rowsC*cm;
-        if(rowsC===4){st='ok';c++;}
-        else if(rowsC>0){st='ok';c++;}
-        else{st='no';w++;}
-        uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');
-      }
+      if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join('');const ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}
     }else if(q.type==='num'){
       aDisp=String(q.answer);
-      if(!u){st='sk';sk++;}
-      else{
-        const tol=q.tolerance||0;
-        const diff=Math.abs(parseFloat(u)-parseFloat(q.answer));
-        if(diff<=tol){st='ok';got=cm;c++;}
-        else{st='no';got=wm;w++;}
-        uDisp=parseFloat(u).toFixed(q.decimals||2);
-      }
+      if(!u){st='sk';sk++;}else{const tol=q.tolerance||0;const diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}
     }
-    marks+=got;
-    det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});
+    marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});
   });
-
   const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;
   const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};
-  S.curRes=r;
-  return r;
+  S.curRes=r;return r;
 }
 
+// ─── SHOW RESULT ──────────────────────────────────────────
 function showResult(r,containerId){
   const cont=document.getElementById(containerId);
   const offset=283-(r.pct/100)*283;
@@ -1038,10 +887,7 @@ function showResult(r,containerId){
           <circle class="scbg" cx="50" cy="50" r="45"/>
           <circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/>
         </svg>
-        <div class="sct">
-          <span class="scv">${r.pct}%</span>
-          <span class="scl">Score</span>
-        </div>
+        <div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div>
       </div>
       <div class="rst">
         <div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div>
@@ -1057,121 +903,679 @@ function showResult(r,containerId){
       <button class="btn ol" onclick="go('leader')">🏆 View Leaderboard</button>
       <button class="btn pr" onclick="clearManual()">🔄 Try Again</button>
     </div>
-  `;
+
+    <!-- ══ PERSONAL PERFORMANCE CHARTS ══ -->
+    <div class="analytics-section">
+      <h3 style="margin-bottom:1rem;font-size:1.1rem">📊 Your Performance Analysis</h3>
+
+      <!-- Export buttons -->
+      <div class="exp-btns">
+        <button class="exp-btn exp-pdf" onclick="exportPDF()">📄 Export PDF Report</button>
+        <button class="exp-btn exp-excel" onclick="exportExcel()">📊 Export Excel</button>
+        <button class="exp-btn exp-csv" onclick="exportCSV()">📋 Export CSV</button>
+      </div>
+
+      <div class="analytics-grid">
+        <!-- Pie chart: correct/wrong/skipped -->
+        <div class="chart-box">
+          <h3>🥧 Result Breakdown</h3>
+          <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+        </div>
+        <!-- Bar chart: marks per question -->
+        <div class="chart-box">
+          <h3>📊 Marks per Question</h3>
+          <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Question-wise analysis table -->
+      <div class="chart-box" style="margin-bottom:1.5rem">
+        <h3>🔍 Question-wise Analysis</h3>
+        <div style="overflow-x:auto">
+          <table class="qa-table">
+            <thead>
+              <tr>
+                <th>Q#</th><th>Type</th><th>Your Answer</th>
+                <th>Correct Answer</th><th>Status</th><th>Marks</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${r.details.map(d=>`
+                <tr>
+                  <td><b>Q${d.q}</b></td>
+                  <td><span class="mq-type ${d.type}" style="display:inline-block">${TYPE_LBL[d.type]}</span></td>
+                  <td style="font-family:monospace">${d.u}</td>
+                  <td style="font-family:monospace;color:var(--ok)">${d.a}</td>
+                  <td>${d.st==='ok'?'<span style="color:var(--ok)">✅ Correct</span>':d.st==='no'?'<span style="color:var(--no)">❌ Wrong</span>':'<span style="color:var(--warn)">⏭️ Skipped</span>'}</td>
+                  <td style="font-weight:700;color:${d.marks>0?'var(--ok)':d.marks<0?'var(--no)':'var(--gl)'}">${d.marks>0?'+':''}${d.marks}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+
+  // Render charts after DOM update
+  setTimeout(()=>renderPersonalCharts(r),100);
 }
 
-// ─── LEADERBOARD ────────────────────────────────────────
+// ─── PERSONAL CHARTS ──────────────────────────────────────
+function renderPersonalCharts(r){
+  // Destroy old charts
+  if(S.charts.pie){S.charts.pie.destroy();S.charts.pie=null;}
+  if(S.charts.bar){S.charts.bar.destroy();S.charts.bar=null;}
+
+  const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:12}}}}};
+
+  // Pie chart
+  const pieCtx=document.getElementById('pieChart');
+  if(pieCtx){
+    S.charts.pie=new Chart(pieCtx,{
+      type:'doughnut',
+      data:{
+        labels:['Correct','Wrong','Skipped'],
+        datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]
+      },
+      options:{...chartOpts,cutout:'65%',plugins:{...chartOpts.plugins,tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/r.total*100)}%)`}}}}
+    });
+  }
+
+  // Bar chart
+  const barCtx=document.getElementById('barChart');
+  if(barCtx){
+    S.charts.bar=new Chart(barCtx,{
+      type:'bar',
+      data:{
+        labels:r.details.map(d=>`Q${d.q}`),
+        datasets:[{
+          label:'Marks',
+          data:r.details.map(d=>d.marks),
+          backgroundColor:r.details.map(d=>d.st==='ok'?'rgba(16,185,129,.7)':d.st==='no'?'rgba(239,68,68,.7)':'rgba(245,158,11,.5)'),
+          borderColor:r.details.map(d=>d.st==='ok'?'#10b981':d.st==='no'?'#ef4444':'#f59e0b'),
+          borderWidth:1,borderRadius:4
+        }]
+      },
+      options:{
+        ...chartOpts,
+        scales:{
+          x:{ticks:{color:'#94a3b8',maxRotation:0},grid:{color:'rgba(255,255,255,.05)'}},
+          y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}}
+        }
+      }
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// ─── ANALYTICS TAB ────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+window.loadAnalytics=async function(){
+  const eid=document.getElementById('anExam')?.value;
+  const cont=document.getElementById('anContent');
+  if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>';return;}
+
+  const now=Date.now();
+  const cacheKey=eid;
+  if(S.cache.an.data&&S.cache.an.key===cacheKey&&(now-S.cache.an.ts<CACHE_AN)){
+    renderAnalytics(S.cache.an.data);return;
+  }
+
+  cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei"><div class="spin"></div></span><p>Loading analytics...</p></div>';
+
+  try{
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
+    const allResults=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
+    const key=S.keys.find(k=>k.id===eid);
+
+    if(!allResults.length){
+      cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📭</span><p>No submissions yet for this exam</p></div>';
+      return;
+    }
+
+    // Build analytics data
+    const anData=buildAnalyticsData(allResults,key);
+    S.cache.an={data:anData,ts:now,key:cacheKey};
+    S.anData=anData;
+    renderAnalytics(anData);
+  }catch(e){
+    console.error(e);
+    cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading analytics</p></div>';
+  }
+};
+
+function buildAnalyticsData(results,key){
+  const total=results.length;
+  const avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total);
+  const avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10;
+  const maxScore=Math.max(...results.map(r=>r.pct||0));
+  const minScore=Math.min(...results.map(r=>r.pct||0));
+  const passCount=results.filter(r=>(r.pct||0)>=33).length;
+
+  // Score distribution buckets
+  const buckets={
+    '0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0
+  };
+  results.forEach(r=>{
+    const p=r.pct||0;
+    if(p<=20)buckets['0-20']++;
+    else if(p<=40)buckets['21-40']++;
+    else if(p<=60)buckets['41-60']++;
+    else if(p<=80)buckets['61-80']++;
+    else buckets['81-100']++;
+  });
+
+  // Question-wise analysis
+  // We need to re-grade or use stored per-question data
+  // Since we only store totals, we'll compute from key questions
+  const qStats=[];
+  if(key&&key.questions){
+    key.questions.forEach((q,i)=>{
+      // We can only estimate from results that stored question details
+      // Instead show question meta + marks
+      qStats.push({
+        n:i+1,type:q.type,
+        maxMarks:q.marks?.c||0,
+        answer:formatAnswer(q)
+      });
+    });
+  }
+
+  return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};
+}
+
+function formatAnswer(q){
+  if(q.type==='scq')return q.answer||'?';
+  if(q.type==='mcq')return Array.isArray(q.answer)?q.answer.join(','):'?';
+  if(q.type==='match')return Object.entries(q.answer||{}).map(([k,v])=>`${k}-${v}`).join(' ');
+  if(q.type==='matrix')return Object.entries(q.answer||{}).map(([k,v])=>`${k}:${Array.isArray(v)?v.join(''):'?'}`).join(' ');
+  if(q.type==='num')return String(q.answer);
+  return '?';
+}
+
+function renderAnalytics(d){
+  const cont=document.getElementById('anContent');
+
+  // Score distribution data for chart
+  const bucketLabels=Object.keys(d.buckets);
+  const bucketData=Object.values(d.buckets);
+
+  // Score trend (last 20 results by date)
+  const trendData=[...d.results].sort((a,b)=>{
+    const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);
+    const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);
+    return da-db2;
+  }).slice(-20);
+
+  cont.innerHTML=`
+    <!-- Summary Stats -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">
+      ${[
+        {v:d.total,l:'Total Attempts',i:'👥'},
+        {v:d.avgScore+'%',l:'Avg Score',i:'📊'},
+        {v:d.avgMarks,l:'Avg Marks',i:'⭐'},
+        {v:d.maxScore+'%',l:'Top Score',i:'🏆'},
+        {v:d.minScore+'%',l:'Lowest Score',i:'📉'},
+        {v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}
+      ].map(s=>`
+        <div class="stc">
+          <span style="font-size:1.4rem">${s.i}</span>
+          <span class="n" style="font-size:1.4rem">${s.v}</span>
+          <span class="l">${s.l}</span>
+        </div>`).join('')}
+    </div>
+
+    <!-- Export Buttons for full exam analytics -->
+    <div class="exp-btns" style="margin-bottom:1.5rem">
+      <button class="exp-btn exp-pdf" onclick="exportAnalyticsPDF()">📄 Export Analytics PDF</button>
+      <button class="exp-btn exp-excel" onclick="exportAnalyticsExcel()">📊 Export All Results Excel</button>
+      <button class="exp-btn exp-csv" onclick="exportAnalyticsCSV()">📋 Export All Results CSV</button>
+    </div>
+
+    <!-- Charts -->
+    <div class="analytics-grid" style="margin-bottom:1.5rem">
+      <div class="chart-box">
+        <h3>📊 Score Distribution</h3>
+        <div class="chart-wrap"><canvas id="distChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>📈 Score Trend (Last 20)</h3>
+        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Pie: pass vs fail -->
+    <div class="analytics-grid" style="margin-bottom:1.5rem">
+      <div class="chart-box">
+        <h3>🥧 Pass vs Fail (≥33%)</h3>
+        <div class="chart-wrap"><canvas id="passChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>📋 Correct/Wrong/Skipped (Avg)</h3>
+        <div class="chart-wrap"><canvas id="cwsChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Answer Key Table -->
+    ${d.qStats.length?`
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>🔑 Answer Key Overview</h3>
+      <div style="overflow-x:auto">
+        <table class="qa-table">
+          <thead>
+            <tr><th>Q#</th><th>Type</th><th>Correct Answer</th><th>Max Marks</th></tr>
+          </thead>
+          <tbody>
+            ${d.qStats.map(q=>`
+              <tr>
+                <td><b>Q${q.n}</b></td>
+                <td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td>
+                <td style="font-family:monospace;color:var(--ok)">${q.answer}</td>
+                <td><b style="color:var(--pl)">+${q.maxMarks}</b></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`:'' }
+
+    <!-- All Results Table -->
+    <div class="chart-box">
+      <h3>📋 All Submissions (${d.total})</h3>
+      <div style="overflow-x:auto">
+        <table class="qa-table">
+          <thead>
+            <tr><th>Rank</th><th>Name</th><th>Score %</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr>
+          </thead>
+          <tbody>
+            ${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
+              const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+              const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';
+              return `<tr>
+                <td><span class="rb ${rc}">${i+1}</span></td>
+                <td><b>${r.name}</b></td>
+                <td><b style="color:var(--pl)">${r.pct}%</b></td>
+                <td>${r.marks}/${r.max}</td>
+                <td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td>
+                <td style="color:var(--gl);font-size:.82rem">${dt}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  // Render analytics charts
+  setTimeout(()=>renderAnalyticsCharts(d,bucketLabels,bucketData,trendData),100);
+}
+
+function renderAnalyticsCharts(d,bucketLabels,bucketData,trendData){
+  ['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
+
+  const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};
+  const gridColor='rgba(255,255,255,.05)';
+  const tickColor='#94a3b8';
+
+  // Distribution bar chart
+  const distCtx=document.getElementById('distChart');
+  if(distCtx){
+    S.charts.dist=new Chart(distCtx,{
+      type:'bar',
+      data:{
+        labels:bucketLabels,
+        datasets:[{label:'Students',data:bucketData,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]
+      },
+      options:{...baseOpts,scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{ticks:{color:tickColor,stepSize:1},grid:{color:gridColor}}}}
+    });
+  }
+
+  // Trend line chart
+  const trendCtx=document.getElementById('trendChart');
+  if(trendCtx){
+    S.charts.trend=new Chart(trendCtx,{
+      type:'line',
+      data:{
+        labels:trendData.map((_,i)=>`#${i+1}`),
+        datasets:[{label:'Score %',data:trendData.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointBackgroundColor:'#818cf8',pointRadius:4}]
+      },
+      options:{...baseOpts,scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{min:0,max:100,ticks:{color:tickColor},grid:{color:gridColor}}}}
+    });
+  }
+
+  // Pass/Fail donut
+  const passCtx=document.getElementById('passChart');
+  if(passCtx){
+    S.charts.pass=new Chart(passCtx,{
+      type:'doughnut',
+      data:{
+        labels:['Pass (≥33%)','Fail (<33%)'],
+        datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderColor:['#10b981','#ef4444'],borderWidth:2}]
+      },
+      options:{...baseOpts,cutout:'60%'}
+    });
+  }
+
+  // Avg Correct/Wrong/Skipped donut
+  const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total);
+  const avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total);
+  const avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);
+  const cwsCtx=document.getElementById('cwsChart');
+  if(cwsCtx){
+    S.charts.cws=new Chart(cwsCtx,{
+      type:'doughnut',
+      data:{
+        labels:[`Correct (avg ${avgC})`,`Wrong (avg ${avgW})`,`Skipped (avg ${avgSk})`],
+        datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]
+      },
+      options:{...baseOpts,cutout:'60%'}
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// ─── EXPORT FUNCTIONS ─────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+
+// ── Personal Result: PDF ──────────────────────────────────
+window.exportPDF=function(){
+  if(!S.curRes)return toast('No result to export','wa');
+  const r=S.curRes;
+  const{jsPDF}=window.jspdf;
+  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=pdf.internal.pageSize.getWidth();
+  let y=18;
+
+  // Header
+  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
+  pdf.setTextColor(255,255,255);pdf.setFontSize(18);pdf.setFont('helvetica','bold');
+  pdf.text('OMR Scanner Pro — Result Report',W/2,12,{align:'center'});
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
+  pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});
+  y=40;
+
+  // Info box
+  pdf.setFillColor(30,41,59);pdf.roundedRect(10,y,W-20,36,3,3,'F');
+  pdf.setTextColor(129,140,248);pdf.setFontSize(11);pdf.setFont('helvetica','bold');
+  pdf.text('Candidate',14,y+8);pdf.text('Exam',W/2+2,y+8);
+  pdf.setTextColor(255,255,255);pdf.setFontSize(12);
+  pdf.text(r.name,14,y+16);pdf.text(r.examName,W/2+2,y+16);
+  pdf.setTextColor(129,140,248);pdf.setFontSize(9);
+  pdf.text(`Score: ${r.marks}/${r.max}  •  ${r.pct}%`,14,y+26);
+  pdf.text(`✓ ${r.correct}  ✗ ${r.wrong}  — ${r.skipped}  •  Acc: ${r.acc}%`,W/2+2,y+26);
+  y+=44;
+
+  // Details table
+  pdf.setFontSize(10);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);
+  pdf.text('Q#',14,y);pdf.text('Type',24,y);pdf.text('Your Answer',42,y);pdf.text('Correct Answer',90,y);pdf.text('Status',140,y);pdf.text('Marks',165,y);
+  y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;
+
+  pdf.setFont('helvetica','normal');pdf.setFontSize(9);
+  r.details.forEach((d,idx)=>{
+    if(y>270){pdf.addPage();pdf.setFillColor(15,23,42);pdf.rect(0,0,W,10,'F');y=18;}
+    if(idx%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-4,W-20,8,'F');}
+    const stColor=d.st==='ok'?[16,185,129]:d.st==='no'?[239,68,68]:[245,158,11];
+    pdf.setTextColor(...stColor);
+    pdf.text(`Q${d.q}`,14,y);
+    pdf.setTextColor(200,200,200);
+    pdf.text(TYPE_LBL[d.type],24,y);
+    pdf.text(String(d.u).slice(0,18),42,y);
+    pdf.text(String(d.a).slice(0,22),90,y);
+    pdf.setTextColor(...stColor);
+    pdf.text(d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',140,y);
+    pdf.text(`${d.marks>0?'+':''}${d.marks}`,165,y);
+    y+=8;
+  });
+
+  // Footer
+  y=Math.max(y+6,275);
+  pdf.setFillColor(15,23,42);pdf.rect(0,y,W,12,'F');
+  pdf.setTextColor(100,116,139);pdf.setFontSize(8);
+  pdf.text('Generated by OMR Scanner Pro • Firebase Cloud',W/2,y+7,{align:'center'});
+
+  pdf.save(`${r.name}_${r.examName}_Result.pdf`);
+  toast('PDF exported! 📄','ok');
+};
+
+// ── Personal Result: Excel ────────────────────────────────
+window.exportExcel=function(){
+  if(!S.curRes)return toast('No result to export','wa');
+  const r=S.curRes;
+  const wb=XLSX.utils.book_new();
+
+  // Summary sheet
+  const sumData=[
+    ['OMR Scanner Pro — Result Report'],[''],
+    ['Name',r.name],['Exam',r.examName],
+    ['Score',`${r.marks}/${r.max}`],['Percentage',r.pct+'%'],
+    ['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped],
+    ['Accuracy',r.acc+'%'],['Date',new Date().toLocaleString()]
+  ];
+  const ws1=XLSX.utils.aoa_to_sheet(sumData);
+  ws1['!cols']=[{wch:20},{wch:30}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Summary');
+
+  // Details sheet
+  const detData=[['Q#','Type','Your Answer','Correct Answer','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',d.marks])];
+  const ws2=XLSX.utils.aoa_to_sheet(detData);
+  ws2['!cols']=[{wch:6},{wch:10},{wch:22},{wch:22},{wch:10},{wch:8}];
+  XLSX.utils.book_append_sheet(wb,ws2,'Question Details');
+
+  XLSX.writeFile(wb,`${r.name}_${r.examName}_Result.xlsx`);
+  toast('Excel exported! 📊','ok');
+};
+
+// ── Personal Result: CSV ──────────────────────────────────
+window.exportCSV=function(){
+  if(!S.curRes)return toast('No result to export','wa');
+  const r=S.curRes;
+  const rows=[
+    ['OMR Scanner Pro - Result'],
+    ['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],['Percentage',r.pct+'%'],
+    ['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped],[''],
+    ['Q#','Type','Your Answer','Correct Answer','Status','Marks'],
+    ...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',d.marks])
+  ];
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  dlFile(csv,'text/csv',`${r.name}_${r.examName}_Result.csv`);
+  toast('CSV exported! 📋','ok');
+};
+
+// ── Analytics: PDF ────────────────────────────────────────
+window.exportAnalyticsPDF=function(){
+  if(!S.anData)return toast('No analytics data','wa');
+  const d=S.anData;
+  const{jsPDF}=window.jspdf;
+  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=pdf.internal.pageSize.getWidth();
+  let y=18;
+
+  // Header
+  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
+  pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
+  pdf.text('Analytics Report — '+d.examName,W/2,12,{align:'center'});
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
+  pdf.text(`${d.total} submissions • Generated ${new Date().toLocaleString()}`,W/2,20,{align:'center'});
+  y=40;
+
+  // Stats grid
+  const stats=[['Total Attempts',d.total],['Avg Score',d.avgScore+'%'],['Avg Marks',d.avgMarks],['Top Score',d.maxScore+'%'],['Lowest Score',d.minScore+'%'],['Pass Rate',Math.round(d.passCount/d.total*100)+'%']];
+  stats.forEach((s,i)=>{
+    const col=i%3;const row=Math.floor(i/3);
+    const bx=10+col*64;const by=y+row*20;
+    pdf.setFillColor(30,41,59);pdf.roundedRect(bx,by,60,16,2,2,'F');
+    pdf.setTextColor(129,140,248);pdf.setFontSize(14);pdf.setFont('helvetica','bold');
+    pdf.text(String(s[1]),bx+30,by+8,{align:'center'});
+    pdf.setTextColor(100,116,139);pdf.setFontSize(7);pdf.setFont('helvetica','normal');
+    pdf.text(s[0],bx+30,by+13,{align:'center'});
+  });
+  y+=50;
+
+  // Score distribution
+  pdf.setTextColor(129,140,248);pdf.setFontSize(10);pdf.setFont('helvetica','bold');
+  pdf.text('Score Distribution',14,y);y+=6;
+  const maxBucket=Math.max(...Object.values(d.buckets),1);
+  Object.entries(d.buckets).forEach(([label,count])=>{
+    pdf.setFillColor(30,41,59);pdf.rect(14,y,170,8,'F');
+    const bw=Math.round((count/maxBucket)*150);
+    if(bw>0){pdf.setFillColor(99,102,241);pdf.rect(14,y,bw,8,'F');}
+    pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.setFont('helvetica','normal');
+    pdf.text(`${label}%`,16,y+5.5);
+    pdf.text(`${count} students`,175,y+5.5,{align:'right'});
+    y+=10;
+  });
+  y+=6;
+
+  // All results
+  pdf.setTextColor(129,140,248);pdf.setFontSize(10);pdf.setFont('helvetica','bold');
+  pdf.text('All Submissions',14,y);y+=6;
+  pdf.setFontSize(8);pdf.setTextColor(100,116,139);
+  pdf.text('Rank',14,y);pdf.text('Name',26,y);pdf.text('Score%',90,y);pdf.text('Marks',110,y);pdf.text('C/W/S',130,y);pdf.text('Date',160,y);
+  y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=4;
+
+  [...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).forEach((r,i)=>{
+    if(y>270){pdf.addPage();y=14;}
+    if(i%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-3,W-20,7,'F');}
+    pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.setFont('helvetica','normal');
+    pdf.text(String(i+1),14,y+1);
+    pdf.text(r.name.slice(0,20),26,y+1);
+    const stColor=r.pct>=60?[16,185,129]:r.pct>=33?[245,158,11]:[239,68,68];
+    pdf.setTextColor(...stColor);pdf.text(r.pct+'%',90,y+1);
+    pdf.setTextColor(200,200,200);
+    pdf.text(`${r.marks}/${r.max}`,110,y+1);
+    pdf.text(`${r.correct}/${r.wrong}/${r.skipped}`,130,y+1);
+    const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+    pdf.text(dt,160,y+1);
+    y+=7;
+  });
+
+  pdf.save(`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.pdf`);
+  toast('Analytics PDF exported! 📄','ok');
+};
+
+// ── Analytics: Excel ──────────────────────────────────────
+window.exportAnalyticsExcel=function(){
+  if(!S.anData)return toast('No analytics data','wa');
+  const d=S.anData;
+  const wb=XLSX.utils.book_new();
+
+  // Summary
+  const sumData=[
+    ['Analytics Report — '+d.examName],['Generated',new Date().toLocaleString()],[''],
+    ['Total Attempts',d.total],['Average Score',d.avgScore+'%'],['Average Marks',d.avgMarks],
+    ['Top Score',d.maxScore+'%'],['Lowest Score',d.minScore+'%'],
+    ['Pass Count',d.passCount],['Pass Rate',Math.round(d.passCount/d.total*100)+'%'],[''],
+    ['Score Distribution'],['Range','Count'],
+    ...Object.entries(d.buckets).map(([k,v])=>[k+'%',v])
+  ];
+  const ws1=XLSX.utils.aoa_to_sheet(sumData);
+  ws1['!cols']=[{wch:25},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Summary');
+
+  // All results
+  const resData=[
+    ['Rank','Name','Score %','Marks','Max Marks','Correct','Wrong','Skipped','Accuracy %','Date'],
+    ...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
+      const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+      return[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped,r.acc,dt];
+    })
+  ];
+  const ws2=XLSX.utils.aoa_to_sheet(resData);
+  ws2['!cols']=[{wch:6},{wch:20},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws2,'All Results');
+
+  // Answer key
+  if(d.qStats.length){
+    const akData=[['Q#','Type','Correct Answer','Max Marks'],...d.qStats.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.answer,q.maxMarks])];
+    const ws3=XLSX.utils.aoa_to_sheet(akData);
+    ws3['!cols']=[{wch:6},{wch:10},{wch:30},{wch:12}];
+    XLSX.utils.book_append_sheet(wb,ws3,'Answer Key');
+  }
+
+  XLSX.writeFile(wb,`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.xlsx`);
+  toast('Analytics Excel exported! 📊','ok');
+};
+
+// ── Analytics: CSV ────────────────────────────────────────
+window.exportAnalyticsCSV=function(){
+  if(!S.anData)return toast('No analytics data','wa');
+  const d=S.anData;
+  const rows=[
+    ['Analytics Report',d.examName],['Total',d.total],['Avg Score',d.avgScore+'%'],[''],
+    ['Rank','Name','Score %','Marks','Max','Correct','Wrong','Skipped','Date'],
+    ...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
+      const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+      return[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped,dt];
+    })
+  ];
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  dlFile(csv,'text/csv',`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.csv`);
+  toast('Analytics CSV exported! 📋','ok');
+};
+
+// ── Download helper ───────────────────────────────────────
+function dlFile(content,mime,filename){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── LEADERBOARD ──────────────────────────────────────────
 async function loadLB(force){
   const eid=document.getElementById('lExam')?.value||'all';
   const tf=document.getElementById('lTime')?.value||'all';
-  const cacheKey=`${eid}_${tf}`;
-  const now=Date.now();
-
-  if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){
-    renderLB(S.cache.lb.data);return;
-  }
-
+  const cacheKey=`${eid}_${tf}`;const now=Date.now();
+  if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}
   try{
     const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));
     let data=snap.docs.map(d=>({id:d.id,...d.data()}));
-
     if(eid!=='all')data=data.filter(r=>r.examId===eid);
-
     if(tf!=='all'){
-      const nowD=new Date();
-      let cutoff;
+      const nowD=new Date();let cutoff;
       if(tf==='today'){cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());}
       else if(tf==='week'){cutoff=new Date(nowD-7*86400000);}
       else if(tf==='month'){cutoff=new Date(nowD-30*86400000);}
-      data=data.filter(r=>{
-        const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);
-        return d>=cutoff;
-      });
+      data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});
     }
-
     data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));
-
-    S.cache.lb={data,ts:now,key:cacheKey};
-    renderLB(data);
-  }catch(e){
-    console.error(e);
-    document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading leaderboard</p></td></tr>';
-  }
+    S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);
+  }catch(e){console.error(e);document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading leaderboard</p></td></tr>';}
 }
 window.loadLB=loadLB;
 
 function renderLB(data){
   const body=document.getElementById('lbBody');
-
-  // Podium
   const top3=data.slice(0,3);
   [1,2,3].forEach(i=>{
     const r=top3[i-1];
-    const av=document.getElementById('pav'+i);
-    const nm=document.getElementById('pn'+i);
-    const sc=document.getElementById('ps'+i);
-    if(r){
-      av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-      nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;
-      sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;
-    }else{
-      av.textContent='?';nm.textContent='—';sc.textContent='—';
-    }
+    const av=document.getElementById('pav'+i);const nm=document.getElementById('pn'+i);const sc=document.getElementById('ps'+i);
+    if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}
+    else{av.textContent='?';nm.textContent='—';sc.textContent='—';}
   });
-
-  if(!data.length){
-    body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions yet</p></td></tr>';
-    return;
-  }
-
+  if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions yet</p></td></tr>';return;}
   body.innerHTML=data.slice(0,100).map((r,i)=>{
-    const rank=i+1;
-    const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
+    const rank=i+1;const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
     const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());
     const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    return `<tr>
-      <td><span class="rb ${rc}">${rank}</span></td>
-      <td><b>${r.name}</b></td>
-      <td>${r.examName||'—'}</td>
-      <td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td>
-      <td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td>
-      <td style="color:var(--gl);font-size:.82rem">${dt}</td>
-    </tr>`;
+    return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;
   }).join('');
 }
 
-// ─── HOME STATS ─────────────────────────────────────────
+// ─── HOME STATS ───────────────────────────────────────────
 async function loadHomeStats(){
   const now=Date.now();
-  if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){
-    applyStats(S.cache.stats.data);return;
-  }
+  if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}
   try{
-    const [resSnap,usrSnap]=await Promise.all([
-      getCountFromServer(collection(db,'results')),
-      getCountFromServer(collection(db,'users'))
-    ]);
-    const subs=resSnap.data().count;
-    const usrs=usrSnap.data().count;
-
+    const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);
+    const subs=resSnap.data().count;const usrs=usrSnap.data().count;
     let avg='—';
-    if(subs>0){
-      const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));
-      const arr=rs.docs.map(d=>d.data().pct||0);
-      if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';
-    }
-    const data={subs,usrs,avg};
-    S.cache.stats={data,ts:now};
-    applyStats(data);
+    if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}
+    const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);
   }catch(e){console.error(e)}
 }
-
 function applyStats(d){
   document.getElementById('hScans').textContent=d.subs||0;
   document.getElementById('hUsers').textContent=d.usrs||0;
   document.getElementById('hAvg').textContent=d.avg||'—';
 }
-
 </script>
 </body>
 </html>
