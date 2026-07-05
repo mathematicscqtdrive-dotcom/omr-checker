@@ -16,70 +16,187 @@
   --g:#64748b;--gl:#94a3b8;--w:#fff;
   --gold:#fbbf24;--silver:#9ca3af;--bronze:#d97706;--r:12px
 }
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--d);color:var(--w);min-height:100vh}
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;background:rgba(15,23,42,.97);border-bottom:1px solid rgba(255,255,255,.06)}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--d);color:var(--w);min-height:100vh;overflow-x:hidden}
+
+/* ═══════════════════════════════════════════
+   SCIENCE PARTICLE CANVAS
+   ═══════════════════════════════════════════ */
+#scienceCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ═══════════════════════════════════════════
+   MATH FLOW BACKGROUND
+   ═══════════════════════════════════════════ */
+.math-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+.math-symbol{position:absolute;color:rgba(99,102,241,.08);font-size:1.5rem;font-weight:700;animation:mathFloat linear infinite;pointer-events:none;user-select:none}
+@keyframes mathFloat{
+  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* ═══════════════════════════════════════════
+   DNA HELIX DECORATION
+   ═══════════════════════════════════════════ */
+.dna-helix{position:fixed;right:-40px;top:50%;transform:translateY(-50%);z-index:0;pointer-events:none;opacity:.06}
+.dna-dot{width:8px;height:8px;border-radius:50%;background:var(--p);position:absolute;animation:dnaRotate 4s ease-in-out infinite}
+@keyframes dnaRotate{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(60px)}
+}
+
+/* ═══════════════════════════════════════════
+   ATOM SPINNER
+   ═══════════════════════════════════════════ */
+.atom{position:relative;width:60px;height:60px;display:inline-block}
+.atom-nucleus{width:12px;height:12px;background:var(--p);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--p)}
+.atom-orbit{position:absolute;top:0;left:0;width:100%;height:100%;border:1.5px solid rgba(99,102,241,.3);border-radius:50%;animation:atomSpin 3s linear infinite}
+.atom-orbit:nth-child(2){transform:rotate(60deg);animation-duration:4s}
+.atom-orbit:nth-child(3){transform:rotate(-60deg);animation-duration:5s}
+.atom-electron{width:5px;height:5px;background:var(--s);border-radius:50%;position:absolute;top:-2.5px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--s)}
+@keyframes atomSpin{to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════════════════
+   FORMULA CARDS (floating equations)
+   ═══════════════════════════════════════════ */
+.formula-float{position:fixed;z-index:0;pointer-events:none;font-family:'Courier New',monospace;color:rgba(99,102,241,.06);font-size:1.1rem;font-weight:700}
+.formula-float.f1{top:15%;left:5%;animation:formulaBob 6s ease-in-out infinite}
+.formula-float.f2{top:25%;right:8%;animation:formulaBob 7s ease-in-out infinite 1s}
+.formula-float.f3{bottom:30%;left:3%;animation:formulaBob 8s ease-in-out infinite 2s}
+.formula-float.f4{bottom:15%;right:5%;animation:formulaBob 5s ease-in-out infinite .5s}
+.formula-float.f5{top:50%;left:8%;animation:formulaBob 9s ease-in-out infinite 3s}
+.formula-float.f6{top:40%;right:3%;animation:formulaBob 6.5s ease-in-out infinite 1.5s}
+@keyframes formulaBob{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-15px) rotate(2deg)}
+  75%{transform:translateY(15px) rotate(-2deg)}
+}
+
+/* ═══════════════════════════════════════════
+   GLOW PULSE EFFECTS
+   ═══════════════════════════════════════════ */
+.glow-orb{position:fixed;width:300px;height:300px;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none;opacity:.15}
+.glow-orb.go1{background:var(--p);top:-100px;left:-100px;animation:orbPulse 8s ease-in-out infinite}
+.glow-orb.go2{background:var(--s);bottom:-100px;right:-100px;animation:orbPulse 10s ease-in-out infinite 2s}
+.glow-orb.go3{background:#a855f7;top:50%;left:50%;transform:translate(-50%,-50%);animation:orbPulse 12s ease-in-out infinite 4s}
+@keyframes orbPulse{
+  0%,100%{opacity:.08;transform:scale(1)}
+  50%{opacity:.2;transform:scale(1.3)}
+}
+
+/* ═══════════════════════════════════════════
+   GRID PATTERN OVERLAY
+   ═══════════════════════════════════════════ */
+.grid-pattern{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(99,102,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.03) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridShift 20s linear infinite}
+@keyframes gridShift{to{background-position:50px 50px}}
+
+/* ═══════════════════════════════════════════
+   MAIN LAYOUT
+   ═══════════════════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;background:rgba(15,23,42,.92);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px)}
 .brand{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:800}
-.dot{width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 12px var(--p)}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 12px var(--p);animation:dotPulse 2s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 12px var(--p)}50%{box-shadow:0 0 25px var(--p),0 0 50px rgba(99,102,241,.3)}}
 .ntabs{display:flex;gap:4px}
-.tab{color:var(--gl);padding:8px 14px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit}
+.tab{color:var(--gl);padding:8px 14px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;background:none;font-family:inherit;transition:.3s}
 .tab:hover,.tab.on{color:var(--w);background:rgba(99,102,241,.15)}
 .tab.on{color:var(--pl)}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;font-family:inherit;transition:.2s}
-.pr{background:linear-gradient(135deg,var(--p),var(--s));color:var(--w)}
-.pr:hover{transform:translateY(-2px)}
+.tab:hover{transform:translateY(-1px)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;font-family:inherit;transition:all .3s ease;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.15);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
+.btn:active::after{width:300px;height:300px}
+.pr{background:linear-gradient(135deg,var(--p),var(--s));color:var(--w);box-shadow:0 4px 15px rgba(99,102,241,.3)}
+.pr:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
 .ol{background:0 0;color:var(--pl);border:2px solid var(--p)}
+.ol:hover{background:rgba(99,102,241,.1);transform:translateY(-1px)}
 .dn{background:var(--no);color:var(--w)}
 .sm{padding:5px 12px;font-size:.78rem}
 .lg{padding:13px 26px;font-size:1rem}
 .bl{width:100%;justify-content:center}
 .ham{display:none;background:0 0;border:0;color:var(--w);font-size:1.4rem;cursor:pointer;padding:8px 12px}
-.mmenu{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--d2);padding:.8rem;z-index:999;border-bottom:1px solid var(--d3);gap:4px}
+.mmenu{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(30,41,59,.97);backdrop-filter:blur(20px);padding:.8rem;z-index:999;border-bottom:1px solid var(--d3);gap:4px}
 .mmenu.show{display:flex}
 .mmenu .tab{text-align:left;padding:12px 16px;width:100%;font-size:1rem}
-.fi,.fs{width:100%;padding:11px 15px;background:var(--d2);border:2px solid var(--d3);border-radius:8px;color:var(--w);font-family:inherit;font-size:.92rem;outline:0}
-.fi:focus,.fs:focus{border-color:var(--p)}
+.fi,.fs{width:100%;padding:11px 15px;background:var(--d2);border:2px solid var(--d3);border-radius:8px;color:var(--w);font-family:inherit;font-size:.92rem;outline:0;transition:border-color .3s,box-shadow .3s}
+.fi:focus,.fs:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
 .fs option{background:var(--d2)}
 .fg{margin-bottom:1rem}
-.fg label{display:block;margin-bottom:5px;font-size:.8rem;font-weight:700;color:var(--gl);text-transform:uppercase}
-main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-right:auto}
-.sec{display:none}
+.fg label{display:block;margin-bottom:5px;font-size:.8rem;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.5px}
+main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+.sec{display:none;animation:fadeSlideIn .5s ease}
 .sec.on{display:block}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
 .sh{text-align:center;margin-bottom:2rem}
-.sh h2{font-size:1.8rem;font-weight:800;margin-bottom:.4rem}
-.sh p{color:var(--gl)}
+.sh h2{font-size:1.8rem;font-weight:800;margin-bottom:.4rem;position:relative;display:inline-block}
+.sh h2::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:linear-gradient(90deg,var(--p),var(--s));border-radius:2px}
+.sh p{color:var(--gl);margin-top:.8rem}
+
+/* ═══════════════════════════════════════════
+   HERO WITH SCIENCE THEME
+   ═══════════════════════════════════════════ */
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0}
 .hero h1{font-size:2.6rem;font-weight:800;line-height:1.2;margin-bottom:1rem}
-.grad{background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad{background:linear-gradient(135deg,var(--p),var(--s),#a855f7);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradShift 4s ease-in-out infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero p{font-size:1.05rem;color:var(--gl);margin-bottom:1.8rem;line-height:1.7}
+
+/* Animated science badge */
+.science-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);padding:6px 14px;border-radius:50px;font-size:.8rem;color:var(--pl);margin-bottom:1rem;animation:badgeGlow 3s ease-in-out infinite}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.2)}50%{box-shadow:0 0 20px 5px rgba(99,102,241,.15)}}
+
 .stats-row{display:flex;gap:1.2rem;margin-bottom:1.8rem}
-.stc{background:var(--d2);padding:1rem;border-radius:var(--r);border:1px solid var(--d3);text-align:center;flex:1}
+.stc{background:rgba(30,41,59,.8);padding:1rem;border-radius:var(--r);border:1px solid var(--d3);text-align:center;flex:1;backdrop-filter:blur(10px);transition:all .3s;position:relative;overflow:hidden}
+.stc::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--p),transparent);animation:scanLine 3s linear infinite}
+@keyframes scanLine{to{left:200%}}
+.stc:hover{border-color:var(--p);transform:translateY(-3px);box-shadow:0 8px 25px rgba(99,102,241,.15)}
 .stc .n{display:block;font-size:1.6rem;font-weight:800;color:var(--pl)}
-.stc .l{font-size:.75rem;color:var(--g);text-transform:uppercase}
+.stc .l{font-size:.75rem;color:var(--g);text-transform:uppercase;letter-spacing:.5px}
 .hacts{display:flex;gap:1rem}
-.omrc{background:var(--d2);border:2px solid var(--d3);border-radius:16px;padding:1.5rem;width:260px;transform:rotate(3deg);margin:0 auto}
-.omrc h4{text-align:center;font-weight:700;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:2px solid var(--d3);color:var(--pl)}
-.brow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+
+/* ═══════════════════════════════════════════
+   ANIMATED OMR CARD
+   ═══════════════════════════════════════════ */
+.omrc{background:rgba(30,41,59,.8);border:2px solid var(--d3);border-radius:16px;padding:1.5rem;width:260px;transform:rotate(3deg);margin:0 auto;backdrop-filter:blur(10px);animation:omrFloat 4s ease-in-out infinite;position:relative;overflow:hidden}
+.omrc::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent,rgba(99,102,241,.05),transparent);animation:omrRotate 8s linear infinite}
+@keyframes omrFloat{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(3deg) translateY(-10px)}}
+@keyframes omrRotate{to{transform:rotate(360deg)}}
+.omrc h4{text-align:center;font-weight:700;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:2px solid var(--d3);color:var(--pl);position:relative;z-index:1}
+.brow{display:flex;align-items:center;gap:10px;margin-bottom:10px;position:relative;z-index:1}
 .brow span{width:28px;font-size:.8rem;color:var(--gl)}
-.bub{width:24px;height:24px;border-radius:50%;border:2px solid var(--g)}
-.bub.f{background:var(--p);border-color:var(--p)}
-.rh{display:flex;align-items:center;gap:2.5rem;padding:1.5rem;background:var(--d2);border-radius:16px;border:1px solid var(--d3);margin-bottom:1.5rem}
+.bub{width:24px;height:24px;border-radius:50%;border:2px solid var(--g);transition:all .3s;cursor:default}
+.bub.f{background:var(--p);border-color:var(--p);box-shadow:0 0 10px rgba(99,102,241,.5);animation:bubPop .8s ease}
+@keyframes bubPop{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.bub:hover{border-color:var(--pl);transform:scale(1.1)}
+
+/* ═══════════════════════════════════════════
+   RESULT SECTION
+   ═══════════════════════════════════════════ */
+.rh{display:flex;align-items:center;gap:2.5rem;padding:1.5rem;background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);margin-bottom:1.5rem;backdrop-filter:blur(10px);animation:fadeSlideIn .6s ease}
 .scirc{position:relative;width:140px;height:140px;flex-shrink:0}
 .scirc svg{width:100%;height:100%;transform:rotate(-90deg)}
 .scbg{fill:none;stroke:var(--d3);stroke-width:8}
-.scf{fill:none;stroke:var(--p);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.5s ease}
+.scf{fill:none;stroke:var(--p);stroke-width:8;stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 1.5s ease;filter:drop-shadow(0 0 6px var(--p))}
 .sct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
 .scv{display:block;font-size:1.5rem;font-weight:800;color:var(--pl)}
 .scl{font-size:.7rem;color:var(--g);text-transform:uppercase}
 .rst{display:flex;gap:1.5rem;flex:1}
-.rs{text-align:center;padding:.8rem;border-radius:var(--r);background:var(--d);flex:1}
+.rs{text-align:center;padding:.8rem;border-radius:var(--r);background:rgba(15,23,42,.6);flex:1;transition:all .3s;border:1px solid transparent}
+.rs:hover{transform:translateY(-2px);border-color:var(--d3)}
 .rs .ri{font-size:1.1rem;display:block}
 .rs .rv{font-size:1.8rem;font-weight:800;display:block}
 .rs .rl{font-size:.75rem;color:var(--gl);text-transform:uppercase}
 .rs.ok .ri,.rs.ok .rv{color:var(--ok)}
 .rs.no .ri,.rs.no .rv{color:var(--no)}
 .rs.sk .ri,.rs.sk .rv{color:var(--warn)}
+
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:1.5rem}
-.ai{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--d2);border:1px solid var(--d3);font-size:.85rem}
+.ai{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgba(30,41,59,.6);border:1px solid var(--d3);font-size:.85rem;transition:all .3s;animation:fadeSlideIn .4s ease backwards}
+.ai:nth-child(1){animation-delay:.05s}.ai:nth-child(2){animation-delay:.1s}.ai:nth-child(3){animation-delay:.15s}.ai:nth-child(4){animation-delay:.2s}.ai:nth-child(5){animation-delay:.25s}
+.ai:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .ai.ok{border-color:var(--ok);background:rgba(16,185,129,.08)}
 .ai.no{border-color:var(--no);background:rgba(239,68,68,.08)}
 .ai.sk{border-color:var(--warn);background:rgba(245,158,11,.08)}
@@ -90,9 +207,14 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .ai.no .qi{color:var(--no)}
 .ai.sk .qi{color:var(--warn)}
 .racts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
-.mconf{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding:1.2rem;background:var(--d2);border-radius:var(--r);border:1px solid var(--d3)}
+
+/* ═══════════════════════════════════════════
+   MANUAL ENTRY
+   ═══════════════════════════════════════════ */
+.mconf{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding:1.2rem;background:rgba(30,41,59,.8);border-radius:var(--r);border:1px solid var(--d3);backdrop-filter:blur(10px)}
 .mgrid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;max-height:600px;overflow-y:auto;padding-right:6px}
-.mq{padding:12px 14px;background:var(--d2);border-radius:8px;border:1px solid var(--d3)}
+.mq{padding:12px 14px;background:rgba(30,41,59,.7);border-radius:8px;border:1px solid var(--d3);transition:all .3s;animation:fadeSlideIn .4s ease backwards}
+.mq:hover{border-color:rgba(99,102,241,.3)}
 .mq-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .mq-num{font-weight:700;color:var(--pl);font-size:.9rem}
 .mq-type{background:var(--p);color:#fff;padding:2px 8px;border-radius:5px;font-size:.68rem;font-weight:700;text-transform:uppercase}
@@ -101,85 +223,124 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .mq-type.matrix{background:var(--gold);color:#000}
 .mq-type.num{background:var(--ok)}
 .mq-opts{display:flex;gap:6px;flex-wrap:wrap}
-.ob{min-width:34px;height:34px;padding:0 10px;border:2px solid var(--d3);border-radius:50px;background:0 0;color:var(--gl);font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit}
-.ob:hover{border-color:var(--p);color:var(--pl)}
-.ob.sel{background:var(--p);border-color:var(--p);color:var(--w)}
-.mq-num-input{width:200px;padding:8px 12px;background:var(--d);border:2px solid var(--d3);border-radius:8px;color:var(--w);font-family:inherit;font-size:.9rem}
+.ob{min-width:34px;height:34px;padding:0 10px;border:2px solid var(--d3);border-radius:50px;background:0 0;color:var(--gl);font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .3s;position:relative;overflow:hidden}
+.ob:hover{border-color:var(--p);color:var(--pl);transform:scale(1.05)}
+.ob.sel{background:var(--p);border-color:var(--p);color:var(--w);animation:selectPop .3s ease;box-shadow:0 0 12px rgba(99,102,241,.4)}
+@keyframes selectPop{0%{transform:scale(.8)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.mq-num-input{width:200px;padding:8px 12px;background:rgba(15,23,42,.6);border:2px solid var(--d3);border-radius:8px;color:var(--w);font-family:inherit;font-size:.9rem;transition:all .3s}
+.mq-num-input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
 .mq-match{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;max-width:400px}
 .mq-match span{font-weight:700;color:var(--pl)}
 .mq-matrix{display:grid;gap:4px;font-size:.78rem;max-width:400px}
 .mq-matrix-row{display:grid;grid-template-columns:40px repeat(5,1fr);gap:4px;align-items:center}
 .mq-matrix-row .rl{font-weight:700;color:var(--pl);text-align:center}
-.mq-matrix-row .mc{background:var(--d);border:2px solid var(--d3);border-radius:5px;padding:6px;cursor:pointer;text-align:center;font-weight:700;user-select:none}
-.mq-matrix-row .mc:hover{border-color:var(--p)}
-.mq-matrix-row .mc.sel{background:var(--p);border-color:var(--p);color:#fff}
+.mq-matrix-row .mc{background:rgba(15,23,42,.6);border:2px solid var(--d3);border-radius:5px;padding:6px;cursor:pointer;text-align:center;font-weight:700;user-select:none;transition:all .2s}
+.mq-matrix-row .mc:hover{border-color:var(--p);transform:scale(1.05)}
+.mq-matrix-row .mc.sel{background:var(--p);border-color:var(--p);color:#fff;animation:selectPop .3s ease}
 .mq-matrix-head{display:grid;grid-template-columns:40px repeat(5,1fr);gap:4px;font-weight:700;color:var(--pl);text-align:center;font-size:.72rem;text-transform:uppercase}
 .macts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ═══════════════════════════════════════════
+   LEADERBOARD
+   ═══════════════════════════════════════════ */
 .lf{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
 .lf .fs{width:auto;min-width:180px}
 .podium{display:flex;align-items:flex-end;justify-content:center;gap:1rem;margin-bottom:2.5rem;padding:1.5rem 0}
-.pi{text-align:center;display:flex;flex-direction:column;align-items:center}
-.pcrown{color:var(--gold);font-size:1.4rem;margin-bottom:.4rem}
-.pav{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:.4rem;border:3px solid}
-.pi.p1 .pav{width:70px;height:70px;border-color:var(--gold);color:var(--gold)}
+.pi{text-align:center;display:flex;flex-direction:column;align-items:center;animation:fadeSlideIn .6s ease backwards}
+.pi.p1{animation-delay:.2s}.pi.p2{animation-delay:.1s}.pi.p3{animation-delay:.3s}
+.pcrown{color:var(--gold);font-size:1.4rem;margin-bottom:.4rem;animation:crownBounce 2s ease-in-out infinite}
+@keyframes crownBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.pav{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:.4rem;border:3px solid;transition:all .3s}
+.pav:hover{transform:scale(1.1)}
+.pi.p1 .pav{width:70px;height:70px;border-color:var(--gold);color:var(--gold);box-shadow:0 0 20px rgba(251,191,36,.3)}
 .pi.p2 .pav{border-color:var(--silver);color:var(--silver)}
 .pi.p3 .pav{border-color:var(--bronze);color:var(--bronze)}
 .pname{font-weight:700;font-size:.88rem}
 .pscore{font-size:.78rem;color:var(--gl);margin-bottom:.4rem}
-.pstand{width:90px;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center}
+.pstand{width:90px;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center;transition:all .3s}
+.pstand:hover{transform:scaleY(1.05);transform-origin:bottom}
 .pstand span{font-size:1.4rem;font-weight:800;padding:.8rem}
 .pi.p1 .pstand{height:110px;background:rgba(251,191,36,.15);color:var(--gold)}
 .pi.p2 .pstand{height:80px;background:rgba(156,163,175,.15);color:var(--silver)}
 .pi.p3 .pstand{height:60px;background:rgba(217,119,6,.15);color:var(--bronze)}
-.ltw{background:var(--d2);border-radius:16px;border:1px solid var(--d3);overflow:hidden;overflow-x:auto}
+.ltw{background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);overflow:hidden;overflow-x:auto;backdrop-filter:blur(10px)}
 .lt{width:100%;border-collapse:collapse;min-width:600px}
-.lt thead{background:var(--d)}
+.lt thead{background:rgba(15,23,42,.8)}
 .lt th{padding:12px 18px;text-align:left;font-size:.78rem;text-transform:uppercase;color:var(--gl);font-weight:700}
 .lt td{padding:12px 18px;border-bottom:1px solid var(--d3);font-size:.92rem}
-.rb{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:.82rem}
+.lt tr{transition:background .3s}
+.lt tbody tr:hover{background:rgba(99,102,241,.05)}
+.rb{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:.82rem;transition:transform .3s}
+.rb:hover{transform:scale(1.2)}
 .r1{background:rgba(251,191,36,.2);color:var(--gold);border:2px solid var(--gold)}
 .r2{background:rgba(156,163,175,.2);color:var(--silver);border:2px solid var(--silver)}
 .r3{background:rgba(217,119,6,.2);color:var(--bronze);border:2px solid var(--bronze)}
-.rd{background:var(--d);color:var(--gl);border:2px solid var(--d3)}
+.rd{background:rgba(15,23,42,.6);color:var(--gl);border:2px solid var(--d3)}
 .emp{text-align:center;padding:2.5rem!important;color:var(--g)}
 .emp .ei{font-size:2.5rem;display:block;margin-bottom:.8rem}
 .live{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.15);color:var(--ok);border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:50px;font-size:.78rem;font-weight:700}
 .livdot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ═══════════════════════════════════════════
+   ADMIN
+   ═══════════════════════════════════════════ */
 .adm{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.box{background:var(--d2);border-radius:16px;border:1px solid var(--d3);padding:1.5rem}
+.box{background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);padding:1.5rem;backdrop-filter:blur(10px)}
 .box h3{margin-bottom:1.2rem;font-size:1.1rem}
 .akl{display:flex;flex-direction:column;gap:8px;max-height:600px;overflow-y:auto}
-.akc{padding:1rem;background:var(--d);border-radius:var(--r);border:1px solid var(--d3)}
+.akc{padding:1rem;background:rgba(15,23,42,.6);border-radius:var(--r);border:1px solid var(--d3);transition:all .3s;animation:fadeSlideIn .4s ease backwards}
+.akc:hover{border-color:rgba(99,102,241,.3);transform:translateX(4px)}
 .akc h4{font-size:.95rem;margin-bottom:.4rem}
 .akm{display:flex;gap:.8rem;font-size:.78rem;color:var(--gl);margin-bottom:.4rem;flex-wrap:wrap}
-.akm span{background:var(--d2);padding:2px 8px;border-radius:5px}
-.mov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:1rem}
+.akm span{background:rgba(30,41,59,.8);padding:2px 8px;border-radius:5px}
+.mov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:1rem;backdrop-filter:blur(8px)}
 .mov.show{display:flex}
-.modal{background:var(--d2);border-radius:16px;border:1px solid var(--d3);padding:1.8rem;width:100%;max-width:420px;position:relative}
-.mcl{position:absolute;top:.8rem;right:1rem;background:0 0;border:0;color:var(--g);font-size:1.4rem;cursor:pointer}
+.modal{background:var(--d2);border-radius:16px;border:1px solid var(--d3);padding:1.8rem;width:100%;max-width:420px;position:relative;animation:modalPop .4s ease}
+@keyframes modalPop{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mcl{position:absolute;top:.8rem;right:1rem;background:0 0;border:0;color:var(--g);font-size:1.4rem;cursor:pointer;transition:.3s}
+.mcl:hover{color:var(--w);transform:rotate(90deg)}
 .mts{display:flex;margin-bottom:1.2rem;border-bottom:2px solid var(--d3)}
-.mtab{flex:1;padding:10px;background:0 0;border:0;color:var(--g);font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.mtab{flex:1;padding:10px;background:0 0;border:0;color:var(--g);font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.3s}
 .mtab.on{color:var(--pl);border-bottom-color:var(--p)}
+
+/* ═══════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════ */
 .loadscr{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem}
 .loadscr p{color:var(--gl)}
-.spin{width:44px;height:44px;border:4px solid var(--d3);border-top-color:var(--p);border-radius:50%;animation:sp 1s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
+.load-atom{position:relative;width:80px;height:80px}
+.load-nucleus{width:16px;height:16px;background:var(--p);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 30px var(--p)}
+.load-orbit{position:absolute;top:0;left:0;width:100%;height:100%;border:2px solid rgba(99,102,241,.3);border-radius:50%;animation:atomSpin 2s linear infinite}
+.load-orbit:nth-child(2){transform:rotate(60deg);animation-duration:2.5s;border-color:rgba(14,165,233,.3)}
+.load-orbit:nth-child(3){transform:rotate(-60deg);animation-duration:3s;border-color:rgba(168,85,247,.3)}
+.load-e{width:6px;height:6px;border-radius:50%;position:absolute;top:-3px;left:50%;transform:translateX(-50%)}
+.load-orbit:nth-child(1) .load-e{background:var(--p);box-shadow:0 0 10px var(--p)}
+.load-orbit:nth-child(2) .load-e{background:var(--s);box-shadow:0 0 10px var(--s)}
+.load-orbit:nth-child(3) .load-e{background:#a855f7;box-shadow:0 0 10px #a855f7}
+.load-text{margin-top:.5rem;font-size:.85rem;color:var(--gl);animation:loadTextPulse 2s ease-in-out infinite}
+@keyframes loadTextPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
 .toasts{position:fixed;top:80px;right:16px;z-index:3000;display:flex;flex-direction:column;gap:8px;max-width:90vw}
-.toast{display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--d2);border-radius:var(--r);border:1px solid var(--d3);min-width:280px;font-size:.9rem;animation:slideIn .3s ease}
+.toast{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(30,41,59,.95);border-radius:var(--r);border:1px solid var(--d3);min-width:280px;font-size:.9rem;animation:slideIn .3s ease;backdrop-filter:blur(10px)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
 .toast.ok{border-left:4px solid var(--ok)}
 .toast.er{border-left:4px solid var(--no)}
 .toast.inf{border-left:4px solid var(--s)}
 .toast.wa{border-left:4px solid var(--warn)}
-.qb-card{background:var(--d2);border:1px solid var(--d3);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem}
+
+/* ═══════════════════════════════════════════
+   QUESTION BUILDER
+   ═══════════════════════════════════════════ */
+.qb-card{background:rgba(30,41,59,.7);border:1px solid var(--d3);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;backdrop-filter:blur(10px)}
 .qb-card h3{margin-bottom:1rem;font-size:1.05rem;color:var(--pl)}
 .qb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
 .qb-add{display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end}
 .qb-add .fs,.qb-add .fi{flex:1;min-width:130px}
 .qb-qlist{display:flex;flex-direction:column;gap:.7rem;max-height:500px;overflow-y:auto;padding-right:6px}
 .qb-empty{text-align:center;color:var(--gl);padding:1.5rem;font-style:italic;font-size:.9rem}
-.qb-q{background:var(--d);border:1px solid var(--d3);border-radius:10px;padding:.9rem}
+.qb-q{background:rgba(15,23,42,.6);border:1px solid var(--d3);border-radius:10px;padding:.9rem;transition:all .3s;animation:fadeSlideIn .3s ease backwards}
+.qb-q:hover{border-color:rgba(99,102,241,.3)}
 .qb-qh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;gap:.5rem;flex-wrap:wrap}
 .qb-qn{font-weight:700;color:var(--pl)}
 .qb-qt{padding:3px 10px;border-radius:5px;font-size:.7rem;font-weight:700;text-transform:uppercase;color:#fff;background:var(--p)}
@@ -187,29 +348,31 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .qb-qt.match{background:var(--warn)}
 .qb-qt.matrix{background:var(--gold);color:#000}
 .qb-qt.num{background:var(--ok)}
-.qb-del{background:var(--no);color:#fff;border:0;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:.72rem;font-weight:700}
+.qb-del{background:var(--no);color:#fff;border:0;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:.72rem;font-weight:700;transition:all .2s}
+.qb-del:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(239,68,68,.4)}
 .qb-body{display:flex;flex-direction:column;gap:.6rem}
 .qb-lbl{font-size:.7rem;color:var(--gl);text-transform:uppercase;font-weight:700}
 .qb-opts{display:flex;gap:.4rem;flex-wrap:wrap}
-.qb-opt{background:var(--d2);border:2px solid var(--d3);color:var(--w);padding:6px 14px;border-radius:5px;cursor:pointer;font-weight:700;font-size:.82rem;user-select:none}
-.qb-opt:hover{border-color:var(--p)}
-.qb-opt.on{background:var(--ok);border-color:var(--ok)}
+.qb-opt{background:rgba(30,41,59,.7);border:2px solid var(--d3);color:var(--w);padding:6px 14px;border-radius:5px;cursor:pointer;font-weight:700;font-size:.82rem;user-select:none;transition:all .2s}
+.qb-opt:hover{border-color:var(--p);transform:scale(1.05)}
+.qb-opt.on{background:var(--ok);border-color:var(--ok);animation:selectPop .3s ease}
 .qb-mtx{display:grid;grid-template-columns:40px repeat(5,1fr);gap:3px;font-size:.75rem;max-width:400px}
 .qb-mtx .h{font-weight:700;color:var(--pl);text-align:center;padding:4px}
-.qb-mtx .c{background:var(--d2);border:2px solid var(--d3);border-radius:4px;padding:6px;cursor:pointer;text-align:center;font-weight:700;user-select:none}
+.qb-mtx .c{background:rgba(30,41,59,.7);border:2px solid var(--d3);border-radius:4px;padding:6px;cursor:pointer;text-align:center;font-weight:700;user-select:none;transition:all .2s}
 .qb-mtx .c:hover{border-color:var(--p)}
 .qb-mtx .c.on{background:var(--ok);border-color:var(--ok)}
-.qb-mtx .r{font-weight:700;color:var(--pl);text-align:center;padding:6px;background:var(--d3);border-radius:4px}
+.qb-mtx .r{font-weight:700;color:var(--pl);text-align:center;padding:6px;background:rgba(51,65,85,.5);border-radius:4px}
 .qb-mrow{display:flex;align-items:center;gap:6px;margin-bottom:4px}
 .qb-mrow span{font-weight:700;color:var(--pl);min-width:24px}
 .qb-mrow select{flex:1;max-width:200px}
-.qb-marks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--d2);padding:8px;border-radius:8px}
+.qb-marks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:rgba(30,41,59,.5);padding:8px;border-radius:8px}
 .qb-marks.four{grid-template-columns:repeat(4,1fr)}
-.qb-marks input{background:var(--d);border:1px solid var(--d3);color:var(--w);padding:5px 8px;border-radius:5px;font-family:inherit;font-size:.82rem;width:100%}
+.qb-marks input{background:rgba(15,23,42,.6);border:1px solid var(--d3);color:var(--w);padding:5px 8px;border-radius:5px;font-family:inherit;font-size:.82rem;width:100%}
 .qb-marks label{font-size:.65rem;color:var(--gl);text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
 .qb-num{display:grid;grid-template-columns:1fr 90px 100px;gap:6px}
 .qb-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.6rem;margin-top:.8rem}
-.qb-stat{background:var(--d);padding:.7rem;border-radius:8px;text-align:center;border:1px solid var(--d3)}
+.qb-stat{background:rgba(15,23,42,.6);padding:.7rem;border-radius:8px;text-align:center;border:1px solid var(--d3);transition:all .3s}
+.qb-stat:hover{border-color:var(--p);transform:translateY(-2px)}
 .qb-stat-v{font-size:1.3rem;font-weight:800;color:var(--pl)}
 .qb-stat-l{font-size:.68rem;color:var(--gl);text-transform:uppercase;margin-top:2px}
 .dzone{margin-top:1.5rem;padding:1.5rem;border-top:2px solid var(--no);border-radius:0 0 12px 12px}
@@ -217,27 +380,24 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .dzone p{color:var(--gl);margin-bottom:1rem;font-size:.85rem}
 .dzone-acts{display:flex;gap:.8rem;flex-wrap:wrap}
 
-/* ── NEW: Analytics & Charts ── */
-.analytics-section{margin-top:1.5rem}
+/* ═══════════════════════════════════════════
+   ANALYTICS
+   ═══════════════════════════════════════════ */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
-.chart-box{background:var(--d2);border:1px solid var(--d3);border-radius:16px;padding:1.5rem}
+.chart-box{background:rgba(30,41,59,.8);border:1px solid var(--d3);border-radius:16px;padding:1.5rem;backdrop-filter:blur(10px);transition:all .3s}
+.chart-box:hover{border-color:rgba(99,102,241,.3);box-shadow:0 8px 25px rgba(0,0,0,.2)}
 .chart-box h3{font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--pl)}
 .chart-wrap{position:relative;height:260px}
 .qa-table{width:100%;border-collapse:collapse;font-size:.82rem}
 .qa-table th{padding:8px 12px;text-align:left;font-size:.72rem;text-transform:uppercase;color:var(--gl);font-weight:700;border-bottom:2px solid var(--d3)}
 .qa-table td{padding:8px 12px;border-bottom:1px solid var(--d3)}
-.qa-bar-wrap{display:flex;align-items:center;gap:8px;min-width:120px}
-.qa-bar{height:8px;border-radius:4px;min-width:4px;transition:.6s}
-.qa-bar.ok{background:var(--ok)}
-.qa-bar.no{background:var(--no)}
-.qa-bar.sk{background:var(--warn)}
-.diff-badge{padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:700}
-.diff-easy{background:rgba(16,185,129,.2);color:var(--ok)}
-.diff-med{background:rgba(245,158,11,.2);color:var(--warn)}
-.diff-hard{background:rgba(239,68,68,.2);color:var(--no)}
-.diff-skip{background:rgba(100,116,139,.2);color:var(--gl)}
+.qa-table tr{transition:background .3s}
+.qa-table tbody tr:hover{background:rgba(99,102,241,.05)}
+
 .exp-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
-.exp-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit;font-size:.88rem;transition:.2s}
+.exp-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit;font-size:.88rem;transition:all .3s;position:relative;overflow:hidden}
+.exp-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .6s}
+.exp-btn:hover::before{left:100%}
 .exp-pdf{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 .exp-pdf:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(239,68,68,.4)}
 .exp-excel{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
@@ -245,35 +405,34 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .exp-csv{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
 .exp-csv:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(245,158,11,.4)}
 
-/* ── Analytics Tab (Admin) ── */
-.atabs{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--d);padding:4px;border-radius:10px;width:fit-content}
-.atab{padding:8px 16px;border-radius:8px;border:none;background:0 0;color:var(--gl);font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
-.atab.on{background:var(--p);color:#fff}
-.qa-analysis{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem}
-.qa-card{background:var(--d2);border:1px solid var(--d3);border-radius:12px;padding:1rem}
-.qa-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
-.qa-card-num{font-weight:800;color:var(--pl)}
-.qa-mini-bars{display:flex;flex-direction:column;gap:4px}
-.qa-mini-bar-row{display:flex;align-items:center;gap:8px;font-size:.75rem}
-.qa-mini-bar-row span:first-child{width:50px;color:var(--gl)}
-.qa-mini-bar-bg{flex:1;height:6px;background:var(--d3);border-radius:3px;overflow:hidden}
-.qa-mini-bar-fill{height:100%;border-radius:3px;transition:.6s}
-.qa-mini-bar-row span:last-child{width:36px;text-align:right;font-weight:600}
+/* ═══════════════════════════════════════════
+   CONFETTI ANIMATION (for good scores)
+   ═══════════════════════════════════════════ */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5000;overflow:hidden}
+.confetti{position:absolute;width:10px;height:10px;top:-10px;opacity:0;animation:confettiFall linear forwards}
+@keyframes confettiFall{
+  0%{transform:translateX(0) rotateZ(0deg);opacity:1}
+  100%{transform:translateX(var(--drift)) rotateZ(720deg);opacity:0;top:110vh}
+}
 
-/* ── Global Analytics (Admin) ── */
-.ga-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:1.5rem}
-.ga-chart-box{background:var(--d2);border:1px solid var(--d3);border-radius:16px;padding:1.5rem}
-.ga-chart-box h4{font-size:.95rem;font-weight:700;margin-bottom:1rem;color:var(--pl)}
-.ga-chart-wrap{position:relative;height:220px}
+/* ═══════════════════════════════════════════
+   WAVE SEPARATOR
+   ═══════════════════════════════════════════ */
+.wave-sep{position:relative;height:40px;overflow:hidden;margin:1rem 0}
+.wave-sep svg{position:absolute;bottom:0;width:200%;animation:waveMove 8s linear infinite}
+@keyframes waveMove{to{transform:translateX(-50%)}}
 
-footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-top:1px solid var(--d3);margin-top:2rem}
+footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-top:1px solid var(--d3);margin-top:2rem;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;text-align:center}
   .hacts{justify-content:center}
   .stats-row{justify-content:center}
   .adm{grid-template-columns:1fr}
   .analytics-grid{grid-template-columns:1fr}
-  .ga-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   .ntabs{display:none}
@@ -293,20 +452,56 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   .toasts{right:8px;top:70px}
   .toast{min-width:auto}
   .analytics-grid{grid-template-columns:1fr}
-  .qa-analysis{grid-template-columns:1fr}
+  .formula-float{display:none}
+  .glow-orb{width:200px;height:200px}
 }
 </style>
 </head>
 <body>
 
+<!-- ═══ SCIENCE BACKGROUND EFFECTS ═══ -->
+<canvas id="scienceCanvas"></canvas>
+<div class="grid-pattern"></div>
+<div class="glow-orb go1"></div>
+<div class="glow-orb go2"></div>
+<div class="glow-orb go3"></div>
+
+<div class="math-bg" id="mathBg"></div>
+
+<div class="formula-float f1">E = mc²</div>
+<div class="formula-float f2">∫f(x)dx</div>
+<div class="formula-float f3">F = ma</div>
+<div class="formula-float f4">∇ × B = μ₀J</div>
+<div class="formula-float f5">PV = nRT</div>
+<div class="formula-float f6">λ = h/p</div>
+
+<!-- ═══ LOADING SCREEN (ATOM STYLE) ═══ -->
 <div class="loadscr" id="loadScr">
-  <div style="font-size:2rem">🎯</div>
-  <div class="spin"></div>
-  <p>Connecting to database...</p>
+  <div class="load-atom">
+    <div class="load-orbit"><div class="load-e"></div></div>
+    <div class="load-orbit"><div class="load-e"></div></div>
+    <div class="load-orbit"><div class="load-e"></div></div>
+    <div class="load-nucleus"></div>
+  </div>
+  <p class="load-text">Initializing quantum scanner...</p>
+  <div style="display:flex;gap:4px;margin-top:8px">
+    <div style="width:6px;height:6px;border-radius:50%;background:var(--p);animation:loadDot 1.4s ease-in-out infinite"></div>
+    <div style="width:6px;height:6px;border-radius:50%;background:var(--s);animation:loadDot 1.4s ease-in-out infinite .2s"></div>
+    <div style="width:6px;height:6px;border-radius:50%;background:#a855f7;animation:loadDot 1.4s ease-in-out infinite .4s"></div>
+  </div>
 </div>
+<style>@keyframes loadDot{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.5);opacity:1}}</style>
 
 <nav>
-  <div class="brand"><div class="dot"></div><span>OMR Scanner Pro</span></div>
+  <div class="brand">
+    <div class="dot"></div>
+    <span>OMR Scanner Pro</span>
+    <div class="atom" style="width:28px;height:28px;margin-left:4px">
+      <div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div>
+      <div class="atom-orbit" style="border-width:1px;transform:rotate(60deg);animation-duration:3.5s"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px;background:var(--p)"></div></div>
+      <div class="atom-nucleus" style="width:5px;height:5px"></div>
+    </div>
+  </div>
   <div class="ntabs" id="navTabs">
     <button class="tab on" onclick="go('home')">🏠 Home</button>
     <button class="tab" onclick="go('manual')">✏️ Manual Entry</button>
@@ -332,8 +527,12 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 <section id="home" class="sec on">
   <div class="hero">
     <div>
+      <div class="science-badge">
+        <div class="atom" style="width:20px;height:20px"><div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div><div class="atom-nucleus" style="width:4px;height:4px"></div></div>
+        Powered by Science & AI
+      </div>
       <h1>OMR <span class="grad">Answer Checker</span></h1>
-      <p>Multi-type questions (SCQ, MCQ, Matching, Matrix, Numerical) with real cloud storage. Everyone sees the same leaderboard in real time!</p>
+      <p>Multi-type questions (SCQ, MCQ, Matching, Matrix, Numerical) with real cloud storage. Everyone sees the same leaderboard in real time! ⚡</p>
       <div class="stats-row">
         <div class="stc"><span class="n" id="hScans">—</span><span class="l">Submissions</span></div>
         <div class="stc"><span class="n" id="hUsers">—</span><span class="l">Users</span></div>
@@ -381,10 +580,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
     <div class="lf">
       <select id="lExam" class="fs" onchange="loadLB(true)"><option value="all">All Exams</option></select>
       <select id="lTime" class="fs" onchange="loadLB(true)">
-        <option value="all">All Time</option>
-        <option value="today">Today</option>
-        <option value="week">Week</option>
-        <option value="month">Month</option>
+        <option value="all">All Time</option><option value="today">Today</option><option value="week">Week</option><option value="month">Month</option>
       </select>
       <button class="btn ol sm" onclick="loadLB(true)">🔄 Refresh</button>
     </div>
@@ -394,30 +590,21 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <div class="pi p3"><div class="pav" id="pav3">?</div><div class="pname" id="pn3">—</div><div class="pscore" id="ps3">—</div><div class="pstand"><span>3</span></div></div>
     </div>
     <div class="ltw">
-      <table class="lt">
-        <thead><tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr></thead>
-        <tbody id="lbBody"><tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr></tbody>
-      </table>
+      <table class="lt"><thead><tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr></thead>
+      <tbody id="lbBody"><tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr></tbody></table>
     </div>
   </div>
 </section>
 
-<!-- ══ NEW: ANALYTICS SECTION ══ -->
+<!-- ANALYTICS -->
 <section id="analytics" class="sec">
   <div class="sh"><h2>📊 Analytics</h2><p>Question-wise analysis, performance charts & export</p></div>
   <div style="max-width:1100px;margin:0 auto">
-
-    <!-- Exam selector -->
     <div class="lf" style="margin-bottom:1.5rem">
-      <select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px">
-        <option value="">Select Exam to Analyse</option>
-      </select>
+      <select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px"><option value="">Select Exam to Analyse</option></select>
       <button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button>
     </div>
-
-    <div id="anContent">
-      <div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>
-    </div>
+    <div id="anContent"><div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div></div>
   </div>
 </section>
 
@@ -437,11 +624,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
         <h3>Add Question</h3>
         <div class="qb-add">
           <select class="fs" id="qbType">
-            <option value="scq">Single Correct (SCQ)</option>
-            <option value="mcq">Multiple Correct (MCQ)</option>
-            <option value="match">Matching Type</option>
-            <option value="matrix">Matrix Matching</option>
-            <option value="num">Numerical Type</option>
+            <option value="scq">Single Correct (SCQ)</option><option value="mcq">Multiple Correct (MCQ)</option><option value="match">Matching Type</option><option value="matrix">Matrix Matching</option><option value="num">Numerical Type</option>
           </select>
           <input type="number" class="fi" id="qbCount" value="1" min="1" max="50" placeholder="How many?">
           <button class="btn pr" onclick="qbAdd()">➕ Add</button>
@@ -459,8 +642,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <h3>📋 Existing Keys <span id="akCount" style="color:var(--gl);font-size:.8rem;font-weight:400"></span></h3>
       <div class="akl" id="akList"><div class="emp"><span class="ei">⏳</span><p>Loading...</p></div></div>
       <div class="dzone">
-        <h4>🚨 Danger Zone</h4>
-        <p>Permanently delete data. These actions cannot be undone.</p>
+        <h4>🚨 Danger Zone</h4><p>Permanently delete data. These actions cannot be undone.</p>
         <div class="dzone-acts">
           <button class="btn dn" onclick="clearLeaderboard()">🗑️ Clear Leaderboard</button>
           <button class="btn dn" onclick="clearAllKeys()">🔑 Clear All Keys</button>
@@ -474,7 +656,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 
 </main>
 
-<!-- AUTH MODAL -->
+<!-- MODALS -->
 <div class="mov" id="authMod">
   <div class="modal">
     <button class="mcl" onclick="document.getElementById('authMod').classList.remove('show')">✕</button>
@@ -497,1085 +679,284 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   </div>
 </div>
 
-<!-- ADMIN PASSWORD MODAL -->
 <div class="mov" id="admMod">
   <div class="modal" style="max-width:380px">
     <button class="mcl" onclick="closeAdmMod()">✕</button>
     <div style="text-align:center;margin-bottom:1.2rem">
-      <div style="font-size:2.5rem;margin-bottom:.5rem">🔒</div>
+      <div class="load-atom" style="width:60px;height:60px;margin:0 auto .8rem">
+        <div class="load-orbit"><div class="load-e"></div></div>
+        <div class="load-orbit"><div class="load-e"></div></div>
+        <div class="load-orbit"><div class="load-e"></div></div>
+        <div class="load-nucleus"></div>
+      </div>
       <h3 style="margin-bottom:.3rem">Admin Access</h3>
       <p style="color:var(--gl);font-size:.85rem">Enter password to continue</p>
     </div>
-    <div class="fg">
-      <label>Password</label>
-      <input type="password" id="admPass" class="fi" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkAdm()">
-    </div>
+    <div class="fg"><label>Password</label><input type="password" id="admPass" class="fi" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkAdm()"></div>
     <button class="btn pr bl" onclick="checkAdm()">🔓 Unlock</button>
   </div>
 </div>
 
 <div class="toasts" id="toasts"></div>
-<footer>© 2024 OMR Scanner Pro — Firebase Cloud 🔥 | Analytics + Export Enabled</footer>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px">
+    <div class="atom" style="width:20px;height:20px"><div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div><div class="atom-nucleus" style="width:4px;height:4px"></div></div>
+    <span>OMR Scanner Pro</span>
+  </div>
+  © 2024 — Firebase Cloud 🔥 | E = mc² | All Question Types Supported
+</footer>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig={
-  apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",
-  authDomain:"omr-leaderboard.firebaseapp.com",
-  projectId:"omr-leaderboard",
-  storageBucket:"omr-leaderboard.firebasestorage.app",
-  messagingSenderId:"375904858200",
-  appId:"1:375904858200:web:0e3a92d55ff32d4fca1a2d"
-};
+const firebaseConfig={apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",authDomain:"omr-leaderboard.firebaseapp.com",projectId:"omr-leaderboard",storageBucket:"omr-leaderboard.firebasestorage.app",messagingSenderId:"375904858200",appId:"1:375904858200:web:0e3a92d55ff32d4fca1a2d"};
+const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-
-const S={
-  user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,
-  charts:{},anData:null,
-  cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}}
-};
-
+const S={user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,charts:{},anData:null,cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}}};
 const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000,CACHE_AN=120000;
 const DEF_MARKS={scq:{c:3,w:-1,u:0},mcq:{c:4,w:-2,p:1,u:0},match:{c:3,w:-1,u:0},matrix:{c:1,w:0,u:0},num:{c:4,w:0,u:0}};
 const TYPE_LBL={scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
 const ADM_PASS='delta';
 
-// ─── TOAST ──────────────────────────────────────────────
+// ═══════════════════════════════════════════
+// SCIENCE PARTICLE SYSTEM
+// ═══════════════════════════════════════════
+(function initScienceCanvas(){
+  const canvas=document.getElementById('scienceCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  const particles=[];
+  const connections=[];
+  const PARTICLE_COUNT=50;
+  const CONNECTION_DIST=150;
+
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  class Particle{
+    constructor(){
+      this.x=Math.random()*W;this.y=Math.random()*H;
+      this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+      this.size=Math.random()*2+1;
+      this.alpha=Math.random()*.3+.1;
+      this.color=`hsla(${230+Math.random()*40},80%,70%,${this.alpha})`;
+    }
+    update(){
+      this.x+=this.vx;this.y+=this.vy;
+      if(this.x<0||this.x>W)this.vx*=-1;
+      if(this.y<0||this.y>H)this.vy*=-1;
+    }
+    draw(){
+      ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+      ctx.fillStyle=this.color;ctx.fill();
+      ctx.shadowBlur=this.size*3;ctx.shadowColor=this.color;
+    }
+  }
+
+  for(let i=0;i<PARTICLE_COUNT;i++)particles.push(new Particle());
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{p.update();p.draw();});
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x;
+        const dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<CONNECTION_DIST){
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(99,102,241,${.08*(1-dist/CONNECTION_DIST)})`;ctx.lineWidth=.5;ctx.stroke();
+        }
+      }
+    }
+    ctx.shadowBlur=0;
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+// ═══════════════════════════════════════════
+// MATH SYMBOLS FLOATING
+// ═══════════════════════════════════════════
+(function initMathBg(){
+  const symbols=['∫','∑','∂','∇','∆','π','θ','α','β','γ','δ','ε','λ','μ','σ','ω','Ψ','Φ','∞','√','±','≈','≠','≤','≥','⊗','⊕','∀','∃','∈','⊂','∪','∩','℃','→','⇒','↔','⟨','⟩','ℏ','∝'];
+  const bg=document.getElementById('mathBg');
+  function spawn(){
+    const sym=document.createElement('div');
+    sym.className='math-symbol';
+    sym.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    sym.style.left=Math.random()*100+'%';
+    sym.style.fontSize=(Math.random()*1.5+.8)+'rem';
+    sym.style.animationDuration=(Math.random()*15+10)+'s';
+    sym.style.animationDelay=Math.random()*5+'s';
+    const colors=['rgba(99,102,241,.06)','rgba(14,165,233,.06)','rgba(168,85,247,.06)','rgba(16,185,129,.05)'];
+    sym.style.color=colors[Math.floor(Math.random()*colors.length)];
+    bg.appendChild(sym);
+    sym.addEventListener('animationend',()=>sym.remove());
+    setTimeout(()=>{if(sym.parentElement)sym.remove();},30000);
+  }
+  for(let i=0;i<15;i++)setTimeout(()=>spawn(),i*800);
+  setInterval(spawn,2000);
+})();
+
+// ═══════════════════════════════════════════
+// CONFETTI EFFECT
+// ═══════════════════════════════════════════
+function launchConfetti(){
+  const container=document.getElementById('confettiContainer');
+  const colors=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7','#ec4899','#fbbf24'];
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.width=(Math.random()*8+4)+'px';
+    c.style.height=(Math.random()*8+4)+'px';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius=Math.random()>.5?'50%':'2px';
+    c.style.setProperty('--drift',(Math.random()*200-100)+'px');
+    c.style.animationDuration=(Math.random()*2+2)+'s';
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    container.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
 window.toast=function(msg,type='inf'){
   const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};
-  const t=document.createElement('div');
-  t.className='toast '+type;
+  const t=document.createElement('div');t.className='toast '+type;
   t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
   document.getElementById('toasts').appendChild(t);
   setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);
 };
+function fbErr(err){const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'User not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Password too weak','auth/invalid-credential':'Invalid credentials','auth/network-request-failed':'Network error'};return m[err.code]||err.message||'Error occurred';}
 
-function fbErr(err){
-  const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'User not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Password too weak','auth/invalid-credential':'Invalid credentials','auth/network-request-failed':'Network error'};
-  return m[err.code]||err.message||'Error occurred';
-}
-
-// ─── AUTH ────────────────────────────────────────────────
-onAuthStateChanged(auth,async u=>{
-  S.user=u||null;updUserUI();
-  document.getElementById('loadScr').style.display='none';
-  await loadKeys();fillDDs();loadHomeStats();
-});
-
+// ═══════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════
+onAuthStateChanged(auth,async u=>{S.user=u||null;updUserUI();document.getElementById('loadScr').style.display='none';await loadKeys();fillDDs();loadHomeStats();});
 window.showAuth=()=>document.getElementById('authMod').classList.add('show');
-
-window.authTab=function(t){
-  document.getElementById('ltab').classList.toggle('on',t==='l');
-  document.getElementById('rtab').classList.toggle('on',t==='r');
-  document.getElementById('lForm').style.display=t==='l'?'block':'none';
-  document.getElementById('rForm').style.display=t==='r'?'block':'none';
-};
-
-window.doLogin=async function(){
-  const e=document.getElementById('lEmail').value.trim();
-  const p=document.getElementById('lPass').value;
-  if(!e||!p)return toast('Fill all fields','wa');
-  try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}
-  catch(err){toast(fbErr(err),'er')}
-};
-
-window.doReg=async function(){
-  const n=document.getElementById('rName').value.trim();
-  const e=document.getElementById('rEmail').value.trim();
-  const p=document.getElementById('rPass').value;
-  const p2=document.getElementById('rPass2').value;
-  if(!n||!e||!p)return toast('Fill all fields','wa');
-  if(p!==p2)return toast('Passwords do not match','er');
-  if(p.length<6)return toast('Min 6 chars','er');
-  try{
-    const cred=await createUserWithEmailAndPassword(auth,e,p);
-    await updateProfile(cred.user,{displayName:n});
-    await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});
-    document.getElementById('authMod').classList.remove('show');
-    toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();
-  }catch(err){toast(fbErr(err),'er')}
-};
-
+window.authTab=function(t){document.getElementById('ltab').classList.toggle('on',t==='l');document.getElementById('rtab').classList.toggle('on',t==='r');document.getElementById('lForm').style.display=t==='l'?'block':'none';document.getElementById('rForm').style.display=t==='r'?'block':'none';};
+window.doLogin=async function(){const e=document.getElementById('lEmail').value.trim();const p=document.getElementById('lPass').value;if(!e||!p)return toast('Fill all fields','wa');try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}catch(err){toast(fbErr(err),'er')}};
+window.doReg=async function(){const n=document.getElementById('rName').value.trim();const e=document.getElementById('rEmail').value.trim();const p=document.getElementById('rPass').value;const p2=document.getElementById('rPass2').value;if(!n||!e||!p)return toast('Fill all fields','wa');if(p!==p2)return toast('Passwords do not match','er');if(p.length<6)return toast('Min 6 chars','er');try{const cred=await createUserWithEmailAndPassword(auth,e,p);await updateProfile(cred.user,{displayName:n});await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});document.getElementById('authMod').classList.remove('show');toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();}catch(err){toast(fbErr(err),'er')}};
 window.logout=async function(){await signOut(auth);S.admOk=false;toast('Logged out','inf');};
+function updUserUI(){const a=document.getElementById('uarea');if(S.user){const nm=S.user.displayName||S.user.email;const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,41,59,.8);border-radius:50px;cursor:pointer;backdrop-filter:blur(10px)" onclick="logout()"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div><span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span><span style="color:var(--g)">🚪</span></div>`;document.getElementById('manName').value=nm;}else{a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;}}
 
-function updUserUI(){
-  const a=document.getElementById('uarea');
-  if(S.user){
-    const nm=S.user.displayName||S.user.email;
-    const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:var(--d2);border-radius:50px;cursor:pointer" onclick="logout()">
-      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div>
-      <span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span>
-      <span style="color:var(--g)">🚪</span></div>`;
-    document.getElementById('manName').value=nm;
-  }else{
-    a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;
-  }
-}
-
-// ─── NAVIGATION ──────────────────────────────────────────
-window.go=function(id){
-  if(id==='admin'&&!S.admOk){
-    document.getElementById('admMod').classList.add('show');
-    setTimeout(()=>document.getElementById('admPass').focus(),100);return;
-  }
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
-  document.getElementById(id)?.classList.add('on');
-  document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));
-  const map={home:0,manual:1,leader:2,analytics:3,admin:4};
-  const tabs=document.querySelectorAll('#navTabs .tab');
-  if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');
-  if(id==='leader')loadLB();
-  if(id==='admin'){loadKeys().then(renderAKList);}
-  if(id==='home')loadHomeStats();
-  if(id==='analytics')loadAnalytics();
-  window.scrollTo({top:0,behavior:'smooth'});
-};
-
-// ─── ADMIN PASSWORD ───────────────────────────────────────
-window.checkAdm=function(){
-  const p=document.getElementById('admPass').value;
-  if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin access granted 🔓','ok');go('admin');}
-  else{toast('Wrong password ❌','er');document.getElementById('admPass').value='';document.getElementById('admPass').focus();}
-};
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+window.go=function(id){if(id==='admin'&&!S.admOk){document.getElementById('admMod').classList.add('show');setTimeout(()=>document.getElementById('admPass').focus(),100);return;}document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id)?.classList.add('on');document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));const map={home:0,manual:1,leader:2,analytics:3,admin:4};const tabs=document.querySelectorAll('#navTabs .tab');if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');if(id==='leader')loadLB();if(id==='admin'){loadKeys().then(renderAKList);}if(id==='home')loadHomeStats();if(id==='analytics')loadAnalytics();window.scrollTo({top:0,behavior:'smooth'});};
+window.checkAdm=function(){const p=document.getElementById('admPass').value;if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin access granted 🔓','ok');go('admin');}else{toast('Wrong password ❌','er');document.getElementById('admPass').value='';document.getElementById('admPass').focus();}};
 window.closeAdmMod=function(){document.getElementById('admMod').classList.remove('show');document.getElementById('admPass').value='';};
 window.lockAdmin=function(){S.admOk=false;toast('Admin locked 🔒','inf');go('home');};
 
-// ─── KEYS ─────────────────────────────────────────────────
-async function loadKeys(force){
-  const now=Date.now();
-  if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){S.keys=S.cache.keys.data;fillDDs();return;}
-  try{
-    const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));
-    S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));
-    S.cache.keys={data:S.keys,ts:now};fillDDs();
-  }catch(e){console.error(e)}
-}
+// ═══════════════════════════════════════════
+// KEYS
+// ═══════════════════════════════════════════
+async function loadKeys(force){const now=Date.now();if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){S.keys=S.cache.keys.data;fillDDs();return;}try{const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));S.cache.keys={data:S.keys,ts:now};fillDDs();}catch(e){console.error(e)}}
+function fillDDs(){['manExam','lExam','anExam'].forEach(id=>{const s=document.getElementById(id);if(!s)return;const v=s.value;s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'?'<option value="">Select Exam to Analyse</option>':'<option value="">Select Exam</option>';S.keys.forEach(k=>{const o=document.createElement('option');o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);});if(v)s.value=v;});}
 
-function fillDDs(){
-  ['manExam','lExam','anExam'].forEach(id=>{
-    const s=document.getElementById(id);if(!s)return;
-    const v=s.value;
-    s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'?'<option value="">Select Exam to Analyse</option>':'<option value="">Select Exam</option>';
-    S.keys.forEach(k=>{
-      const o=document.createElement('option');
-      o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);
-    });
-    if(v)s.value=v;
-  });
-}
-
-// ─── QUESTION BUILDER ─────────────────────────────────────
-window.qbAdd=function(){
-  const t=document.getElementById('qbType').value;
-  const c=parseInt(document.getElementById('qbCount').value)||1;
-  for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}
-  qbRender();
-};
+// ═══════════════════════════════════════════
+// QUESTION BUILDER (same as before)
+// ═══════════════════════════════════════════
+window.qbAdd=function(){const t=document.getElementById('qbType').value;const c=parseInt(document.getElementById('qbCount').value)||1;for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}qbRender();};
 function defAns(t){return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';}
 window.qbClear=function(){if(!S.qb.length)return;if(!confirm('Clear all questions?'))return;S.qb=[];S.qbId=0;qbRender();};
 window.qbDel=function(id){S.qb=S.qb.filter(q=>q.id!==id);qbRender();};
+function qbRender(){const l=document.getElementById('qbList');document.getElementById('qbTotal').textContent=S.qb.length;if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions added yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();}
 
-function qbRender(){
-  const l=document.getElementById('qbList');
-  document.getElementById('qbTotal').textContent=S.qb.length;
-  if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions added yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}
-  l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();
-}
+function qbCard(q,n){let body='';if(q.type==='scq')body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='mcq')body=`<span class="qb-lbl">Correct Answers (multiple)</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='match')body=`<span class="qb-lbl">Match Column I → Column II</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k} →</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">Select</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix Match</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;else if(q.type==='num')body=`<span class="qb-lbl">Numerical Answer</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" placeholder="Value" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="± Tol" oninput="qbTol(${q.id},this.value)"></div>`;const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong -</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;}
 
-function qbCard(q,n){
-  let body='';
-  if(q.type==='scq')body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;
-  else if(q.type==='mcq')body=`<span class="qb-lbl">Correct Answers (multiple)</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;
-  else if(q.type==='match')body=`<span class="qb-lbl">Match Column I → Column II</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k} →</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">Select</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;
-  else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix Match (click to toggle)</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;
-  else if(q.type==='num')body=`<span class="qb-lbl">Numerical Answer Setup</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" placeholder="Value e.g. 3.14" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="± Tol" oninput="qbTol(${q.id},this.value)"></div>`;
-  const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong -</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;
-  return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;
-}
+window.qbSCQ=(id,v)=>{qbFind(id).answer=v;qbRender()};window.qbMCQ=(id,v)=>{const q=qbFind(id);q.answer.includes(v)?q.answer=q.answer.filter(x=>x!==v):q.answer.push(v);qbRender()};window.qbMatch=(id,k,v)=>{qbFind(id).answer[k]=v};window.qbMtx=(id,r,c)=>{const q=qbFind(id);q.answer[r].includes(c)?q.answer[r]=q.answer[r].filter(x=>x!==c):q.answer[r].push(c);qbRender()};window.qbNum=(id,v)=>{qbFind(id).answer=v};window.qbDec=(id,v)=>{qbFind(id).decimals=parseInt(v)||0};window.qbTol=(id,v)=>{qbFind(id).tolerance=parseFloat(v)||0};window.qbMark=(id,k,v)=>{qbFind(id).marks[k]=parseFloat(v)||0;qbUpdStats()};function qbFind(id){return S.qb.find(q=>q.id===id)}
 
-window.qbSCQ=(id,v)=>{qbFind(id).answer=v;qbRender()};
-window.qbMCQ=(id,v)=>{const q=qbFind(id);q.answer.includes(v)?q.answer=q.answer.filter(x=>x!==v):q.answer.push(v);qbRender()};
-window.qbMatch=(id,k,v)=>{qbFind(id).answer[k]=v};
-window.qbMtx=(id,r,c)=>{const q=qbFind(id);q.answer[r].includes(c)?q.answer[r]=q.answer[r].filter(x=>x!==c):q.answer[r].push(c);qbRender()};
-window.qbNum=(id,v)=>{qbFind(id).answer=v};
-window.qbDec=(id,v)=>{qbFind(id).decimals=parseInt(v)||0};
-window.qbTol=(id,v)=>{qbFind(id).tolerance=parseFloat(v)||0};
-window.qbMark=(id,k,v)=>{qbFind(id).marks[k]=parseFloat(v)||0;qbUpdStats()};
-function qbFind(id){return S.qb.find(q=>q.id===id)}
+function qbUpdStats(){if(!S.qb.length)return;const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;const el=document.getElementById('qbStats');el.style.display='grid';el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max Marks</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;}
 
-function qbUpdStats(){
-  if(!S.qb.length)return;
-  const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);
-  const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);
-  document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;
-  const el=document.getElementById('qbStats');el.style.display='grid';
-  el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max Marks</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;
-}
+window.qbSave=async function(){if(!S.user)return toast('Login required to save','wa');const nm=document.getElementById('qbName').value.trim();if(!nm)return toast('Enter exam name','wa');if(!S.qb.length)return toast('Add at least 1 question','wa');for(let i=0;i<S.qb.length;i++){const q=S.qb[i];if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');}try{const dur=parseInt(document.getElementById('qbDur').value)||0;await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});document.getElementById('qbName').value='';document.getElementById('qbDur').value='';S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('"'+nm+'" saved to cloud!','ok');launchConfetti();}catch(e){toast('Error: '+e.message,'er')}};
 
-window.qbSave=async function(){
-  if(!S.user)return toast('Login required to save','wa');
-  const nm=document.getElementById('qbName').value.trim();
-  if(!nm)return toast('Enter exam name','wa');
-  if(!S.qb.length)return toast('Add at least 1 question','wa');
-  for(let i=0;i<S.qb.length;i++){
-    const q=S.qb[i];
-    if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');
-    if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');
-    if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');
-  }
-  try{
-    const dur=parseInt(document.getElementById('qbDur').value)||0;
-    await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});
-    document.getElementById('qbName').value='';document.getElementById('qbDur').value='';
-    S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;
-    await loadKeys(true);renderAKList();toast('"'+nm+'" saved to cloud!','ok');
-  }catch(e){toast('Error: '+e.message,'er')}
-};
+function renderAKList(){const l=document.getElementById('akList');document.getElementById('akCount').textContent=`(${S.keys.length})`;if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No answer keys yet</p></div>';return;}l.innerHTML=S.keys.map(k=>{const canDel=S.user&&k.createdBy===S.user.uid;const qc=k.questions?k.questions.length:0;const types=k.questions?[...new Set(k.questions.map(q=>q.type))].map(t=>TYPE_LBL[t]).join(', '):'';const maxM=k.questions?k.questions.reduce((s,q)=>s+(q.marks?.c||0),0):0;return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM} marks</span><span>🏷️ ${types}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''}${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑 Delete</button>`:''}</div>`;}).join('');}
+window.delAK=async function(id){if(!S.user)return toast('Login required','wa');if(!confirm('Delete this answer key?'))return;try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}catch(e){toast('Error: '+e.message,'er')}};
 
-function renderAKList(){
-  const l=document.getElementById('akList');
-  document.getElementById('akCount').textContent=`(${S.keys.length})`;
-  if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No answer keys yet</p></div>';return;}
-  l.innerHTML=S.keys.map(k=>{
-    const canDel=S.user&&k.createdBy===S.user.uid;
-    const qc=k.questions?k.questions.length:0;
-    const types=k.questions?[...new Set(k.questions.map(q=>q.type))].map(t=>TYPE_LBL[t]).join(', '):'';
-    const maxM=k.questions?k.questions.reduce((s,q)=>s+(q.marks?.c||0),0):0;
-    return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM} marks</span><span>🏷️ ${types}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''}${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑 Delete</button>`:''}</div>`;
-  }).join('');
-}
+// ═══════════════════════════════════════════
+// DANGER ZONE
+// ═══════════════════════════════════════════
+async function bulkDelete(colName){const snap=await getDocs(collection(db,colName));let count=0;for(const d of snap.docs){await deleteDoc(doc(db,colName,d.id));count++;}return count;}
+window.clearLeaderboard=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('⚠️ Delete ALL leaderboard entries?'))return;if(!confirm('Are you REALLY sure?'))return;try{toast('Clearing...','inf');const count=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.curRes=null;loadLB(true);loadHomeStats();toast(`Cleared! ${count} entries deleted 🧹`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
+window.clearAllKeys=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('⚠️ Delete ALL answer keys?'))return;if(!confirm('REALLY sure?'))return;try{toast('Clearing...','inf');const count=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`Cleared! ${count} keys deleted 🧹`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
+window.clearEverything=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('💣 DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING!'))return;try{toast('Clearing...','inf');const c1=await bulkDelete('results');const c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}};S.keys=[];S.curRes=null;fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`Everything cleared! ${c1}+${c2} deleted 💣`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
 
-window.delAK=async function(id){
-  if(!S.user)return toast('Login required','wa');
-  if(!confirm('Delete this answer key?'))return;
-  try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}
-  catch(e){toast('Error: '+e.message,'er')}
-};
+// ═══════════════════════════════════════════
+// MANUAL ENTRY
+// ═══════════════════════════════════════════
+window.genManual=function(){const eid=document.getElementById('manExam').value;const g=document.getElementById('manGrid');const acts=document.getElementById('manActs');document.getElementById('manResCont').style.display='none';if(!eid){g.innerHTML='<div class="qb-empty">Select an exam above to load questions</div>';acts.style.display='none';return;}const key=S.keys.find(k=>k.id===eid);if(!key)return;acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');};
 
-// ─── DANGER ZONE ──────────────────────────────────────────
-async function bulkDelete(colName){
-  const snap=await getDocs(collection(db,colName));let count=0;
-  for(const d of snap.docs){await deleteDoc(doc(db,colName,d.id));count++;}return count;
-}
-window.clearLeaderboard=async function(){
-  if(!S.user)return toast('Login required','wa');
-  if(!confirm('⚠️ Delete ALL leaderboard entries?\nThis cannot be undone!'))return;
-  if(!confirm('Are you REALLY sure?'))return;
-  try{toast('Clearing leaderboard...','inf');const count=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.curRes=null;loadLB(true);loadHomeStats();toast(`Leaderboard cleared! ${count} entries deleted 🧹`,'ok');}
-  catch(e){toast('Error: '+e.message,'er')}
-};
-window.clearAllKeys=async function(){
-  if(!S.user)return toast('Login required','wa');
-  if(!confirm('⚠️ Delete ALL answer keys?'))return;if(!confirm('Are you REALLY sure?'))return;
-  try{toast('Clearing answer keys...','inf');const count=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`All answer keys cleared! ${count} keys deleted 🧹`,'ok');}
-  catch(e){toast('Error: '+e.message,'er')}
-};
-window.clearEverything=async function(){
-  if(!S.user)return toast('Login required','wa');
-  if(!confirm('💣 DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING: Continue?'))return;
-  try{toast('Clearing everything...','inf');const c1=await bulkDelete('results');const c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}};S.keys=[];S.curRes=null;fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`Everything cleared! ${c1} results + ${c2} keys deleted 💣`,'ok');}
-  catch(e){toast('Error: '+e.message,'er')}
-};
+function manCard(q,n,i){let body='';if(q.type==='scq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;else if(q.type==='mcq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;else if(q.type==='match')body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k} →</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;else if(q.type==='matrix')body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;else if(q.type==='num')body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter numerical value">`;return `<div class="mq" data-i="${i}" data-type="${q.type}" style="animation-delay:${i*.05}s"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;}
 
-// ─── MANUAL ENTRY ─────────────────────────────────────────
-window.genManual=function(){
-  const eid=document.getElementById('manExam').value;
-  const g=document.getElementById('manGrid');const acts=document.getElementById('manActs');
-  document.getElementById('manResCont').style.display='none';
-  if(!eid){g.innerHTML='<div class="qb-empty">Select an exam above to load questions</div>';acts.style.display='none';return;}
-  const key=S.keys.find(k=>k.id===eid);if(!key)return;
-  acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');
-};
-
-function manCard(q,n,i){
-  let body='';
-  if(q.type==='scq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;
-  else if(q.type==='mcq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;
-  else if(q.type==='match')body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k} →</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;
-  else if(q.type==='matrix')body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;
-  else if(q.type==='num')body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter numerical value">`;
-  return `<div class="mq" data-i="${i}" data-type="${q.type}"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;
-}
-
-window.manSel=function(i,v,btn,type){
-  const par=btn.parentElement;
-  if(type==='mcq')btn.classList.toggle('sel');
-  else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
-};
+window.manSel=function(i,v,btn,type){const par=btn.parentElement;if(type==='mcq')btn.classList.toggle('sel');else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}};
 window.manMtx=function(i,r,c,el){el.classList.toggle('sel');el.textContent=el.classList.contains('sel')?'✓':'';};
-window.clearManual=function(){
-  document.querySelectorAll('.mq').forEach(mq=>{
-    mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));
-    mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});
-    mq.querySelectorAll('select').forEach(s=>s.value='');
-    mq.querySelectorAll('input').forEach(inp=>inp.value='');
-  });
-  document.getElementById('manResCont').style.display='none';
-};
+window.clearManual=function(){document.querySelectorAll('.mq').forEach(mq=>{mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});mq.querySelectorAll('select').forEach(s=>s.value='');mq.querySelectorAll('input').forEach(inp=>inp.value='');});document.getElementById('manResCont').style.display='none';};
 
-window.submitManual=async function(){
-  const nm=document.getElementById('manName').value.trim();
-  const eid=document.getElementById('manExam').value;
-  if(!nm)return toast('Enter your name','wa');
-  if(!eid)return toast('Select an exam','wa');
-  const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');
-  const userAns=[];
-  document.querySelectorAll('.mq').forEach(mq=>{
-    const t=mq.dataset.type;
-    if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}
-    else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}
-    else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}
-    else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}
-    else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}
-  });
-  const res=gradeAll(userAns,key,nm);
-  showResult(res,'manResCont');
-  document.getElementById('manResCont').style.display='block';
-  document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});
-  toast('Graded successfully!','ok');
-  try{
-    await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});
-    S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.an={data:null,ts:0,key:''};
-  }catch(e){console.error('Save error:',e)}
-};
+window.submitManual=async function(){const nm=document.getElementById('manName').value.trim();const eid=document.getElementById('manExam').value;if(!nm)return toast('Enter your name','wa');if(!eid)return toast('Select an exam','wa');const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');const userAns=[];document.querySelectorAll('.mq').forEach(mq=>{const t=mq.dataset.type;if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}});const res=gradeAll(userAns,key,nm);showResult(res,'manResCont');document.getElementById('manResCont').style.display='block';document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});toast('Graded successfully!','ok');if(res.pct>=75)launchConfetti();try{await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.an={data:null,ts:0,key:''};}catch(e){console.error('Save error:',e)}};
 
-// ─── GRADING ──────────────────────────────────────────────
-function gradeAll(userAns,key,name){
-  let c=0,w=0,sk=0,marks=0,max=0;const det=[];
-  key.questions.forEach((q,i)=>{
-    const u=userAns[i];const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;
-    max+=cm;let st='sk',got=um,uDisp='–',aDisp='';
-    if(q.type==='scq'){
-      aDisp=q.answer;
-      if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}
-    }else if(q.type==='mcq'){
-      aDisp=q.answer.join(',');
-      if(!u||!u.length){st='sk';sk++;}
-      else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}
-    }else if(q.type==='match'){
-      aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');
-      if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}
-    }else if(q.type==='matrix'){
-      aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');
-      if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join('');const ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}
-    }else if(q.type==='num'){
-      aDisp=String(q.answer);
-      if(!u){st='sk';sk++;}else{const tol=q.tolerance||0;const diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}
-    }
-    marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});
-  });
-  const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;
-  const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};
-  S.curRes=r;return r;
-}
+// ═══════════════════════════════════════════
+// GRADING
+// ═══════════════════════════════════════════
+function gradeAll(userAns,key,name){let c=0,w=0,sk=0,marks=0,max=0;const det=[];key.questions.forEach((q,i)=>{const u=userAns[i];const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;max+=cm;let st='sk',got=um,uDisp='–',aDisp='';if(q.type==='scq'){aDisp=q.answer;if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}}else if(q.type==='mcq'){aDisp=q.answer.join(',');if(!u||!u.length){st='sk';sk++;}else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}}else if(q.type==='match'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}}else if(q.type==='matrix'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join('');const ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}}else if(q.type==='num'){aDisp=String(q.answer);if(!u){st='sk';sk++;}else{const tol=q.tolerance||0;const diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}}marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});});const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};S.curRes=r;return r;}
 
-// ─── SHOW RESULT ──────────────────────────────────────────
-function showResult(r,containerId){
-  const cont=document.getElementById(containerId);
-  const offset=283-(r.pct/100)*283;
-  cont.innerHTML=`
-    <div class="rh">
-      <div class="scirc">
-        <svg viewBox="0 0 100 100">
-          <circle class="scbg" cx="50" cy="50" r="45"/>
-          <circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/>
-        </svg>
-        <div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div>
-      </div>
-      <div class="rst">
-        <div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div>
-        <div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div>
-        <div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div>
-        <div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div>
-      </div>
-    </div>
-    <div class="agrid">
-      ${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}
-    </div>
-    <div class="racts">
-      <button class="btn ol" onclick="go('leader')">🏆 View Leaderboard</button>
-      <button class="btn pr" onclick="clearManual()">🔄 Try Again</button>
-    </div>
+// ═══════════════════════════════════════════
+// SHOW RESULT
+// ═══════════════════════════════════════════
+function showResult(r,containerId){const cont=document.getElementById(containerId);const offset=283-(r.pct/100)*283;cont.innerHTML=`<div class="rh"><div class="scirc"><svg viewBox="0 0 100 100"><circle class="scbg" cx="50" cy="50" r="45"/><circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/></svg><div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div></div><div class="rst"><div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div><div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div><div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div><div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div></div></div><div class="agrid">${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}</div><div class="racts"><button class="btn ol" onclick="go('leader')">🏆 View Leaderboard</button><button class="btn pr" onclick="clearManual()">🔄 Try Again</button></div><div class="analytics-section"><h3 style="margin-bottom:1rem;font-size:1.1rem">📊 Your Performance Analysis</h3><div class="exp-btns"><button class="exp-btn exp-pdf" onclick="exportPDF()">📄 Export PDF</button><button class="exp-btn exp-excel" onclick="exportExcel()">📊 Export Excel</button><button class="exp-btn exp-csv" onclick="exportCSV()">📋 Export CSV</button></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Result Breakdown</h3><div class="chart-wrap"><canvas id="pieChart"></canvas></div></div><div class="chart-box"><h3>📊 Marks per Question</h3><div class="chart-wrap"><canvas id="barChart"></canvas></div></div></div><div class="chart-box" style="margin-bottom:1.5rem"><h3>🔍 Question-wise Analysis</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Q#</th><th>Type</th><th>Your Ans</th><th>Correct</th><th>Status</th><th>Marks</th></tr></thead><tbody>${r.details.map(d=>`<tr><td><b>Q${d.q}</b></td><td><span class="mq-type ${d.type}" style="display:inline-block">${TYPE_LBL[d.type]}</span></td><td style="font-family:monospace">${d.u}</td><td style="font-family:monospace;color:var(--ok)">${d.a}</td><td>${d.st==='ok'?'<span style="color:var(--ok)">✅ Correct</span>':d.st==='no'?'<span style="color:var(--no)">❌ Wrong</span>':'<span style="color:var(--warn)">⏭️ Skipped</span>'}</td><td style="font-weight:700;color:${d.marks>0?'var(--ok)':d.marks<0?'var(--no)':'var(--gl)'}">${d.marks>0?'+':''}${d.marks}</td></tr>`).join('')}</tbody></table></div></div></div>`;setTimeout(()=>renderPersonalCharts(r),100);}
 
-    <!-- ══ PERSONAL PERFORMANCE CHARTS ══ -->
-    <div class="analytics-section">
-      <h3 style="margin-bottom:1rem;font-size:1.1rem">📊 Your Performance Analysis</h3>
+function renderPersonalCharts(r){if(S.charts.pie){S.charts.pie.destroy();S.charts.pie=null;}if(S.charts.bar){S.charts.bar.destroy();S.charts.bar=null;}const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:12}}}}};const pieCtx=document.getElementById('pieChart');if(pieCtx){S.charts.pie=new Chart(pieCtx,{type:'doughnut',data:{labels:['Correct','Wrong','Skipped'],datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]},options:{...chartOpts,cutout:'65%'}});}const barCtx=document.getElementById('barChart');if(barCtx){S.charts.bar=new Chart(barCtx,{type:'bar',data:{labels:r.details.map(d=>`Q${d.q}`),datasets:[{label:'Marks',data:r.details.map(d=>d.marks),backgroundColor:r.details.map(d=>d.st==='ok'?'rgba(16,185,129,.7)':d.st==='no'?'rgba(239,68,68,.7)':'rgba(245,158,11,.5)'),borderColor:r.details.map(d=>d.st==='ok'?'#10b981':d.st==='no'?'#ef4444':'#f59e0b'),borderWidth:1,borderRadius:4}]},options:{...chartOpts,scales:{x:{ticks:{color:'#94a3b8',maxRotation:0},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}}}}});}}
 
-      <!-- Export buttons -->
-      <div class="exp-btns">
-        <button class="exp-btn exp-pdf" onclick="exportPDF()">📄 Export PDF Report</button>
-        <button class="exp-btn exp-excel" onclick="exportExcel()">📊 Export Excel</button>
-        <button class="exp-btn exp-csv" onclick="exportCSV()">📋 Export CSV</button>
-      </div>
+// ═══════════════════════════════════════════
+// ANALYTICS
+// ═══════════════════════════════════════════
+window.loadAnalytics=async function(){const eid=document.getElementById('anExam')?.value;const cont=document.getElementById('anContent');if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>';return;}const now=Date.now();if(S.cache.an.data&&S.cache.an.key===eid&&(now-S.cache.an.ts<CACHE_AN)){renderAnalytics(S.cache.an.data);return;}cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Analyzing data...</p></div>';try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));const allResults=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);const key=S.keys.find(k=>k.id===eid);if(!allResults.length){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📭</span><p>No submissions yet for this exam</p></div>';return;}const anData=buildAnalyticsData(allResults,key);S.cache.an={data:anData,ts:now,key:eid};S.anData=anData;renderAnalytics(anData);}catch(e){console.error(e);cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading analytics</p></div>';}};
 
-      <div class="analytics-grid">
-        <!-- Pie chart: correct/wrong/skipped -->
-        <div class="chart-box">
-          <h3>🥧 Result Breakdown</h3>
-          <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
-        </div>
-        <!-- Bar chart: marks per question -->
-        <div class="chart-box">
-          <h3>📊 Marks per Question</h3>
-          <div class="chart-wrap"><canvas id="barChart"></canvas></div>
-        </div>
-      </div>
+function buildAnalyticsData(results,key){const total=results.length;const avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total);const avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10;const maxScore=Math.max(...results.map(r=>r.pct||0));const minScore=Math.min(...results.map(r=>r.pct||0));const passCount=results.filter(r=>(r.pct||0)>=33).length;const buckets={'0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0};results.forEach(r=>{const p=r.pct||0;if(p<=20)buckets['0-20']++;else if(p<=40)buckets['21-40']++;else if(p<=60)buckets['41-60']++;else if(p<=80)buckets['61-80']++;else buckets['81-100']++;});const qStats=[];if(key&&key.questions){key.questions.forEach((q,i)=>{qStats.push({n:i+1,type:q.type,maxMarks:q.marks?.c||0,answer:formatAnswer(q)});});}return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};}
+function formatAnswer(q){if(q.type==='scq')return q.answer||'?';if(q.type==='mcq')return Array.isArray(q.answer)?q.answer.join(','):'?';if(q.type==='match')return Object.entries(q.answer||{}).map(([k,v])=>`${k}-${v}`).join(' ');if(q.type==='matrix')return Object.entries(q.answer||{}).map(([k,v])=>`${k}:${Array.isArray(v)?v.join(''):'?'}`).join(' ');if(q.type==='num')return String(q.answer);return '?';}
 
-      <!-- Question-wise analysis table -->
-      <div class="chart-box" style="margin-bottom:1.5rem">
-        <h3>🔍 Question-wise Analysis</h3>
-        <div style="overflow-x:auto">
-          <table class="qa-table">
-            <thead>
-              <tr>
-                <th>Q#</th><th>Type</th><th>Your Answer</th>
-                <th>Correct Answer</th><th>Status</th><th>Marks</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${r.details.map(d=>`
-                <tr>
-                  <td><b>Q${d.q}</b></td>
-                  <td><span class="mq-type ${d.type}" style="display:inline-block">${TYPE_LBL[d.type]}</span></td>
-                  <td style="font-family:monospace">${d.u}</td>
-                  <td style="font-family:monospace;color:var(--ok)">${d.a}</td>
-                  <td>${d.st==='ok'?'<span style="color:var(--ok)">✅ Correct</span>':d.st==='no'?'<span style="color:var(--no)">❌ Wrong</span>':'<span style="color:var(--warn)">⏭️ Skipped</span>'}</td>
-                  <td style="font-weight:700;color:${d.marks>0?'var(--ok)':d.marks<0?'var(--no)':'var(--gl)'}">${d.marks>0?'+':''}${d.marks}</td>
-                </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>`;
+function renderAnalytics(d){const cont=document.getElementById('anContent');const trendData=[...d.results].sort((a,b)=>{const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);return da-db2;}).slice(-20);cont.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">${[{v:d.total,l:'Total Attempts',i:'👥'},{v:d.avgScore+'%',l:'Avg Score',i:'📊'},{v:d.avgMarks,l:'Avg Marks',i:'⭐'},{v:d.maxScore+'%',l:'Top Score',i:'🏆'},{v:d.minScore+'%',l:'Lowest',i:'📉'},{v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}].map(s=>`<div class="stc"><span style="font-size:1.4rem">${s.i}</span><span class="n" style="font-size:1.4rem">${s.v}</span><span class="l">${s.l}</span></div>`).join('')}</div><div class="exp-btns"><button class="exp-btn exp-pdf" onclick="exportAnalyticsPDF()">📄 Export PDF</button><button class="exp-btn exp-excel" onclick="exportAnalyticsExcel()">📊 Export Excel</button><button class="exp-btn exp-csv" onclick="exportAnalyticsCSV()">📋 Export CSV</button></div><div class="analytics-grid"><div class="chart-box"><h3>📊 Score Distribution</h3><div class="chart-wrap"><canvas id="distChart"></canvas></div></div><div class="chart-box"><h3>📈 Score Trend</h3><div class="chart-wrap"><canvas id="trendChart"></canvas></div></div></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Pass vs Fail</h3><div class="chart-wrap"><canvas id="passChart"></canvas></div></div><div class="chart-box"><h3>📋 Avg C/W/S</h3><div class="chart-wrap"><canvas id="cwsChart"></canvas></div></div></div>${d.qStats.length?`<div class="chart-box" style="margin-bottom:1.5rem"><h3>🔑 Answer Key</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Q#</th><th>Type</th><th>Answer</th><th>Max</th></tr></thead><tbody>${d.qStats.map(q=>`<tr><td><b>Q${q.n}</b></td><td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td><td style="font-family:monospace;color:var(--ok)">${q.answer}</td><td><b style="color:var(--pl)">+${q.maxMarks}</b></td></tr>`).join('')}</tbody></table></div></div>`:''}<div class="chart-box"><h3>📋 All Submissions (${d.total})</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr></thead><tbody>${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';return `<tr><td><span class="rb ${rc}">${i+1}</span></td><td><b>${r.name}</b></td><td><b style="color:var(--pl)">${r.pct}%</b></td><td>${r.marks}/${r.max}</td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('')}</tbody></table></div></div>`;setTimeout(()=>renderAnalyticsCharts(d,Object.keys(d.buckets),Object.values(d.buckets),trendData),100);}
 
-  // Render charts after DOM update
-  setTimeout(()=>renderPersonalCharts(r),100);
-}
+function renderAnalyticsCharts(d,bL,bD,tD){['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};const gc='rgba(255,255,255,.05)',tc='#94a3b8';const dc=document.getElementById('distChart');if(dc){S.charts.dist=new Chart(dc,{type:'bar',data:{labels:bL,datasets:[{label:'Students',data:bD,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{ticks:{color:tc,stepSize:1},grid:{color:gc}}}}});}const trc=document.getElementById('trendChart');if(trc){S.charts.trend=new Chart(trc,{type:'line',data:{labels:tD.map((_,i)=>`#${i+1}`),datasets:[{label:'Score %',data:tD.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointBackgroundColor:'#818cf8',pointRadius:4}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}const pc=document.getElementById('passChart');if(pc){S.charts.pass=new Chart(pc,{type:'doughnut',data:{labels:['Pass','Fail'],datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total);const avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total);const avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);const cc=document.getElementById('cwsChart');if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct (${avgC})`,`Wrong (${avgW})`,`Skipped (${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}}
 
-// ─── PERSONAL CHARTS ──────────────────────────────────────
-function renderPersonalCharts(r){
-  // Destroy old charts
-  if(S.charts.pie){S.charts.pie.destroy();S.charts.pie=null;}
-  if(S.charts.bar){S.charts.bar.destroy();S.charts.bar=null;}
+// ═══════════════════════════════════════════
+// EXPORT FUNCTIONS
+// ═══════════════════════════════════════════
+window.exportPDF=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const{jsPDF}=window.jspdf;const pdf=new jsPDF();const W=pdf.internal.pageSize.getWidth();let y=18;pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');pdf.setTextColor(255,255,255);pdf.setFontSize(18);pdf.setFont('helvetica','bold');pdf.text('OMR Scanner Pro — Result',W/2,12,{align:'center'});pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});y=40;pdf.setFillColor(30,41,59);pdf.roundedRect(10,y,W-20,30,3,3,'F');pdf.setTextColor(129,140,248);pdf.setFontSize(11);pdf.setFont('helvetica','bold');pdf.text('Candidate',14,y+8);pdf.text('Exam',W/2+2,y+8);pdf.setTextColor(255,255,255);pdf.setFontSize(12);pdf.text(r.name,14,y+16);pdf.text(r.examName,W/2+2,y+16);pdf.setTextColor(129,140,248);pdf.setFontSize(9);pdf.text(`Score: ${r.marks}/${r.max} • ${r.pct}%`,14,y+24);pdf.text(`✓${r.correct} ✗${r.wrong} —${r.skipped}`,W/2+2,y+24);y+=38;pdf.setFontSize(8);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);pdf.text('Q#',14,y);pdf.text('Type',24,y);pdf.text('Your Ans',42,y);pdf.text('Correct',90,y);pdf.text('Status',140,y);pdf.text('Marks',170,y);y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;pdf.setFont('helvetica','normal');pdf.setFontSize(8);r.details.forEach((d,idx)=>{if(y>270){pdf.addPage();y=14;}if(idx%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-4,W-20,8,'F');}const sc=d.st==='ok'?[16,185,129]:d.st==='no'?[239,68,68]:[245,158,11];pdf.setTextColor(...sc);pdf.text(`Q${d.q}`,14,y);pdf.setTextColor(200,200,200);pdf.text(TYPE_LBL[d.type],24,y);pdf.text(String(d.u).slice(0,18),42,y);pdf.text(String(d.a).slice(0,22),90,y);pdf.setTextColor(...sc);pdf.text(d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',140,y);pdf.text(`${d.marks>0?'+':''}${d.marks}`,170,y);y+=8;});pdf.save(`${r.name}_${r.examName}_Result.pdf`);toast('PDF exported! 📄','ok');};
 
-  const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:12}}}}};
+window.exportExcel=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const wb=XLSX.utils.book_new();const ws1=XLSX.utils.aoa_to_sheet([['OMR Scanner Pro'],[''],['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],['%',r.pct+'%'],['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped]]);XLSX.utils.book_append_sheet(wb,ws1,'Summary');const ws2=XLSX.utils.aoa_to_sheet([['Q#','Type','Your Ans','Correct','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',d.marks])]);XLSX.utils.book_append_sheet(wb,ws2,'Details');XLSX.writeFile(wb,`${r.name}_${r.examName}.xlsx`);toast('Excel exported! 📊','ok');};
 
-  // Pie chart
-  const pieCtx=document.getElementById('pieChart');
-  if(pieCtx){
-    S.charts.pie=new Chart(pieCtx,{
-      type:'doughnut',
-      data:{
-        labels:['Correct','Wrong','Skipped'],
-        datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]
-      },
-      options:{...chartOpts,cutout:'65%',plugins:{...chartOpts.plugins,tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} (${Math.round(ctx.parsed/r.total*100)}%)`}}}}
-    });
-  }
+window.exportCSV=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const rows=[['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],[''],['Q#','Type','Your Ans','Correct','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',d.marks])];const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');dlFile(csv,'text/csv',`${r.name}_${r.examName}.csv`);toast('CSV exported! 📋','ok');};
 
-  // Bar chart
-  const barCtx=document.getElementById('barChart');
-  if(barCtx){
-    S.charts.bar=new Chart(barCtx,{
-      type:'bar',
-      data:{
-        labels:r.details.map(d=>`Q${d.q}`),
-        datasets:[{
-          label:'Marks',
-          data:r.details.map(d=>d.marks),
-          backgroundColor:r.details.map(d=>d.st==='ok'?'rgba(16,185,129,.7)':d.st==='no'?'rgba(239,68,68,.7)':'rgba(245,158,11,.5)'),
-          borderColor:r.details.map(d=>d.st==='ok'?'#10b981':d.st==='no'?'#ef4444':'#f59e0b'),
-          borderWidth:1,borderRadius:4
-        }]
-      },
-      options:{
-        ...chartOpts,
-        scales:{
-          x:{ticks:{color:'#94a3b8',maxRotation:0},grid:{color:'rgba(255,255,255,.05)'}},
-          y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}}
-        }
-      }
-    });
-  }
-}
+window.exportAnalyticsPDF=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const{jsPDF}=window.jspdf;const pdf=new jsPDF();const W=pdf.internal.pageSize.getWidth();let y=18;pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');pdf.text('Analytics — '+d.examName,W/2,12,{align:'center'});pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(`${d.total} submissions • ${new Date().toLocaleString()}`,W/2,20,{align:'center'});y=40;const stats=[['Attempts',d.total],['Avg',d.avgScore+'%'],['Top',d.maxScore+'%'],['Low',d.minScore+'%'],['Pass',Math.round(d.passCount/d.total*100)+'%']];stats.forEach((s,i)=>{const bx=10+i*38;pdf.setFillColor(30,41,59);pdf.roundedRect(bx,y,34,16,2,2,'F');pdf.setTextColor(129,140,248);pdf.setFontSize(12);pdf.setFont('helvetica','bold');pdf.text(String(s[1]),bx+17,y+8,{align:'center'});pdf.setTextColor(100,116,139);pdf.setFontSize(6);pdf.text(s[0],bx+17,y+13,{align:'center'});});y+=24;[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).forEach((r,i)=>{if(y>270){pdf.addPage();y=14;}pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.text(`${i+1}. ${r.name} — ${r.pct}% (${r.marks}/${r.max})`,14,y);y+=6;});pdf.save(`Analytics_${d.examName}.pdf`);toast('PDF exported!','ok');};
 
-// ══════════════════════════════════════════════════════════
-// ─── ANALYTICS TAB ────────────────────────────────────────
-// ══════════════════════════════════════════════════════════
-window.loadAnalytics=async function(){
-  const eid=document.getElementById('anExam')?.value;
-  const cont=document.getElementById('anContent');
-  if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>';return;}
+window.exportAnalyticsExcel=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const wb=XLSX.utils.book_new();const ws1=XLSX.utils.aoa_to_sheet([['Analytics — '+d.examName],[''],['Total',d.total],['Avg Score',d.avgScore+'%'],['Top',d.maxScore+'%'],['Low',d.minScore+'%']]);XLSX.utils.book_append_sheet(wb,ws1,'Summary');const ws2=XLSX.utils.aoa_to_sheet([['Rank','Name','Score%','Marks','Max','C','W','S'],...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped])]);XLSX.utils.book_append_sheet(wb,ws2,'Results');XLSX.writeFile(wb,`Analytics_${d.examName}.xlsx`);toast('Excel exported!','ok');};
 
-  const now=Date.now();
-  const cacheKey=eid;
-  if(S.cache.an.data&&S.cache.an.key===cacheKey&&(now-S.cache.an.ts<CACHE_AN)){
-    renderAnalytics(S.cache.an.data);return;
-  }
+window.exportAnalyticsCSV=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const rows=[['Analytics',d.examName],[''],['Rank','Name','Score%','Marks','Max','C','W','S'],...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped])];const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');dlFile(csv,'text/csv',`Analytics_${d.examName}.csv`);toast('CSV exported!','ok');};
 
-  cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei"><div class="spin"></div></span><p>Loading analytics...</p></div>';
+function dlFile(content,mime,filename){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
 
-  try{
-    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
-    const allResults=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
-    const key=S.keys.find(k=>k.id===eid);
-
-    if(!allResults.length){
-      cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📭</span><p>No submissions yet for this exam</p></div>';
-      return;
-    }
-
-    // Build analytics data
-    const anData=buildAnalyticsData(allResults,key);
-    S.cache.an={data:anData,ts:now,key:cacheKey};
-    S.anData=anData;
-    renderAnalytics(anData);
-  }catch(e){
-    console.error(e);
-    cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading analytics</p></div>';
-  }
-};
-
-function buildAnalyticsData(results,key){
-  const total=results.length;
-  const avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total);
-  const avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10;
-  const maxScore=Math.max(...results.map(r=>r.pct||0));
-  const minScore=Math.min(...results.map(r=>r.pct||0));
-  const passCount=results.filter(r=>(r.pct||0)>=33).length;
-
-  // Score distribution buckets
-  const buckets={
-    '0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0
-  };
-  results.forEach(r=>{
-    const p=r.pct||0;
-    if(p<=20)buckets['0-20']++;
-    else if(p<=40)buckets['21-40']++;
-    else if(p<=60)buckets['41-60']++;
-    else if(p<=80)buckets['61-80']++;
-    else buckets['81-100']++;
-  });
-
-  // Question-wise analysis
-  // We need to re-grade or use stored per-question data
-  // Since we only store totals, we'll compute from key questions
-  const qStats=[];
-  if(key&&key.questions){
-    key.questions.forEach((q,i)=>{
-      // We can only estimate from results that stored question details
-      // Instead show question meta + marks
-      qStats.push({
-        n:i+1,type:q.type,
-        maxMarks:q.marks?.c||0,
-        answer:formatAnswer(q)
-      });
-    });
-  }
-
-  return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};
-}
-
-function formatAnswer(q){
-  if(q.type==='scq')return q.answer||'?';
-  if(q.type==='mcq')return Array.isArray(q.answer)?q.answer.join(','):'?';
-  if(q.type==='match')return Object.entries(q.answer||{}).map(([k,v])=>`${k}-${v}`).join(' ');
-  if(q.type==='matrix')return Object.entries(q.answer||{}).map(([k,v])=>`${k}:${Array.isArray(v)?v.join(''):'?'}`).join(' ');
-  if(q.type==='num')return String(q.answer);
-  return '?';
-}
-
-function renderAnalytics(d){
-  const cont=document.getElementById('anContent');
-
-  // Score distribution data for chart
-  const bucketLabels=Object.keys(d.buckets);
-  const bucketData=Object.values(d.buckets);
-
-  // Score trend (last 20 results by date)
-  const trendData=[...d.results].sort((a,b)=>{
-    const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);
-    const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);
-    return da-db2;
-  }).slice(-20);
-
-  cont.innerHTML=`
-    <!-- Summary Stats -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">
-      ${[
-        {v:d.total,l:'Total Attempts',i:'👥'},
-        {v:d.avgScore+'%',l:'Avg Score',i:'📊'},
-        {v:d.avgMarks,l:'Avg Marks',i:'⭐'},
-        {v:d.maxScore+'%',l:'Top Score',i:'🏆'},
-        {v:d.minScore+'%',l:'Lowest Score',i:'📉'},
-        {v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}
-      ].map(s=>`
-        <div class="stc">
-          <span style="font-size:1.4rem">${s.i}</span>
-          <span class="n" style="font-size:1.4rem">${s.v}</span>
-          <span class="l">${s.l}</span>
-        </div>`).join('')}
-    </div>
-
-    <!-- Export Buttons for full exam analytics -->
-    <div class="exp-btns" style="margin-bottom:1.5rem">
-      <button class="exp-btn exp-pdf" onclick="exportAnalyticsPDF()">📄 Export Analytics PDF</button>
-      <button class="exp-btn exp-excel" onclick="exportAnalyticsExcel()">📊 Export All Results Excel</button>
-      <button class="exp-btn exp-csv" onclick="exportAnalyticsCSV()">📋 Export All Results CSV</button>
-    </div>
-
-    <!-- Charts -->
-    <div class="analytics-grid" style="margin-bottom:1.5rem">
-      <div class="chart-box">
-        <h3>📊 Score Distribution</h3>
-        <div class="chart-wrap"><canvas id="distChart"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>📈 Score Trend (Last 20)</h3>
-        <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Pie: pass vs fail -->
-    <div class="analytics-grid" style="margin-bottom:1.5rem">
-      <div class="chart-box">
-        <h3>🥧 Pass vs Fail (≥33%)</h3>
-        <div class="chart-wrap"><canvas id="passChart"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>📋 Correct/Wrong/Skipped (Avg)</h3>
-        <div class="chart-wrap"><canvas id="cwsChart"></canvas></div>
-      </div>
-    </div>
-
-    <!-- Answer Key Table -->
-    ${d.qStats.length?`
-    <div class="chart-box" style="margin-bottom:1.5rem">
-      <h3>🔑 Answer Key Overview</h3>
-      <div style="overflow-x:auto">
-        <table class="qa-table">
-          <thead>
-            <tr><th>Q#</th><th>Type</th><th>Correct Answer</th><th>Max Marks</th></tr>
-          </thead>
-          <tbody>
-            ${d.qStats.map(q=>`
-              <tr>
-                <td><b>Q${q.n}</b></td>
-                <td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td>
-                <td style="font-family:monospace;color:var(--ok)">${q.answer}</td>
-                <td><b style="color:var(--pl)">+${q.maxMarks}</b></td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>`:'' }
-
-    <!-- All Results Table -->
-    <div class="chart-box">
-      <h3>📋 All Submissions (${d.total})</h3>
-      <div style="overflow-x:auto">
-        <table class="qa-table">
-          <thead>
-            <tr><th>Rank</th><th>Name</th><th>Score %</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr>
-          </thead>
-          <tbody>
-            ${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
-              const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
-              const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';
-              return `<tr>
-                <td><span class="rb ${rc}">${i+1}</span></td>
-                <td><b>${r.name}</b></td>
-                <td><b style="color:var(--pl)">${r.pct}%</b></td>
-                <td>${r.marks}/${r.max}</td>
-                <td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td>
-                <td style="color:var(--gl);font-size:.82rem">${dt}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>`;
-
-  // Render analytics charts
-  setTimeout(()=>renderAnalyticsCharts(d,bucketLabels,bucketData,trendData),100);
-}
-
-function renderAnalyticsCharts(d,bucketLabels,bucketData,trendData){
-  ['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
-
-  const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};
-  const gridColor='rgba(255,255,255,.05)';
-  const tickColor='#94a3b8';
-
-  // Distribution bar chart
-  const distCtx=document.getElementById('distChart');
-  if(distCtx){
-    S.charts.dist=new Chart(distCtx,{
-      type:'bar',
-      data:{
-        labels:bucketLabels,
-        datasets:[{label:'Students',data:bucketData,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]
-      },
-      options:{...baseOpts,scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{ticks:{color:tickColor,stepSize:1},grid:{color:gridColor}}}}
-    });
-  }
-
-  // Trend line chart
-  const trendCtx=document.getElementById('trendChart');
-  if(trendCtx){
-    S.charts.trend=new Chart(trendCtx,{
-      type:'line',
-      data:{
-        labels:trendData.map((_,i)=>`#${i+1}`),
-        datasets:[{label:'Score %',data:trendData.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointBackgroundColor:'#818cf8',pointRadius:4}]
-      },
-      options:{...baseOpts,scales:{x:{ticks:{color:tickColor},grid:{color:gridColor}},y:{min:0,max:100,ticks:{color:tickColor},grid:{color:gridColor}}}}
-    });
-  }
-
-  // Pass/Fail donut
-  const passCtx=document.getElementById('passChart');
-  if(passCtx){
-    S.charts.pass=new Chart(passCtx,{
-      type:'doughnut',
-      data:{
-        labels:['Pass (≥33%)','Fail (<33%)'],
-        datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderColor:['#10b981','#ef4444'],borderWidth:2}]
-      },
-      options:{...baseOpts,cutout:'60%'}
-    });
-  }
-
-  // Avg Correct/Wrong/Skipped donut
-  const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total);
-  const avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total);
-  const avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);
-  const cwsCtx=document.getElementById('cwsChart');
-  if(cwsCtx){
-    S.charts.cws=new Chart(cwsCtx,{
-      type:'doughnut',
-      data:{
-        labels:[`Correct (avg ${avgC})`,`Wrong (avg ${avgW})`,`Skipped (avg ${avgSk})`],
-        datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]
-      },
-      options:{...baseOpts,cutout:'60%'}
-    });
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-// ─── EXPORT FUNCTIONS ─────────────────────────────────────
-// ══════════════════════════════════════════════════════════
-
-// ── Personal Result: PDF ──────────────────────────────────
-window.exportPDF=function(){
-  if(!S.curRes)return toast('No result to export','wa');
-  const r=S.curRes;
-  const{jsPDF}=window.jspdf;
-  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=pdf.internal.pageSize.getWidth();
-  let y=18;
-
-  // Header
-  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
-  pdf.setTextColor(255,255,255);pdf.setFontSize(18);pdf.setFont('helvetica','bold');
-  pdf.text('OMR Scanner Pro — Result Report',W/2,12,{align:'center'});
-  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
-  pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});
-  y=40;
-
-  // Info box
-  pdf.setFillColor(30,41,59);pdf.roundedRect(10,y,W-20,36,3,3,'F');
-  pdf.setTextColor(129,140,248);pdf.setFontSize(11);pdf.setFont('helvetica','bold');
-  pdf.text('Candidate',14,y+8);pdf.text('Exam',W/2+2,y+8);
-  pdf.setTextColor(255,255,255);pdf.setFontSize(12);
-  pdf.text(r.name,14,y+16);pdf.text(r.examName,W/2+2,y+16);
-  pdf.setTextColor(129,140,248);pdf.setFontSize(9);
-  pdf.text(`Score: ${r.marks}/${r.max}  •  ${r.pct}%`,14,y+26);
-  pdf.text(`✓ ${r.correct}  ✗ ${r.wrong}  — ${r.skipped}  •  Acc: ${r.acc}%`,W/2+2,y+26);
-  y+=44;
-
-  // Details table
-  pdf.setFontSize(10);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);
-  pdf.text('Q#',14,y);pdf.text('Type',24,y);pdf.text('Your Answer',42,y);pdf.text('Correct Answer',90,y);pdf.text('Status',140,y);pdf.text('Marks',165,y);
-  y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;
-
-  pdf.setFont('helvetica','normal');pdf.setFontSize(9);
-  r.details.forEach((d,idx)=>{
-    if(y>270){pdf.addPage();pdf.setFillColor(15,23,42);pdf.rect(0,0,W,10,'F');y=18;}
-    if(idx%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-4,W-20,8,'F');}
-    const stColor=d.st==='ok'?[16,185,129]:d.st==='no'?[239,68,68]:[245,158,11];
-    pdf.setTextColor(...stColor);
-    pdf.text(`Q${d.q}`,14,y);
-    pdf.setTextColor(200,200,200);
-    pdf.text(TYPE_LBL[d.type],24,y);
-    pdf.text(String(d.u).slice(0,18),42,y);
-    pdf.text(String(d.a).slice(0,22),90,y);
-    pdf.setTextColor(...stColor);
-    pdf.text(d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',140,y);
-    pdf.text(`${d.marks>0?'+':''}${d.marks}`,165,y);
-    y+=8;
-  });
-
-  // Footer
-  y=Math.max(y+6,275);
-  pdf.setFillColor(15,23,42);pdf.rect(0,y,W,12,'F');
-  pdf.setTextColor(100,116,139);pdf.setFontSize(8);
-  pdf.text('Generated by OMR Scanner Pro • Firebase Cloud',W/2,y+7,{align:'center'});
-
-  pdf.save(`${r.name}_${r.examName}_Result.pdf`);
-  toast('PDF exported! 📄','ok');
-};
-
-// ── Personal Result: Excel ────────────────────────────────
-window.exportExcel=function(){
-  if(!S.curRes)return toast('No result to export','wa');
-  const r=S.curRes;
-  const wb=XLSX.utils.book_new();
-
-  // Summary sheet
-  const sumData=[
-    ['OMR Scanner Pro — Result Report'],[''],
-    ['Name',r.name],['Exam',r.examName],
-    ['Score',`${r.marks}/${r.max}`],['Percentage',r.pct+'%'],
-    ['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped],
-    ['Accuracy',r.acc+'%'],['Date',new Date().toLocaleString()]
-  ];
-  const ws1=XLSX.utils.aoa_to_sheet(sumData);
-  ws1['!cols']=[{wch:20},{wch:30}];
-  XLSX.utils.book_append_sheet(wb,ws1,'Summary');
-
-  // Details sheet
-  const detData=[['Q#','Type','Your Answer','Correct Answer','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',d.marks])];
-  const ws2=XLSX.utils.aoa_to_sheet(detData);
-  ws2['!cols']=[{wch:6},{wch:10},{wch:22},{wch:22},{wch:10},{wch:8}];
-  XLSX.utils.book_append_sheet(wb,ws2,'Question Details');
-
-  XLSX.writeFile(wb,`${r.name}_${r.examName}_Result.xlsx`);
-  toast('Excel exported! 📊','ok');
-};
-
-// ── Personal Result: CSV ──────────────────────────────────
-window.exportCSV=function(){
-  if(!S.curRes)return toast('No result to export','wa');
-  const r=S.curRes;
-  const rows=[
-    ['OMR Scanner Pro - Result'],
-    ['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],['Percentage',r.pct+'%'],
-    ['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped],[''],
-    ['Q#','Type','Your Answer','Correct Answer','Status','Marks'],
-    ...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skipped',d.marks])
-  ];
-  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  dlFile(csv,'text/csv',`${r.name}_${r.examName}_Result.csv`);
-  toast('CSV exported! 📋','ok');
-};
-
-// ── Analytics: PDF ────────────────────────────────────────
-window.exportAnalyticsPDF=function(){
-  if(!S.anData)return toast('No analytics data','wa');
-  const d=S.anData;
-  const{jsPDF}=window.jspdf;
-  const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=pdf.internal.pageSize.getWidth();
-  let y=18;
-
-  // Header
-  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
-  pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
-  pdf.text('Analytics Report — '+d.examName,W/2,12,{align:'center'});
-  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
-  pdf.text(`${d.total} submissions • Generated ${new Date().toLocaleString()}`,W/2,20,{align:'center'});
-  y=40;
-
-  // Stats grid
-  const stats=[['Total Attempts',d.total],['Avg Score',d.avgScore+'%'],['Avg Marks',d.avgMarks],['Top Score',d.maxScore+'%'],['Lowest Score',d.minScore+'%'],['Pass Rate',Math.round(d.passCount/d.total*100)+'%']];
-  stats.forEach((s,i)=>{
-    const col=i%3;const row=Math.floor(i/3);
-    const bx=10+col*64;const by=y+row*20;
-    pdf.setFillColor(30,41,59);pdf.roundedRect(bx,by,60,16,2,2,'F');
-    pdf.setTextColor(129,140,248);pdf.setFontSize(14);pdf.setFont('helvetica','bold');
-    pdf.text(String(s[1]),bx+30,by+8,{align:'center'});
-    pdf.setTextColor(100,116,139);pdf.setFontSize(7);pdf.setFont('helvetica','normal');
-    pdf.text(s[0],bx+30,by+13,{align:'center'});
-  });
-  y+=50;
-
-  // Score distribution
-  pdf.setTextColor(129,140,248);pdf.setFontSize(10);pdf.setFont('helvetica','bold');
-  pdf.text('Score Distribution',14,y);y+=6;
-  const maxBucket=Math.max(...Object.values(d.buckets),1);
-  Object.entries(d.buckets).forEach(([label,count])=>{
-    pdf.setFillColor(30,41,59);pdf.rect(14,y,170,8,'F');
-    const bw=Math.round((count/maxBucket)*150);
-    if(bw>0){pdf.setFillColor(99,102,241);pdf.rect(14,y,bw,8,'F');}
-    pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.setFont('helvetica','normal');
-    pdf.text(`${label}%`,16,y+5.5);
-    pdf.text(`${count} students`,175,y+5.5,{align:'right'});
-    y+=10;
-  });
-  y+=6;
-
-  // All results
-  pdf.setTextColor(129,140,248);pdf.setFontSize(10);pdf.setFont('helvetica','bold');
-  pdf.text('All Submissions',14,y);y+=6;
-  pdf.setFontSize(8);pdf.setTextColor(100,116,139);
-  pdf.text('Rank',14,y);pdf.text('Name',26,y);pdf.text('Score%',90,y);pdf.text('Marks',110,y);pdf.text('C/W/S',130,y);pdf.text('Date',160,y);
-  y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=4;
-
-  [...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).forEach((r,i)=>{
-    if(y>270){pdf.addPage();y=14;}
-    if(i%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-3,W-20,7,'F');}
-    pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.setFont('helvetica','normal');
-    pdf.text(String(i+1),14,y+1);
-    pdf.text(r.name.slice(0,20),26,y+1);
-    const stColor=r.pct>=60?[16,185,129]:r.pct>=33?[245,158,11]:[239,68,68];
-    pdf.setTextColor(...stColor);pdf.text(r.pct+'%',90,y+1);
-    pdf.setTextColor(200,200,200);
-    pdf.text(`${r.marks}/${r.max}`,110,y+1);
-    pdf.text(`${r.correct}/${r.wrong}/${r.skipped}`,130,y+1);
-    const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
-    pdf.text(dt,160,y+1);
-    y+=7;
-  });
-
-  pdf.save(`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.pdf`);
-  toast('Analytics PDF exported! 📄','ok');
-};
-
-// ── Analytics: Excel ──────────────────────────────────────
-window.exportAnalyticsExcel=function(){
-  if(!S.anData)return toast('No analytics data','wa');
-  const d=S.anData;
-  const wb=XLSX.utils.book_new();
-
-  // Summary
-  const sumData=[
-    ['Analytics Report — '+d.examName],['Generated',new Date().toLocaleString()],[''],
-    ['Total Attempts',d.total],['Average Score',d.avgScore+'%'],['Average Marks',d.avgMarks],
-    ['Top Score',d.maxScore+'%'],['Lowest Score',d.minScore+'%'],
-    ['Pass Count',d.passCount],['Pass Rate',Math.round(d.passCount/d.total*100)+'%'],[''],
-    ['Score Distribution'],['Range','Count'],
-    ...Object.entries(d.buckets).map(([k,v])=>[k+'%',v])
-  ];
-  const ws1=XLSX.utils.aoa_to_sheet(sumData);
-  ws1['!cols']=[{wch:25},{wch:20}];
-  XLSX.utils.book_append_sheet(wb,ws1,'Summary');
-
-  // All results
-  const resData=[
-    ['Rank','Name','Score %','Marks','Max Marks','Correct','Wrong','Skipped','Accuracy %','Date'],
-    ...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
-      const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
-      return[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped,r.acc,dt];
-    })
-  ];
-  const ws2=XLSX.utils.aoa_to_sheet(resData);
-  ws2['!cols']=[{wch:6},{wch:20},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:14}];
-  XLSX.utils.book_append_sheet(wb,ws2,'All Results');
-
-  // Answer key
-  if(d.qStats.length){
-    const akData=[['Q#','Type','Correct Answer','Max Marks'],...d.qStats.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.answer,q.maxMarks])];
-    const ws3=XLSX.utils.aoa_to_sheet(akData);
-    ws3['!cols']=[{wch:6},{wch:10},{wch:30},{wch:12}];
-    XLSX.utils.book_append_sheet(wb,ws3,'Answer Key');
-  }
-
-  XLSX.writeFile(wb,`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.xlsx`);
-  toast('Analytics Excel exported! 📊','ok');
-};
-
-// ── Analytics: CSV ────────────────────────────────────────
-window.exportAnalyticsCSV=function(){
-  if(!S.anData)return toast('No analytics data','wa');
-  const d=S.anData;
-  const rows=[
-    ['Analytics Report',d.examName],['Total',d.total],['Avg Score',d.avgScore+'%'],[''],
-    ['Rank','Name','Score %','Marks','Max','Correct','Wrong','Skipped','Date'],
-    ...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
-      const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
-      return[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped,dt];
-    })
-  ];
-  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  dlFile(csv,'text/csv',`Analytics_${d.examName}_${new Date().toISOString().slice(0,10)}.csv`);
-  toast('Analytics CSV exported! 📋','ok');
-};
-
-// ── Download helper ───────────────────────────────────────
-function dlFile(content,mime,filename){
-  const blob=new Blob([content],{type:mime});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=filename;a.click();
-  URL.revokeObjectURL(url);
-}
-
-// ─── LEADERBOARD ──────────────────────────────────────────
-async function loadLB(force){
-  const eid=document.getElementById('lExam')?.value||'all';
-  const tf=document.getElementById('lTime')?.value||'all';
-  const cacheKey=`${eid}_${tf}`;const now=Date.now();
-  if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}
-  try{
-    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));
-    let data=snap.docs.map(d=>({id:d.id,...d.data()}));
-    if(eid!=='all')data=data.filter(r=>r.examId===eid);
-    if(tf!=='all'){
-      const nowD=new Date();let cutoff;
-      if(tf==='today'){cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());}
-      else if(tf==='week'){cutoff=new Date(nowD-7*86400000);}
-      else if(tf==='month'){cutoff=new Date(nowD-30*86400000);}
-      data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});
-    }
-    data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));
-    S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);
-  }catch(e){console.error(e);document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading leaderboard</p></td></tr>';}
-}
+// ═══════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════
+async function loadLB(force){const eid=document.getElementById('lExam')?.value||'all';const tf=document.getElementById('lTime')?.value||'all';const cacheKey=`${eid}_${tf}`;const now=Date.now();if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));let data=snap.docs.map(d=>({id:d.id,...d.data()}));if(eid!=='all')data=data.filter(r=>r.examId===eid);if(tf!=='all'){const nowD=new Date();let cutoff;if(tf==='today')cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());else if(tf==='week')cutoff=new Date(nowD-7*86400000);else if(tf==='month')cutoff=new Date(nowD-30*86400000);data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});}data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);}catch(e){console.error(e);document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading</p></td></tr>';}}
 window.loadLB=loadLB;
 
-function renderLB(data){
-  const body=document.getElementById('lbBody');
-  const top3=data.slice(0,3);
-  [1,2,3].forEach(i=>{
-    const r=top3[i-1];
-    const av=document.getElementById('pav'+i);const nm=document.getElementById('pn'+i);const sc=document.getElementById('ps'+i);
-    if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}
-    else{av.textContent='?';nm.textContent='—';sc.textContent='—';}
-  });
-  if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions yet</p></td></tr>';return;}
-  body.innerHTML=data.slice(0,100).map((r,i)=>{
-    const rank=i+1;const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
-    const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());
-    const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;
-  }).join('');
-}
+function renderLB(data){const body=document.getElementById('lbBody');const top3=data.slice(0,3);[1,2,3].forEach(i=>{const r=top3[i-1];const av=document.getElementById('pav'+i);const nm=document.getElementById('pn'+i);const sc=document.getElementById('ps'+i);if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}else{av.textContent='?';nm.textContent='—';sc.textContent='—';}});if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions</p></td></tr>';return;}body.innerHTML=data.slice(0,100).map((r,i)=>{const rank=i+1;const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('');}
 
-// ─── HOME STATS ───────────────────────────────────────────
-async function loadHomeStats(){
-  const now=Date.now();
-  if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}
-  try{
-    const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);
-    const subs=resSnap.data().count;const usrs=usrSnap.data().count;
-    let avg='—';
-    if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}
-    const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);
-  }catch(e){console.error(e)}
-}
-function applyStats(d){
-  document.getElementById('hScans').textContent=d.subs||0;
-  document.getElementById('hUsers').textContent=d.usrs||0;
-  document.getElementById('hAvg').textContent=d.avg||'—';
-}
+// ═══════════════════════════════════════════
+// HOME STATS
+// ═══════════════════════════════════════════
+async function loadHomeStats(){const now=Date.now();if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}try{const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);const subs=resSnap.data().count;const usrs=usrSnap.data().count;let avg='—';if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);}catch(e){console.error(e)}}
+function applyStats(d){document.getElementById('hScans').textContent=d.subs||0;document.getElementById('hUsers').textContent=d.usrs||0;document.getElementById('hAvg').textContent=d.avg||'—';}
 </script>
 </body>
 </html>
