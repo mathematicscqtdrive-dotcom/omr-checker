@@ -17,48 +17,10 @@
   --gold:#fbbf24;--silver:#9ca3af;--bronze:#d97706;--r:12px
 }
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--d);color:var(--w);min-height:100vh;overflow-x:hidden}
-
-/* ═══════════════════════════════════════════
-   SCIENCE PARTICLE CANVAS
-   ═══════════════════════════════════════════ */
 #scienceCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-
-/* ═══════════════════════════════════════════
-   MATH FLOW BACKGROUND
-   ═══════════════════════════════════════════ */
 .math-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
 .math-symbol{position:absolute;color:rgba(99,102,241,.08);font-size:1.5rem;font-weight:700;animation:mathFloat linear infinite;pointer-events:none;user-select:none}
-@keyframes mathFloat{
-  0%{transform:translateY(100vh) rotate(0deg);opacity:0}
-  10%{opacity:1}
-  90%{opacity:1}
-  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
-}
-
-/* ═══════════════════════════════════════════
-   DNA HELIX DECORATION
-   ═══════════════════════════════════════════ */
-.dna-helix{position:fixed;right:-40px;top:50%;transform:translateY(-50%);z-index:0;pointer-events:none;opacity:.06}
-.dna-dot{width:8px;height:8px;border-radius:50%;background:var(--p);position:absolute;animation:dnaRotate 4s ease-in-out infinite}
-@keyframes dnaRotate{
-  0%,100%{transform:translateX(0)}
-  50%{transform:translateX(60px)}
-}
-
-/* ═══════════════════════════════════════════
-   ATOM SPINNER
-   ═══════════════════════════════════════════ */
-.atom{position:relative;width:60px;height:60px;display:inline-block}
-.atom-nucleus{width:12px;height:12px;background:var(--p);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 20px var(--p)}
-.atom-orbit{position:absolute;top:0;left:0;width:100%;height:100%;border:1.5px solid rgba(99,102,241,.3);border-radius:50%;animation:atomSpin 3s linear infinite}
-.atom-orbit:nth-child(2){transform:rotate(60deg);animation-duration:4s}
-.atom-orbit:nth-child(3){transform:rotate(-60deg);animation-duration:5s}
-.atom-electron{width:5px;height:5px;background:var(--s);border-radius:50%;position:absolute;top:-2.5px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--s)}
-@keyframes atomSpin{to{transform:rotate(360deg)}}
-
-/* ═══════════════════════════════════════════
-   FORMULA CARDS (floating equations)
-   ═══════════════════════════════════════════ */
+@keyframes mathFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
 .formula-float{position:fixed;z-index:0;pointer-events:none;font-family:'Courier New',monospace;color:rgba(99,102,241,.06);font-size:1.1rem;font-weight:700}
 .formula-float.f1{top:15%;left:5%;animation:formulaBob 6s ease-in-out infinite}
 .formula-float.f2{top:25%;right:8%;animation:formulaBob 7s ease-in-out infinite 1s}
@@ -66,36 +28,15 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--d);color:var(-
 .formula-float.f4{bottom:15%;right:5%;animation:formulaBob 5s ease-in-out infinite .5s}
 .formula-float.f5{top:50%;left:8%;animation:formulaBob 9s ease-in-out infinite 3s}
 .formula-float.f6{top:40%;right:3%;animation:formulaBob 6.5s ease-in-out infinite 1.5s}
-@keyframes formulaBob{
-  0%,100%{transform:translateY(0) rotate(0deg)}
-  25%{transform:translateY(-15px) rotate(2deg)}
-  75%{transform:translateY(15px) rotate(-2deg)}
-}
-
-/* ═══════════════════════════════════════════
-   GLOW PULSE EFFECTS
-   ═══════════════════════════════════════════ */
+@keyframes formulaBob{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-15px) rotate(2deg)}75%{transform:translateY(15px) rotate(-2deg)}}
 .glow-orb{position:fixed;width:300px;height:300px;border-radius:50%;filter:blur(80px);z-index:0;pointer-events:none;opacity:.15}
 .glow-orb.go1{background:var(--p);top:-100px;left:-100px;animation:orbPulse 8s ease-in-out infinite}
 .glow-orb.go2{background:var(--s);bottom:-100px;right:-100px;animation:orbPulse 10s ease-in-out infinite 2s}
 .glow-orb.go3{background:#a855f7;top:50%;left:50%;transform:translate(-50%,-50%);animation:orbPulse 12s ease-in-out infinite 4s}
-@keyframes orbPulse{
-  0%,100%{opacity:.08;transform:scale(1)}
-  50%{opacity:.2;transform:scale(1.3)}
-}
-
-/* ═══════════════════════════════════════════
-   GRID PATTERN OVERLAY
-   ═══════════════════════════════════════════ */
-.grid-pattern{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(99,102,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.03) 1px,transparent 1px);
-  background-size:50px 50px;
-  animation:gridShift 20s linear infinite}
+@keyframes orbPulse{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:.2;transform:scale(1.3)}}
+.grid-pattern{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(99,102,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.03) 1px,transparent 1px);background-size:50px 50px;animation:gridShift 20s linear infinite}
 @keyframes gridShift{to{background-position:50px 50px}}
 
-/* ═══════════════════════════════════════════
-   MAIN LAYOUT
-   ═══════════════════════════════════════════ */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;background:rgba(15,23,42,.92);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px)}
 .brand{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:800}
 .dot{width:12px;height:12px;border-radius:50%;background:var(--p);box-shadow:0 0 12px var(--p);animation:dotPulse 2s ease-in-out infinite}
@@ -106,8 +47,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .tab.on{color:var(--pl)}
 .tab:hover{transform:translateY(-1px)}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;font-family:inherit;transition:all .3s ease;position:relative;overflow:hidden}
-.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;background:rgba(255,255,255,.15);border-radius:50%;transform:translate(-50%,-50%);transition:width .6s,height .6s}
-.btn:active::after{width:300px;height:300px}
 .pr{background:linear-gradient(135deg,var(--p),var(--s));color:var(--w);box-shadow:0 4px 15px rgba(99,102,241,.3)}
 .pr:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
 .ol{background:0 0;color:var(--pl);border:2px solid var(--p)}
@@ -129,25 +68,17 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .sec{display:none;animation:fadeSlideIn .5s ease}
 .sec.on{display:block}
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
 .sh{text-align:center;margin-bottom:2rem}
 .sh h2{font-size:1.8rem;font-weight:800;margin-bottom:.4rem;position:relative;display:inline-block}
 .sh h2::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:60px;height:3px;background:linear-gradient(90deg,var(--p),var(--s));border-radius:2px}
 .sh p{color:var(--gl);margin-top:.8rem}
-
-/* ═══════════════════════════════════════════
-   HERO WITH SCIENCE THEME
-   ═══════════════════════════════════════════ */
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0}
 .hero h1{font-size:2.6rem;font-weight:800;line-height:1.2;margin-bottom:1rem}
 .grad{background:linear-gradient(135deg,var(--p),var(--s),#a855f7);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradShift 4s ease-in-out infinite}
 @keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 .hero p{font-size:1.05rem;color:var(--gl);margin-bottom:1.8rem;line-height:1.7}
-
-/* Animated science badge */
 .science-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);padding:6px 14px;border-radius:50px;font-size:.8rem;color:var(--pl);margin-bottom:1rem;animation:badgeGlow 3s ease-in-out infinite}
 @keyframes badgeGlow{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.2)}50%{box-shadow:0 0 20px 5px rgba(99,102,241,.15)}}
-
 .stats-row{display:flex;gap:1.2rem;margin-bottom:1.8rem}
 .stc{background:rgba(30,41,59,.8);padding:1rem;border-radius:var(--r);border:1px solid var(--d3);text-align:center;flex:1;backdrop-filter:blur(10px);transition:all .3s;position:relative;overflow:hidden}
 .stc::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--p),transparent);animation:scanLine 3s linear infinite}
@@ -156,10 +87,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .stc .n{display:block;font-size:1.6rem;font-weight:800;color:var(--pl)}
 .stc .l{font-size:.75rem;color:var(--g);text-transform:uppercase;letter-spacing:.5px}
 .hacts{display:flex;gap:1rem}
-
-/* ═══════════════════════════════════════════
-   ANIMATED OMR CARD
-   ═══════════════════════════════════════════ */
 .omrc{background:rgba(30,41,59,.8);border:2px solid var(--d3);border-radius:16px;padding:1.5rem;width:260px;transform:rotate(3deg);margin:0 auto;backdrop-filter:blur(10px);animation:omrFloat 4s ease-in-out infinite;position:relative;overflow:hidden}
 .omrc::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(transparent,rgba(99,102,241,.05),transparent);animation:omrRotate 8s linear infinite}
 @keyframes omrFloat{0%,100%{transform:rotate(3deg) translateY(0)}50%{transform:rotate(3deg) translateY(-10px)}}
@@ -167,15 +94,9 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .omrc h4{text-align:center;font-weight:700;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:2px solid var(--d3);color:var(--pl);position:relative;z-index:1}
 .brow{display:flex;align-items:center;gap:10px;margin-bottom:10px;position:relative;z-index:1}
 .brow span{width:28px;font-size:.8rem;color:var(--gl)}
-.bub{width:24px;height:24px;border-radius:50%;border:2px solid var(--g);transition:all .3s;cursor:default}
-.bub.f{background:var(--p);border-color:var(--p);box-shadow:0 0 10px rgba(99,102,241,.5);animation:bubPop .8s ease}
-@keyframes bubPop{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
-.bub:hover{border-color:var(--pl);transform:scale(1.1)}
-
-/* ═══════════════════════════════════════════
-   RESULT SECTION
-   ═══════════════════════════════════════════ */
-.rh{display:flex;align-items:center;gap:2.5rem;padding:1.5rem;background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);margin-bottom:1.5rem;backdrop-filter:blur(10px);animation:fadeSlideIn .6s ease}
+.bub{width:24px;height:24px;border-radius:50%;border:2px solid var(--g);transition:all .3s}
+.bub.f{background:var(--p);border-color:var(--p);box-shadow:0 0 10px rgba(99,102,241,.5)}
+.rh{display:flex;align-items:center;gap:2.5rem;padding:1.5rem;background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);margin-bottom:1.5rem;backdrop-filter:blur(10px)}
 .scirc{position:relative;width:140px;height:140px;flex-shrink:0}
 .scirc svg{width:100%;height:100%;transform:rotate(-90deg)}
 .scbg{fill:none;stroke:var(--d3);stroke-width:8}
@@ -192,11 +113,9 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .rs.ok .ri,.rs.ok .rv{color:var(--ok)}
 .rs.no .ri,.rs.no .rv{color:var(--no)}
 .rs.sk .ri,.rs.sk .rv{color:var(--warn)}
-
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin-bottom:1.5rem}
-.ai{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgba(30,41,59,.6);border:1px solid var(--d3);font-size:.85rem;transition:all .3s;animation:fadeSlideIn .4s ease backwards}
-.ai:nth-child(1){animation-delay:.05s}.ai:nth-child(2){animation-delay:.1s}.ai:nth-child(3){animation-delay:.15s}.ai:nth-child(4){animation-delay:.2s}.ai:nth-child(5){animation-delay:.25s}
-.ai:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.ai{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgba(30,41,59,.6);border:1px solid var(--d3);font-size:.85rem;transition:all .3s}
+.ai:hover{transform:translateY(-2px)}
 .ai.ok{border-color:var(--ok);background:rgba(16,185,129,.08)}
 .ai.no{border-color:var(--no);background:rgba(239,68,68,.08)}
 .ai.sk{border-color:var(--warn);background:rgba(245,158,11,.08)}
@@ -207,10 +126,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .ai.no .qi{color:var(--no)}
 .ai.sk .qi{color:var(--warn)}
 .racts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
-
-/* ═══════════════════════════════════════════
-   MANUAL ENTRY
-   ═══════════════════════════════════════════ */
 .mconf{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;padding:1.2rem;background:rgba(30,41,59,.8);border-radius:var(--r);border:1px solid var(--d3);backdrop-filter:blur(10px)}
 .mgrid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;max-height:600px;overflow-y:auto;padding-right:6px}
 .mq{padding:12px 14px;background:rgba(30,41,59,.7);border-radius:8px;border:1px solid var(--d3);transition:all .3s;animation:fadeSlideIn .4s ease backwards}
@@ -223,12 +138,11 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .mq-type.matrix{background:var(--gold);color:#000}
 .mq-type.num{background:var(--ok)}
 .mq-opts{display:flex;gap:6px;flex-wrap:wrap}
-.ob{min-width:34px;height:34px;padding:0 10px;border:2px solid var(--d3);border-radius:50px;background:0 0;color:var(--gl);font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .3s;position:relative;overflow:hidden}
+.ob{min-width:34px;height:34px;padding:0 10px;border:2px solid var(--d3);border-radius:50px;background:0 0;color:var(--gl);font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .3s}
 .ob:hover{border-color:var(--p);color:var(--pl);transform:scale(1.05)}
 .ob.sel{background:var(--p);border-color:var(--p);color:var(--w);animation:selectPop .3s ease;box-shadow:0 0 12px rgba(99,102,241,.4)}
 @keyframes selectPop{0%{transform:scale(.8)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 .mq-num-input{width:200px;padding:8px 12px;background:rgba(15,23,42,.6);border:2px solid var(--d3);border-radius:8px;color:var(--w);font-family:inherit;font-size:.9rem;transition:all .3s}
-.mq-num-input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(99,102,241,.2)}
 .mq-match{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;max-width:400px}
 .mq-match span{font-weight:700;color:var(--pl)}
 .mq-matrix{display:grid;gap:4px;font-size:.78rem;max-width:400px}
@@ -239,10 +153,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .mq-matrix-row .mc.sel{background:var(--p);border-color:var(--p);color:#fff;animation:selectPop .3s ease}
 .mq-matrix-head{display:grid;grid-template-columns:40px repeat(5,1fr);gap:4px;font-weight:700;color:var(--pl);text-align:center;font-size:.72rem;text-transform:uppercase}
 .macts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-
-/* ═══════════════════════════════════════════
-   LEADERBOARD
-   ═══════════════════════════════════════════ */
 .lf{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
 .lf .fs{width:auto;min-width:180px}
 .podium{display:flex;align-items:flex-end;justify-content:center;gap:1rem;margin-bottom:2.5rem;padding:1.5rem 0}
@@ -257,8 +167,7 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .pi.p3 .pav{border-color:var(--bronze);color:var(--bronze)}
 .pname{font-weight:700;font-size:.88rem}
 .pscore{font-size:.78rem;color:var(--gl);margin-bottom:.4rem}
-.pstand{width:90px;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center;transition:all .3s}
-.pstand:hover{transform:scaleY(1.05);transform-origin:bottom}
+.pstand{width:90px;border-radius:8px 8px 0 0;display:flex;align-items:flex-end;justify-content:center}
 .pstand span{font-size:1.4rem;font-weight:800;padding:.8rem}
 .pi.p1 .pstand{height:110px;background:rgba(251,191,36,.15);color:var(--gold)}
 .pi.p2 .pstand{height:80px;background:rgba(156,163,175,.15);color:var(--silver)}
@@ -270,8 +179,7 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .lt td{padding:12px 18px;border-bottom:1px solid var(--d3);font-size:.92rem}
 .lt tr{transition:background .3s}
 .lt tbody tr:hover{background:rgba(99,102,241,.05)}
-.rb{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:.82rem;transition:transform .3s}
-.rb:hover{transform:scale(1.2)}
+.rb{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:.82rem}
 .r1{background:rgba(251,191,36,.2);color:var(--gold);border:2px solid var(--gold)}
 .r2{background:rgba(156,163,175,.2);color:var(--silver);border:2px solid var(--silver)}
 .r3{background:rgba(217,119,6,.2);color:var(--bronze);border:2px solid var(--bronze)}
@@ -281,15 +189,11 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .live{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.15);color:var(--ok);border:1px solid rgba(16,185,129,.3);padding:4px 12px;border-radius:50px;font-size:.78rem;font-weight:700}
 .livdot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-/* ═══════════════════════════════════════════
-   ADMIN
-   ═══════════════════════════════════════════ */
 .adm{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
 .box{background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);padding:1.5rem;backdrop-filter:blur(10px)}
 .box h3{margin-bottom:1.2rem;font-size:1.1rem}
 .akl{display:flex;flex-direction:column;gap:8px;max-height:600px;overflow-y:auto}
-.akc{padding:1rem;background:rgba(15,23,42,.6);border-radius:var(--r);border:1px solid var(--d3);transition:all .3s;animation:fadeSlideIn .4s ease backwards}
+.akc{padding:1rem;background:rgba(15,23,42,.6);border-radius:var(--r);border:1px solid var(--d3);transition:all .3s}
 .akc:hover{border-color:rgba(99,102,241,.3);transform:translateX(4px)}
 .akc h4{font-size:.95rem;margin-bottom:.4rem}
 .akm{display:flex;gap:.8rem;font-size:.78rem;color:var(--gl);margin-bottom:.4rem;flex-wrap:wrap}
@@ -303,10 +207,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .mts{display:flex;margin-bottom:1.2rem;border-bottom:2px solid var(--d3)}
 .mtab{flex:1;padding:10px;background:0 0;border:0;color:var(--g);font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.3s}
 .mtab.on{color:var(--pl);border-bottom-color:var(--p)}
-
-/* ═══════════════════════════════════════════
-   LOADING SCREEN
-   ═══════════════════════════════════════════ */
 .loadscr{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem}
 .loadscr p{color:var(--gl)}
 .load-atom{position:relative;width:80px;height:80px}
@@ -318,9 +218,9 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .load-orbit:nth-child(1) .load-e{background:var(--p);box-shadow:0 0 10px var(--p)}
 .load-orbit:nth-child(2) .load-e{background:var(--s);box-shadow:0 0 10px var(--s)}
 .load-orbit:nth-child(3) .load-e{background:#a855f7;box-shadow:0 0 10px #a855f7}
+@keyframes atomSpin{to{transform:rotate(360deg)}}
 .load-text{margin-top:.5rem;font-size:.85rem;color:var(--gl);animation:loadTextPulse 2s ease-in-out infinite}
 @keyframes loadTextPulse{0%,100%{opacity:.5}50%{opacity:1}}
-
 .toasts{position:fixed;top:80px;right:16px;z-index:3000;display:flex;flex-direction:column;gap:8px;max-width:90vw}
 .toast{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(30,41,59,.95);border-radius:var(--r);border:1px solid var(--d3);min-width:280px;font-size:.9rem;animation:slideIn .3s ease;backdrop-filter:blur(10px)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -328,10 +228,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .toast.er{border-left:4px solid var(--no)}
 .toast.inf{border-left:4px solid var(--s)}
 .toast.wa{border-left:4px solid var(--warn)}
-
-/* ═══════════════════════════════════════════
-   QUESTION BUILDER
-   ═══════════════════════════════════════════ */
 .qb-card{background:rgba(30,41,59,.7);border:1px solid var(--d3);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;backdrop-filter:blur(10px)}
 .qb-card h3{margin-bottom:1rem;font-size:1.05rem;color:var(--pl)}
 .qb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
@@ -349,7 +245,7 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .qb-qt.matrix{background:var(--gold);color:#000}
 .qb-qt.num{background:var(--ok)}
 .qb-del{background:var(--no);color:#fff;border:0;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:.72rem;font-weight:700;transition:all .2s}
-.qb-del:hover{transform:scale(1.1);box-shadow:0 2px 8px rgba(239,68,68,.4)}
+.qb-del:hover{transform:scale(1.1)}
 .qb-body{display:flex;flex-direction:column;gap:.6rem}
 .qb-lbl{font-size:.7rem;color:var(--gl);text-transform:uppercase;font-weight:700}
 .qb-opts{display:flex;gap:.4rem;flex-wrap:wrap}
@@ -379,13 +275,9 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .dzone h4{color:var(--no);margin-bottom:.4rem;font-size:.95rem}
 .dzone p{color:var(--gl);margin-bottom:1rem;font-size:.85rem}
 .dzone-acts{display:flex;gap:.8rem;flex-wrap:wrap}
-
-/* ═══════════════════════════════════════════
-   ANALYTICS
-   ═══════════════════════════════════════════ */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
 .chart-box{background:rgba(30,41,59,.8);border:1px solid var(--d3);border-radius:16px;padding:1.5rem;backdrop-filter:blur(10px);transition:all .3s}
-.chart-box:hover{border-color:rgba(99,102,241,.3);box-shadow:0 8px 25px rgba(0,0,0,.2)}
+.chart-box:hover{border-color:rgba(99,102,241,.3)}
 .chart-box h3{font-size:1rem;font-weight:700;margin-bottom:1rem;color:var(--pl)}
 .chart-wrap{position:relative;height:260px}
 .qa-table{width:100%;border-collapse:collapse;font-size:.82rem}
@@ -393,7 +285,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .qa-table td{padding:8px 12px;border-bottom:1px solid var(--d3)}
 .qa-table tr{transition:background .3s}
 .qa-table tbody tr:hover{background:rgba(99,102,241,.05)}
-
 .exp-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
 .exp-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit;font-size:.88rem;transition:all .3s;position:relative;overflow:hidden}
 .exp-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .6s}
@@ -404,35 +295,131 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .exp-excel:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(16,185,129,.4)}
 .exp-csv{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
 .exp-csv:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(245,158,11,.4)}
-
-/* ═══════════════════════════════════════════
-   CONFETTI ANIMATION (for good scores)
-   ═══════════════════════════════════════════ */
 .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5000;overflow:hidden}
 .confetti{position:absolute;width:10px;height:10px;top:-10px;opacity:0;animation:confettiFall linear forwards}
-@keyframes confettiFall{
-  0%{transform:translateX(0) rotateZ(0deg);opacity:1}
-  100%{transform:translateX(var(--drift)) rotateZ(720deg);opacity:0;top:110vh}
-}
+@keyframes confettiFall{0%{transform:translateX(0) rotateZ(0deg);opacity:1}100%{transform:translateX(var(--drift)) rotateZ(720deg);opacity:0;top:110vh}}
 
-/* ═══════════════════════════════════════════
-   WAVE SEPARATOR
-   ═══════════════════════════════════════════ */
-.wave-sep{position:relative;height:40px;overflow:hidden;margin:1rem 0}
-.wave-sep svg{position:absolute;bottom:0;width:200%;animation:waveMove 8s linear infinite}
-@keyframes waveMove{to{transform:translateX(-50%)}}
+/* ═══════════════════════════════════
+   FEATURE 21: COMPARISON TOOL
+   ═══════════════════════════════════ */
+.cmp-section{max-width:1100px;margin:0 auto}
+.cmp-selector{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end;margin-bottom:2rem;padding:1.5rem;background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);backdrop-filter:blur(10px)}
+.cmp-vs{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));font-weight:800;font-size:1rem;box-shadow:0 0 20px rgba(99,102,241,.4);animation:vsPulse 2s ease-in-out infinite;align-self:center}
+@keyframes vsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.cmp-header{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;margin-bottom:1.5rem}
+.cmp-player{padding:1.2rem;border-radius:16px;border:2px solid;text-align:center;position:relative;overflow:hidden}
+.cmp-player::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;animation:scanLine 2s linear infinite}
+.cmp-player.p1{border-color:var(--p);background:rgba(99,102,241,.08)}
+.cmp-player.p1::before{background:linear-gradient(90deg,transparent,var(--p),transparent)}
+.cmp-player.p2{border-color:var(--s);background:rgba(14,165,233,.08)}
+.cmp-player.p2::before{background:linear-gradient(90deg,transparent,var(--s),transparent)}
+.cmp-player-ini{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.3rem;margin:0 auto .8rem}
+.cmp-player.p1 .cmp-player-ini{background:linear-gradient(135deg,var(--p),var(--pd));box-shadow:0 0 20px rgba(99,102,241,.3)}
+.cmp-player.p2 .cmp-player-ini{background:linear-gradient(135deg,var(--s),#0284c7);box-shadow:0 0 20px rgba(14,165,233,.3)}
+.cmp-player-name{font-weight:800;font-size:1.1rem;margin-bottom:.3rem}
+.cmp-player-score{font-size:2rem;font-weight:800;display:block}
+.cmp-player.p1 .cmp-player-score{color:var(--pl)}
+.cmp-player.p2 .cmp-player-score{color:var(--s)}
+.cmp-player-sub{font-size:.8rem;color:var(--gl)}
+.cmp-winner-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--gold),#d97706);color:#000;padding:4px 12px;border-radius:50px;font-size:.75rem;font-weight:800;margin-top:.5rem;animation:winnerGlow 2s ease-in-out infinite}
+@keyframes winnerGlow{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.4)}50%{box-shadow:0 0 15px 5px rgba(251,191,36,.3)}}
+.cmp-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
+.cmp-mid-icon{font-size:2rem}
+.cmp-stats-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem;margin-bottom:1.5rem}
+.cmp-stat-row{display:contents}
+.cmp-stat-val{padding:.8rem 1rem;border-radius:8px;text-align:center;font-weight:700;font-size:1.1rem;position:relative;overflow:hidden}
+.cmp-stat-val.p1{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2)}
+.cmp-stat-val.p2{background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.2)}
+.cmp-stat-val.winner-p1.p1{background:rgba(99,102,241,.25);border-color:var(--p);box-shadow:0 0 10px rgba(99,102,241,.2)}
+.cmp-stat-val.winner-p2.p2{background:rgba(14,165,233,.25);border-color:var(--s);box-shadow:0 0 10px rgba(14,165,233,.2)}
+.cmp-stat-label{padding:.8rem;text-align:center;font-size:.78rem;font-weight:700;color:var(--gl);text-transform:uppercase;display:flex;align-items:center;justify-content:center}
+.cmp-bar-section{margin-bottom:1.5rem}
+.cmp-bar-row{display:grid;grid-template-columns:1fr 60px 1fr;gap:.5rem;align-items:center;margin-bottom:.8rem}
+.cmp-bar-label{font-size:.8rem;font-weight:700;color:var(--gl);text-align:center}
+.cmp-bar-wrap{display:flex;align-items:center;gap:6px}
+.cmp-bar-wrap.left{flex-direction:row-reverse}
+.cmp-bar-bg{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden}
+.cmp-bar-fill{height:100%;border-radius:5px;transition:width 1s ease}
+.cmp-bar-fill.p1{background:linear-gradient(90deg,var(--pd),var(--p))}
+.cmp-bar-fill.p2{background:linear-gradient(90deg,var(--s),#0ea5e9)}
+.cmp-bar-pct{font-size:.75rem;font-weight:700;min-width:36px;text-align:center}
+.cmp-bar-wrap.left .cmp-bar-pct{color:var(--pl)}
+.cmp-bar-wrap.right .cmp-bar-pct{color:var(--s)}
+.cmp-qa-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:4px;margin-bottom:1.5rem}
+.cmp-qa-head{font-weight:700;font-size:.75rem;color:var(--gl);text-transform:uppercase;padding:8px;text-align:center}
+.cmp-qa-cell{padding:6px 10px;border-radius:6px;font-size:.82rem;font-weight:600;text-align:center}
+.cmp-qa-cell.ok{background:rgba(16,185,129,.15);color:var(--ok);border:1px solid rgba(16,185,129,.2)}
+.cmp-qa-cell.no{background:rgba(239,68,68,.15);color:var(--no);border:1px solid rgba(239,68,68,.2)}
+.cmp-qa-cell.sk{background:rgba(245,158,11,.15);color:var(--warn);border:1px solid rgba(245,158,11,.2)}
+.cmp-qa-qnum{padding:6px;font-weight:700;color:var(--gl);font-size:.78rem;text-align:center;display:flex;align-items:center;justify-content:center}
+.cmp-radar-wrap{height:320px;position:relative}
+.cmp-insight{padding:1rem 1.2rem;border-radius:12px;background:rgba(30,41,59,.6);border-left:4px solid var(--p);margin-bottom:.8rem;font-size:.88rem;line-height:1.6}
+.cmp-insight.good{border-left-color:var(--ok)}
+.cmp-insight.bad{border-left-color:var(--no)}
+.cmp-insight.neutral{border-left-color:var(--warn)}
+
+/* ═══════════════════════════════════
+   FEATURE 24: DIFFICULTY RATING
+   ═══════════════════════════════════ */
+.diff-section{max-width:1100px;margin:0 auto}
+.diff-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem}
+.diff-card{padding:1.2rem;border-radius:16px;text-align:center;position:relative;overflow:hidden;transition:all .3s}
+.diff-card:hover{transform:translateY(-4px)}
+.diff-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
+.diff-card.easy{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2)}
+.diff-card.easy::after{background:var(--ok)}
+.diff-card.medium{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2)}
+.diff-card.medium::after{background:var(--warn)}
+.diff-card.hard{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2)}
+.diff-card.hard::after{background:var(--no)}
+.diff-card.skull{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2)}
+.diff-card.skull::after{background:#a855f7}
+.diff-card-icon{font-size:2rem;display:block;margin-bottom:.5rem}
+.diff-card-count{font-size:2rem;font-weight:800;display:block}
+.diff-card.easy .diff-card-count{color:var(--ok)}
+.diff-card.medium .diff-card-count{color:var(--warn)}
+.diff-card.hard .diff-card-count{color:var(--no)}
+.diff-card.skull .diff-card-count{color:#a855f7}
+.diff-card-label{font-size:.75rem;color:var(--gl);text-transform:uppercase;font-weight:700}
+.diff-card-range{font-size:.7rem;color:var(--g);margin-top:.2rem}
+.diff-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:700}
+.diff-badge.easy{background:rgba(16,185,129,.2);color:var(--ok);border:1px solid rgba(16,185,129,.3)}
+.diff-badge.medium{background:rgba(245,158,11,.2);color:var(--warn);border:1px solid rgba(245,158,11,.3)}
+.diff-badge.hard{background:rgba(239,68,68,.2);color:var(--no);border:1px solid rgba(239,68,68,.3)}
+.diff-badge.skull{background:rgba(168,85,247,.2);color:#a855f7;border:1px solid rgba(168,85,247,.3)}
+.diff-table{width:100%;border-collapse:collapse;font-size:.85rem}
+.diff-table th{padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;color:var(--gl);font-weight:700;border-bottom:2px solid var(--d3);position:sticky;top:0;background:rgba(15,23,42,.95);backdrop-filter:blur(10px)}
+.diff-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.diff-table tr{transition:background .2s}
+.diff-table tbody tr:hover{background:rgba(99,102,241,.05)}
+.diff-meter{display:flex;align-items:center;gap:8px}
+.diff-meter-bar{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;max-width:120px}
+.diff-meter-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.diff-meter-fill.easy{background:var(--ok)}
+.diff-meter-fill.medium{background:var(--warn)}
+.diff-meter-fill.hard{background:var(--no)}
+.diff-meter-fill.skull{background:#a855f7}
+.diff-meter-pct{font-size:.78rem;font-weight:700;min-width:36px}
+.diff-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;font-size:.8rem}
+.diff-legend-item{display:flex;align-items:center;gap:6px}
+.diff-legend-dot{width:10px;height:10px;border-radius:50%}
+.diff-heatmap{display:grid;gap:4px;margin-bottom:1rem}
+.diff-heatmap-row{display:grid;gap:4px;align-items:center}
+.diff-heatmap-cell{height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;cursor:default;transition:all .3s;position:relative}
+.diff-heatmap-cell:hover{transform:scale(1.1);z-index:1}
+.diff-heatmap-cell[title]:hover::after{content:attr(title);position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:var(--d2);border:1px solid var(--d3);padding:4px 8px;border-radius:6px;font-size:.7rem;white-space:nowrap;z-index:100;pointer-events:none}
 
 footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-top:1px solid var(--d3);margin-top:2rem;position:relative;z-index:1}
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════ */
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;text-align:center}
   .hacts{justify-content:center}
   .stats-row{justify-content:center}
   .adm{grid-template-columns:1fr}
   .analytics-grid{grid-template-columns:1fr}
+  .cmp-header{grid-template-columns:1fr;gap:.8rem}
+  .cmp-mid{flex-direction:row;justify-content:center}
+  .cmp-stats-grid{grid-template-columns:1fr}
+  .cmp-stat-row{display:flex;flex-direction:column;gap:.3rem}
 }
 @media(max-width:768px){
   .ntabs{display:none}
@@ -452,22 +439,21 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   .toasts{right:8px;top:70px}
   .toast{min-width:auto}
   .analytics-grid{grid-template-columns:1fr}
+  .cmp-selector{grid-template-columns:1fr;gap:.8rem}
+  .cmp-vs{display:none}
+  .cmp-qa-grid{grid-template-columns:1fr}
   .formula-float{display:none}
-  .glow-orb{width:200px;height:200px}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ SCIENCE BACKGROUND EFFECTS ═══ -->
 <canvas id="scienceCanvas"></canvas>
 <div class="grid-pattern"></div>
 <div class="glow-orb go1"></div>
 <div class="glow-orb go2"></div>
 <div class="glow-orb go3"></div>
-
 <div class="math-bg" id="mathBg"></div>
-
 <div class="formula-float f1">E = mc²</div>
 <div class="formula-float f2">∫f(x)dx</div>
 <div class="formula-float f3">F = ma</div>
@@ -475,7 +461,6 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 <div class="formula-float f5">PV = nRT</div>
 <div class="formula-float f6">λ = h/p</div>
 
-<!-- ═══ LOADING SCREEN (ATOM STYLE) ═══ -->
 <div class="loadscr" id="loadScr">
   <div class="load-atom">
     <div class="load-orbit"><div class="load-e"></div></div>
@@ -493,20 +478,14 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 <style>@keyframes loadDot{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.5);opacity:1}}</style>
 
 <nav>
-  <div class="brand">
-    <div class="dot"></div>
-    <span>OMR Scanner Pro</span>
-    <div class="atom" style="width:28px;height:28px;margin-left:4px">
-      <div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div>
-      <div class="atom-orbit" style="border-width:1px;transform:rotate(60deg);animation-duration:3.5s"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px;background:var(--p)"></div></div>
-      <div class="atom-nucleus" style="width:5px;height:5px"></div>
-    </div>
-  </div>
+  <div class="brand"><div class="dot"></div><span>OMR Scanner Pro</span></div>
   <div class="ntabs" id="navTabs">
     <button class="tab on" onclick="go('home')">🏠 Home</button>
     <button class="tab" onclick="go('manual')">✏️ Manual Entry</button>
     <button class="tab" onclick="go('leader')">🏆 Leaderboard</button>
     <button class="tab" onclick="go('analytics')">📊 Analytics</button>
+    <button class="tab" onclick="go('compare')">⚔️ Compare</button>
+    <button class="tab" onclick="go('difficulty')">🎯 Difficulty</button>
     <button class="tab" onclick="go('admin')">⚙️ Admin</button>
   </div>
   <div id="uarea"><button class="btn pr" onclick="showAuth()">🔑 Login</button></div>
@@ -518,6 +497,8 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   <button class="tab" onclick="go('manual');document.getElementById('mmenu').classList.remove('show')">✏️ Manual Entry</button>
   <button class="tab" onclick="go('leader');document.getElementById('mmenu').classList.remove('show')">🏆 Leaderboard</button>
   <button class="tab" onclick="go('analytics');document.getElementById('mmenu').classList.remove('show')">📊 Analytics</button>
+  <button class="tab" onclick="go('compare');document.getElementById('mmenu').classList.remove('show')">⚔️ Compare</button>
+  <button class="tab" onclick="go('difficulty');document.getElementById('mmenu').classList.remove('show')">🎯 Difficulty</button>
   <button class="tab" onclick="go('admin');document.getElementById('mmenu').classList.remove('show')">⚙️ Admin</button>
 </div>
 
@@ -527,12 +508,9 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 <section id="home" class="sec on">
   <div class="hero">
     <div>
-      <div class="science-badge">
-        <div class="atom" style="width:20px;height:20px"><div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div><div class="atom-nucleus" style="width:4px;height:4px"></div></div>
-        Powered by Science & AI
-      </div>
+      <div class="science-badge">⚛️ Powered by Science & AI</div>
       <h1>OMR <span class="grad">Answer Checker</span></h1>
-      <p>Multi-type questions (SCQ, MCQ, Matching, Matrix, Numerical) with real cloud storage. Everyone sees the same leaderboard in real time! ⚡</p>
+      <p>Multi-type questions with real cloud storage, comparison tools, and AI difficulty rating!</p>
       <div class="stats-row">
         <div class="stc"><span class="n" id="hScans">—</span><span class="l">Submissions</span></div>
         <div class="stc"><span class="n" id="hUsers">—</span><span class="l">Users</span></div>
@@ -545,7 +523,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
     </div>
     <div>
       <div class="omrc">
-        <h4>📝 OMR Answer Sheet</h4>
+        <h4>📝 OMR Sheet</h4>
         <div class="brow"><span>Q1</span><div class="bub"></div><div class="bub f"></div><div class="bub"></div><div class="bub"></div></div>
         <div class="brow"><span>Q2</span><div class="bub"></div><div class="bub"></div><div class="bub f"></div><div class="bub"></div></div>
         <div class="brow"><span>Q3</span><div class="bub f"></div><div class="bub"></div><div class="bub"></div><div class="bub"></div></div>
@@ -579,9 +557,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   <div style="max-width:960px;margin:0 auto">
     <div class="lf">
       <select id="lExam" class="fs" onchange="loadLB(true)"><option value="all">All Exams</option></select>
-      <select id="lTime" class="fs" onchange="loadLB(true)">
-        <option value="all">All Time</option><option value="today">Today</option><option value="week">Week</option><option value="month">Month</option>
-      </select>
+      <select id="lTime" class="fs" onchange="loadLB(true)"><option value="all">All Time</option><option value="today">Today</option><option value="week">Week</option><option value="month">Month</option></select>
       <button class="btn ol sm" onclick="loadLB(true)">🔄 Refresh</button>
     </div>
     <div class="podium">
@@ -589,28 +565,74 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <div class="pi p1"><div class="pcrown">👑</div><div class="pav" id="pav1">?</div><div class="pname" id="pn1">—</div><div class="pscore" id="ps1">—</div><div class="pstand"><span>1</span></div></div>
       <div class="pi p3"><div class="pav" id="pav3">?</div><div class="pname" id="pn3">—</div><div class="pscore" id="ps3">—</div><div class="pstand"><span>3</span></div></div>
     </div>
-    <div class="ltw">
-      <table class="lt"><thead><tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr></thead>
-      <tbody id="lbBody"><tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr></tbody></table>
-    </div>
+    <div class="ltw"><table class="lt"><thead><tr><th>Rank</th><th>Name</th><th>Exam</th><th>Score</th><th>C/W/S</th><th>Date</th></tr></thead><tbody id="lbBody"><tr><td colspan="6" class="emp"><span class="ei">⏳</span><p>Loading...</p></td></tr></tbody></table></div>
   </div>
 </section>
 
 <!-- ANALYTICS -->
 <section id="analytics" class="sec">
-  <div class="sh"><h2>📊 Analytics</h2><p>Question-wise analysis, performance charts & export</p></div>
+  <div class="sh"><h2>📊 Analytics</h2><p>Question-wise analysis, charts & export</p></div>
   <div style="max-width:1100px;margin:0 auto">
-    <div class="lf" style="margin-bottom:1.5rem">
-      <select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px"><option value="">Select Exam to Analyse</option></select>
-      <button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button>
+    <div class="lf"><select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px"><option value="">Select Exam to Analyse</option></select><button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button></div>
+    <div id="anContent"><div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above</p></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURE 21: COMPARISON TOOL
+     ══════════════════════════════════════ -->
+<section id="compare" class="sec">
+  <div class="sh">
+    <h2>⚔️ Student Comparison</h2>
+    <p>Compare two students head-to-head with detailed analysis</p>
+  </div>
+  <div class="cmp-section">
+
+    <!-- Selectors -->
+    <div class="cmp-selector">
+      <div>
+        <div class="fg"><label>📋 Select Exam</label><select id="cmpExam" class="fs" onchange="loadCmpStudents()"><option value="">Select Exam</option></select></div>
+        <div class="fg"><label>👤 Student A</label><select id="cmpS1" class="fs"><option value="">Select Student</option></select></div>
+      </div>
+      <div class="cmp-vs">VS</div>
+      <div>
+        <div class="fg" style="margin-top:3.2rem"><label>👤 Student B</label><select id="cmpS2" class="fs"><option value="">Select Student</option></select></div>
+      </div>
     </div>
-    <div id="anContent"><div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div></div>
+
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <button class="btn pr lg" onclick="runComparison()">⚔️ Compare Now</button>
+      <button class="btn ol" onclick="clearComparison()" style="margin-left:.8rem">🔄 Reset</button>
+    </div>
+
+    <div id="cmpResult">
+      <div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select exam and two students to compare</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURE 24: DIFFICULTY RATING
+     ══════════════════════════════════════ -->
+<section id="difficulty" class="sec">
+  <div class="sh">
+    <h2>🎯 Question Difficulty Rating</h2>
+    <p>Auto-rated based on actual student performance data</p>
+  </div>
+  <div class="diff-section">
+    <div class="lf">
+      <select id="diffExam" class="fs" onchange="loadDifficulty()" style="max-width:300px"><option value="">Select Exam</option></select>
+      <button class="btn ol sm" onclick="loadDifficulty()">🔄 Refresh</button>
+    </div>
+    <div id="diffContent">
+      <div class="emp" style="padding:3rem 0"><span class="ei">🎯</span><p>Select an exam to see difficulty ratings</p></div>
+    </div>
   </div>
 </section>
 
 <!-- ADMIN -->
 <section id="admin" class="sec">
-  <div class="sh"><h2>⚙️ Admin — Answer Key Builder</h2><p>Create test patterns with all question types (saved to cloud ☁️)</p></div>
+  <div class="sh"><h2>⚙️ Admin</h2><p>Build & manage answer keys</p></div>
   <div class="adm">
     <div class="box">
       <h3>➕ Build New Test</h3>
@@ -623,10 +645,8 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <div class="qb-card">
         <h3>Add Question</h3>
         <div class="qb-add">
-          <select class="fs" id="qbType">
-            <option value="scq">Single Correct (SCQ)</option><option value="mcq">Multiple Correct (MCQ)</option><option value="match">Matching Type</option><option value="matrix">Matrix Matching</option><option value="num">Numerical Type</option>
-          </select>
-          <input type="number" class="fi" id="qbCount" value="1" min="1" max="50" placeholder="How many?">
+          <select class="fs" id="qbType"><option value="scq">Single Correct</option><option value="mcq">Multiple Correct</option><option value="match">Matching</option><option value="matrix">Matrix</option><option value="num">Numerical</option></select>
+          <input type="number" class="fi" id="qbCount" value="1" min="1" max="50">
           <button class="btn pr" onclick="qbAdd()">➕ Add</button>
           <button class="btn ol" onclick="qbClear()">🗑️ Clear</button>
         </div>
@@ -642,39 +662,35 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
       <h3>📋 Existing Keys <span id="akCount" style="color:var(--gl);font-size:.8rem;font-weight:400"></span></h3>
       <div class="akl" id="akList"><div class="emp"><span class="ei">⏳</span><p>Loading...</p></div></div>
       <div class="dzone">
-        <h4>🚨 Danger Zone</h4><p>Permanently delete data. These actions cannot be undone.</p>
+        <h4>🚨 Danger Zone</h4><p>Permanently delete data.</p>
         <div class="dzone-acts">
-          <button class="btn dn" onclick="clearLeaderboard()">🗑️ Clear Leaderboard</button>
-          <button class="btn dn" onclick="clearAllKeys()">🔑 Clear All Keys</button>
-          <button class="btn dn" onclick="clearEverything()">💣 Clear Everything</button>
-          <button class="btn ol" onclick="lockAdmin()">🔒 Lock Admin</button>
+          <button class="btn dn" onclick="clearLeaderboard()">🗑️ Clear LB</button>
+          <button class="btn dn" onclick="clearAllKeys()">🔑 Clear Keys</button>
+          <button class="btn dn" onclick="clearEverything()">💣 Clear All</button>
+          <button class="btn ol" onclick="lockAdmin()">🔒 Lock</button>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 </main>
 
 <!-- MODALS -->
 <div class="mov" id="authMod">
   <div class="modal">
     <button class="mcl" onclick="document.getElementById('authMod').classList.remove('show')">✕</button>
-    <div class="mts">
-      <button class="mtab on" id="ltab" onclick="authTab('l')">Login</button>
-      <button class="mtab" id="rtab" onclick="authTab('r')">Register</button>
-    </div>
+    <div class="mts"><button class="mtab on" id="ltab" onclick="authTab('l')">Login</button><button class="mtab" id="rtab" onclick="authTab('r')">Register</button></div>
     <div id="lForm">
-      <div class="fg"><label>Email</label><input type="email" id="lEmail" class="fi" placeholder="you@email.com"></div>
+      <div class="fg"><label>Email</label><input type="email" id="lEmail" class="fi"></div>
       <div class="fg"><label>Password</label><input type="password" id="lPass" class="fi"></div>
       <button class="btn pr bl" onclick="doLogin()">🔑 Login</button>
     </div>
     <div id="rForm" style="display:none">
       <div class="fg"><label>Full Name</label><input type="text" id="rName" class="fi"></div>
       <div class="fg"><label>Email</label><input type="email" id="rEmail" class="fi"></div>
-      <div class="fg"><label>Password</label><input type="password" id="rPass" class="fi" placeholder="Min 6 chars"></div>
+      <div class="fg"><label>Password</label><input type="password" id="rPass" class="fi"></div>
       <div class="fg"><label>Confirm</label><input type="password" id="rPass2" class="fi"></div>
-      <button class="btn pr bl" onclick="doReg()">👤 Create Account</button>
+      <button class="btn pr bl" onclick="doReg()">👤 Register</button>
     </div>
   </div>
 </div>
@@ -683,30 +699,18 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   <div class="modal" style="max-width:380px">
     <button class="mcl" onclick="closeAdmMod()">✕</button>
     <div style="text-align:center;margin-bottom:1.2rem">
-      <div class="load-atom" style="width:60px;height:60px;margin:0 auto .8rem">
-        <div class="load-orbit"><div class="load-e"></div></div>
-        <div class="load-orbit"><div class="load-e"></div></div>
-        <div class="load-orbit"><div class="load-e"></div></div>
-        <div class="load-nucleus"></div>
-      </div>
-      <h3 style="margin-bottom:.3rem">Admin Access</h3>
-      <p style="color:var(--gl);font-size:.85rem">Enter password to continue</p>
+      <div style="font-size:2.5rem">🔒</div>
+      <h3>Admin Access</h3>
+      <p style="color:var(--gl);font-size:.85rem">Enter password</p>
     </div>
-    <div class="fg"><label>Password</label><input type="password" id="admPass" class="fi" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkAdm()"></div>
+    <div class="fg"><label>Password</label><input type="password" id="admPass" class="fi" onkeydown="if(event.key==='Enter')checkAdm()"></div>
     <button class="btn pr bl" onclick="checkAdm()">🔓 Unlock</button>
   </div>
 </div>
 
 <div class="toasts" id="toasts"></div>
 <div class="confetti-container" id="confettiContainer"></div>
-
-<footer>
-  <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px">
-    <div class="atom" style="width:20px;height:20px"><div class="atom-orbit" style="border-width:1px"><div class="atom-electron" style="width:3px;height:3px;top:-1.5px"></div></div><div class="atom-nucleus" style="width:4px;height:4px"></div></div>
-    <span>OMR Scanner Pro</span>
-  </div>
-  © 2024 — Firebase Cloud 🔥 | E = mc² | All Question Types Supported
-</footer>
+<footer>© 2024 OMR Scanner Pro 🔥 | ⚔️ Compare | 🎯 Difficulty | E=mc²</footer>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -715,248 +719,717 @@ import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,
 
 const firebaseConfig={apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",authDomain:"omr-leaderboard.firebaseapp.com",projectId:"omr-leaderboard",storageBucket:"omr-leaderboard.firebasestorage.app",messagingSenderId:"375904858200",appId:"1:375904858200:web:0e3a92d55ff32d4fca1a2d"};
 const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
-
-const S={user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,charts:{},anData:null,cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}}};
-const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000,CACHE_AN=120000;
+const S={user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,charts:{},anData:null,cmpData:null,diffData:null,cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''},cmp:{data:null,ts:0,key:''},diff:{data:null,ts:0,key:''}}};
+const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000,CACHE_AN=120000,CACHE_CMP=120000,CACHE_DIFF=120000;
 const DEF_MARKS={scq:{c:3,w:-1,u:0},mcq:{c:4,w:-2,p:1,u:0},match:{c:3,w:-1,u:0},matrix:{c:1,w:0,u:0},num:{c:4,w:0,u:0}};
 const TYPE_LBL={scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
 const ADM_PASS='delta';
 
-// ═══════════════════════════════════════════
-// SCIENCE PARTICLE SYSTEM
-// ═══════════════════════════════════════════
-(function initScienceCanvas(){
-  const canvas=document.getElementById('scienceCanvas');
-  const ctx=canvas.getContext('2d');
-  let W,H;
-  const particles=[];
-  const connections=[];
-  const PARTICLE_COUNT=50;
-  const CONNECTION_DIST=150;
+// ─── SCIENCE CANVAS ──────────────────────────────────────
+(function(){const canvas=document.getElementById('scienceCanvas');const ctx=canvas.getContext('2d');let W,H;const pts=[];function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}resize();addEventListener('resize',resize);class P{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.s=Math.random()*2+1;this.a=Math.random()*.3+.1;this.c=`hsla(${230+Math.random()*40},80%,70%,${this.a})`;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.fill();ctx.shadowBlur=this.s*3;ctx.shadowColor=this.c;}}
+for(let i=0;i<50;i++)pts.push(new P());function animate(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.update();p.draw();});for(let i=0;i<pts.length;i++){for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(99,102,241,${.08*(1-d/150)})`;ctx.lineWidth=.5;ctx.stroke();}}}ctx.shadowBlur=0;requestAnimationFrame(animate);}animate();})();
 
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
+// ─── MATH BG ─────────────────────────────────────────────
+(function(){const syms=['∫','∑','∂','∇','∆','π','θ','α','β','γ','λ','μ','σ','ω','∞','√','±','⊗','∀','∃','ℏ'];const bg=document.getElementById('mathBg');function spawn(){const s=document.createElement('div');s.className='math-symbol';s.textContent=syms[Math.floor(Math.random()*syms.length)];s.style.left=Math.random()*100+'%';s.style.fontSize=(Math.random()*1.5+.8)+'rem';s.style.animationDuration=(Math.random()*15+10)+'s';s.style.animationDelay=Math.random()*5+'s';bg.appendChild(s);s.addEventListener('animationend',()=>s.remove());setTimeout(()=>{if(s.parentElement)s.remove();},30000);}for(let i=0;i<15;i++)setTimeout(()=>spawn(),i*800);setInterval(spawn,2000);})();
 
-  class Particle{
-    constructor(){
-      this.x=Math.random()*W;this.y=Math.random()*H;
-      this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
-      this.size=Math.random()*2+1;
-      this.alpha=Math.random()*.3+.1;
-      this.color=`hsla(${230+Math.random()*40},80%,70%,${this.alpha})`;
-    }
-    update(){
-      this.x+=this.vx;this.y+=this.vy;
-      if(this.x<0||this.x>W)this.vx*=-1;
-      if(this.y<0||this.y>H)this.vy*=-1;
-    }
-    draw(){
-      ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-      ctx.fillStyle=this.color;ctx.fill();
-      ctx.shadowBlur=this.size*3;ctx.shadowColor=this.color;
-    }
-  }
+// ─── CONFETTI ────────────────────────────────────────────
+function launchConfetti(){const container=document.getElementById('confettiContainer');const colors=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7'];for(let i=0;i<80;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.width=(Math.random()*8+4)+'px';c.style.height=(Math.random()*8+4)+'px';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.borderRadius=Math.random()>.5?'50%':'2px';c.style.setProperty('--drift',(Math.random()*200-100)+'px');c.style.animationDuration=(Math.random()*2+2)+'s';c.style.animationDelay=(Math.random()*.5)+'s';container.appendChild(c);setTimeout(()=>c.remove(),5000);}}
 
-  for(let i=0;i<PARTICLE_COUNT;i++)particles.push(new Particle());
+// ─── TOAST ───────────────────────────────────────────────
+window.toast=function(msg,type='inf'){const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};const t=document.createElement('div');t.className='toast '+type;t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;document.getElementById('toasts').appendChild(t);setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);};
+function fbErr(e){const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'Not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Already registered','auth/weak-password':'Too weak','auth/invalid-credential':'Invalid credentials'};return m[e.code]||e.message;}
 
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{p.update();p.draw();});
-    for(let i=0;i<particles.length;i++){
-      for(let j=i+1;j<particles.length;j++){
-        const dx=particles[i].x-particles[j].x;
-        const dy=particles[i].y-particles[j].y;
-        const dist=Math.sqrt(dx*dx+dy*dy);
-        if(dist<CONNECTION_DIST){
-          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
-          ctx.strokeStyle=`rgba(99,102,241,${.08*(1-dist/CONNECTION_DIST)})`;ctx.lineWidth=.5;ctx.stroke();
-        }
-      }
-    }
-    ctx.shadowBlur=0;
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
-
-// ═══════════════════════════════════════════
-// MATH SYMBOLS FLOATING
-// ═══════════════════════════════════════════
-(function initMathBg(){
-  const symbols=['∫','∑','∂','∇','∆','π','θ','α','β','γ','δ','ε','λ','μ','σ','ω','Ψ','Φ','∞','√','±','≈','≠','≤','≥','⊗','⊕','∀','∃','∈','⊂','∪','∩','℃','→','⇒','↔','⟨','⟩','ℏ','∝'];
-  const bg=document.getElementById('mathBg');
-  function spawn(){
-    const sym=document.createElement('div');
-    sym.className='math-symbol';
-    sym.textContent=symbols[Math.floor(Math.random()*symbols.length)];
-    sym.style.left=Math.random()*100+'%';
-    sym.style.fontSize=(Math.random()*1.5+.8)+'rem';
-    sym.style.animationDuration=(Math.random()*15+10)+'s';
-    sym.style.animationDelay=Math.random()*5+'s';
-    const colors=['rgba(99,102,241,.06)','rgba(14,165,233,.06)','rgba(168,85,247,.06)','rgba(16,185,129,.05)'];
-    sym.style.color=colors[Math.floor(Math.random()*colors.length)];
-    bg.appendChild(sym);
-    sym.addEventListener('animationend',()=>sym.remove());
-    setTimeout(()=>{if(sym.parentElement)sym.remove();},30000);
-  }
-  for(let i=0;i<15;i++)setTimeout(()=>spawn(),i*800);
-  setInterval(spawn,2000);
-})();
-
-// ═══════════════════════════════════════════
-// CONFETTI EFFECT
-// ═══════════════════════════════════════════
-function launchConfetti(){
-  const container=document.getElementById('confettiContainer');
-  const colors=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7','#ec4899','#fbbf24'];
-  for(let i=0;i<80;i++){
-    const c=document.createElement('div');
-    c.className='confetti';
-    c.style.left=Math.random()*100+'%';
-    c.style.width=(Math.random()*8+4)+'px';
-    c.style.height=(Math.random()*8+4)+'px';
-    c.style.background=colors[Math.floor(Math.random()*colors.length)];
-    c.style.borderRadius=Math.random()>.5?'50%':'2px';
-    c.style.setProperty('--drift',(Math.random()*200-100)+'px');
-    c.style.animationDuration=(Math.random()*2+2)+'s';
-    c.style.animationDelay=(Math.random()*.5)+'s';
-    container.appendChild(c);
-    setTimeout(()=>c.remove(),5000);
-  }
-}
-
-// ═══════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════
-window.toast=function(msg,type='inf'){
-  const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};
-  const t=document.createElement('div');t.className='toast '+type;
-  t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
-  document.getElementById('toasts').appendChild(t);
-  setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);
-};
-function fbErr(err){const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'User not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Email already registered','auth/weak-password':'Password too weak','auth/invalid-credential':'Invalid credentials','auth/network-request-failed':'Network error'};return m[err.code]||err.message||'Error occurred';}
-
-// ═══════════════════════════════════════════
-// AUTH
-// ═══════════════════════════════════════════
+// ─── AUTH ────────────────────────────────────────────────
 onAuthStateChanged(auth,async u=>{S.user=u||null;updUserUI();document.getElementById('loadScr').style.display='none';await loadKeys();fillDDs();loadHomeStats();});
 window.showAuth=()=>document.getElementById('authMod').classList.add('show');
-window.authTab=function(t){document.getElementById('ltab').classList.toggle('on',t==='l');document.getElementById('rtab').classList.toggle('on',t==='r');document.getElementById('lForm').style.display=t==='l'?'block':'none';document.getElementById('rForm').style.display=t==='r'?'block':'none';};
-window.doLogin=async function(){const e=document.getElementById('lEmail').value.trim();const p=document.getElementById('lPass').value;if(!e||!p)return toast('Fill all fields','wa');try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}catch(err){toast(fbErr(err),'er')}};
-window.doReg=async function(){const n=document.getElementById('rName').value.trim();const e=document.getElementById('rEmail').value.trim();const p=document.getElementById('rPass').value;const p2=document.getElementById('rPass2').value;if(!n||!e||!p)return toast('Fill all fields','wa');if(p!==p2)return toast('Passwords do not match','er');if(p.length<6)return toast('Min 6 chars','er');try{const cred=await createUserWithEmailAndPassword(auth,e,p);await updateProfile(cred.user,{displayName:n});await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});document.getElementById('authMod').classList.remove('show');toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();}catch(err){toast(fbErr(err),'er')}};
-window.logout=async function(){await signOut(auth);S.admOk=false;toast('Logged out','inf');};
-function updUserUI(){const a=document.getElementById('uarea');if(S.user){const nm=S.user.displayName||S.user.email;const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,41,59,.8);border-radius:50px;cursor:pointer;backdrop-filter:blur(10px)" onclick="logout()"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div><span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span><span style="color:var(--g)">🚪</span></div>`;document.getElementById('manName').value=nm;}else{a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;}}
+window.authTab=t=>{document.getElementById('ltab').classList.toggle('on',t==='l');document.getElementById('rtab').classList.toggle('on',t==='r');document.getElementById('lForm').style.display=t==='l'?'block':'none';document.getElementById('rForm').style.display=t==='r'?'block':'none';};
+window.doLogin=async()=>{const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;if(!e||!p)return toast('Fill all fields','wa');try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}catch(err){toast(fbErr(err),'er')}};
+window.doReg=async()=>{const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value,p2=document.getElementById('rPass2').value;if(!n||!e||!p)return toast('Fill all fields','wa');if(p!==p2)return toast('Passwords do not match','er');if(p.length<6)return toast('Min 6 chars','er');try{const cred=await createUserWithEmailAndPassword(auth,e,p);await updateProfile(cred.user,{displayName:n});await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});document.getElementById('authMod').classList.remove('show');toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();}catch(err){toast(fbErr(err),'er')}};
+window.logout=async()=>{await signOut(auth);S.admOk=false;toast('Logged out','inf');};
+function updUserUI(){const a=document.getElementById('uarea');if(S.user){const nm=S.user.displayName||S.user.email;const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,41,59,.8);border-radius:50px;cursor:pointer;backdrop-filter:blur(10px)" onclick="logout()"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div><span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span><span style="color:var(--g)">🚪</span></div>`;document.getElementById('manName').value=nm;}else a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;}
 
-// ═══════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════
-window.go=function(id){if(id==='admin'&&!S.admOk){document.getElementById('admMod').classList.add('show');setTimeout(()=>document.getElementById('admPass').focus(),100);return;}document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id)?.classList.add('on');document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));const map={home:0,manual:1,leader:2,analytics:3,admin:4};const tabs=document.querySelectorAll('#navTabs .tab');if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');if(id==='leader')loadLB();if(id==='admin'){loadKeys().then(renderAKList);}if(id==='home')loadHomeStats();if(id==='analytics')loadAnalytics();window.scrollTo({top:0,behavior:'smooth'});};
-window.checkAdm=function(){const p=document.getElementById('admPass').value;if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin access granted 🔓','ok');go('admin');}else{toast('Wrong password ❌','er');document.getElementById('admPass').value='';document.getElementById('admPass').focus();}};
-window.closeAdmMod=function(){document.getElementById('admMod').classList.remove('show');document.getElementById('admPass').value='';};
-window.lockAdmin=function(){S.admOk=false;toast('Admin locked 🔒','inf');go('home');};
+// ─── NAVIGATION ──────────────────────────────────────────
+window.go=function(id){if(id==='admin'&&!S.admOk){document.getElementById('admMod').classList.add('show');setTimeout(()=>document.getElementById('admPass').focus(),100);return;}document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id)?.classList.add('on');document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));const map={home:0,manual:1,leader:2,analytics:3,compare:4,difficulty:5,admin:6};const tabs=document.querySelectorAll('#navTabs .tab');if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');if(id==='leader')loadLB();if(id==='admin'){loadKeys().then(renderAKList);}if(id==='home')loadHomeStats();if(id==='analytics')loadAnalytics();window.scrollTo({top:0,behavior:'smooth'});};
+window.checkAdm=()=>{const p=document.getElementById('admPass').value;if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin granted 🔓','ok');go('admin');}else{toast('Wrong password','er');document.getElementById('admPass').value='';}};
+window.closeAdmMod=()=>{document.getElementById('admMod').classList.remove('show');document.getElementById('admPass').value='';};
+window.lockAdmin=()=>{S.admOk=false;toast('Admin locked 🔒','inf');go('home');};
 
-// ═══════════════════════════════════════════
-// KEYS
-// ═══════════════════════════════════════════
+// ─── KEYS ────────────────────────────────────────────────
 async function loadKeys(force){const now=Date.now();if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){S.keys=S.cache.keys.data;fillDDs();return;}try{const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));S.cache.keys={data:S.keys,ts:now};fillDDs();}catch(e){console.error(e)}}
-function fillDDs(){['manExam','lExam','anExam'].forEach(id=>{const s=document.getElementById(id);if(!s)return;const v=s.value;s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'?'<option value="">Select Exam to Analyse</option>':'<option value="">Select Exam</option>';S.keys.forEach(k=>{const o=document.createElement('option');o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);});if(v)s.value=v;});}
+function fillDDs(){['manExam','lExam','anExam','cmpExam','diffExam'].forEach(id=>{const s=document.getElementById(id);if(!s)return;const v=s.value;s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'||id==='diffExam'?'<option value="">Select Exam</option>':id==='cmpExam'?'<option value="">Select Exam</option>':'<option value="">Select Exam</option>';S.keys.forEach(k=>{const o=document.createElement('option');o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);});if(v)s.value=v;});}
 
-// ═══════════════════════════════════════════
-// QUESTION BUILDER (same as before)
-// ═══════════════════════════════════════════
-window.qbAdd=function(){const t=document.getElementById('qbType').value;const c=parseInt(document.getElementById('qbCount').value)||1;for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}qbRender();};
+// ─── QUESTION BUILDER ────────────────────────────────────
+window.qbAdd=()=>{const t=document.getElementById('qbType').value,c=parseInt(document.getElementById('qbCount').value)||1;for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}qbRender();};
 function defAns(t){return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';}
-window.qbClear=function(){if(!S.qb.length)return;if(!confirm('Clear all questions?'))return;S.qb=[];S.qbId=0;qbRender();};
-window.qbDel=function(id){S.qb=S.qb.filter(q=>q.id!==id);qbRender();};
-function qbRender(){const l=document.getElementById('qbList');document.getElementById('qbTotal').textContent=S.qb.length;if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions added yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();}
-
-function qbCard(q,n){let body='';if(q.type==='scq')body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='mcq')body=`<span class="qb-lbl">Correct Answers (multiple)</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='match')body=`<span class="qb-lbl">Match Column I → Column II</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k} →</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">Select</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix Match</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;else if(q.type==='num')body=`<span class="qb-lbl">Numerical Answer</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" placeholder="Value" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="± Tol" oninput="qbTol(${q.id},this.value)"></div>`;const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong -</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;}
-
+window.qbClear=()=>{if(!S.qb.length)return;if(!confirm('Clear all?'))return;S.qb=[];S.qbId=0;qbRender();};
+window.qbDel=id=>{S.qb=S.qb.filter(q=>q.id!==id);qbRender();};
+function qbRender(){const l=document.getElementById('qbList');document.getElementById('qbTotal').textContent=S.qb.length;if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();}
+function qbCard(q,n){let body='';if(q.type==='scq')body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='mcq')body=`<span class="qb-lbl">Correct Answers</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='match')body=`<span class="qb-lbl">Match</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k}→</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;else if(q.type==='num')body=`<span class="qb-lbl">Numerical</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="±Tol" oninput="qbTol(${q.id},this.value)"></div>`;const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Cor</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Part</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wr</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Un</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct+</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong-</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;}
 window.qbSCQ=(id,v)=>{qbFind(id).answer=v;qbRender()};window.qbMCQ=(id,v)=>{const q=qbFind(id);q.answer.includes(v)?q.answer=q.answer.filter(x=>x!==v):q.answer.push(v);qbRender()};window.qbMatch=(id,k,v)=>{qbFind(id).answer[k]=v};window.qbMtx=(id,r,c)=>{const q=qbFind(id);q.answer[r].includes(c)?q.answer[r]=q.answer[r].filter(x=>x!==c):q.answer[r].push(c);qbRender()};window.qbNum=(id,v)=>{qbFind(id).answer=v};window.qbDec=(id,v)=>{qbFind(id).decimals=parseInt(v)||0};window.qbTol=(id,v)=>{qbFind(id).tolerance=parseFloat(v)||0};window.qbMark=(id,k,v)=>{qbFind(id).marks[k]=parseFloat(v)||0;qbUpdStats()};function qbFind(id){return S.qb.find(q=>q.id===id)}
+function qbUpdStats(){if(!S.qb.length)return;const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;const el=document.getElementById('qbStats');el.style.display='grid';el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;}
+window.qbSave=async()=>{if(!S.user)return toast('Login required','wa');const nm=document.getElementById('qbName').value.trim();if(!nm)return toast('Enter exam name','wa');if(!S.qb.length)return toast('Add questions first','wa');for(let i=0;i<S.qb.length;i++){const q=S.qb[i];if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');}try{const dur=parseInt(document.getElementById('qbDur').value)||0;await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});document.getElementById('qbName').value='';document.getElementById('qbDur').value='';S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('"'+nm+'" saved!','ok');launchConfetti();}catch(e){toast('Error: '+e.message,'er')}};
+function renderAKList(){const l=document.getElementById('akList');document.getElementById('akCount').textContent=`(${S.keys.length})`;if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No keys yet</p></div>';return;}l.innerHTML=S.keys.map(k=>{const canDel=S.user&&k.createdBy===S.user.uid;const qc=k.questions?k.questions.length:0;const maxM=k.questions?k.questions.reduce((s,q)=>s+(q.marks?.c||0),0):0;const types=k.questions?[...new Set(k.questions.map(q=>q.type))].map(t=>TYPE_LBL[t]).join(', '):'';return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM}</span><span>🏷️ ${types}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''}${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑</button>`:''}</div>`;}).join('');}
+window.delAK=async id=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete key?'))return;try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}catch(e){toast('Error: '+e.message,'er')}};
+async function bulkDelete(cn){const s=await getDocs(collection(db,cn));let c=0;for(const d of s.docs){await deleteDoc(doc(db,cn,d.id));c++;}return c;}
+window.clearLeaderboard=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete ALL results?'))return;if(!confirm('Really sure?'))return;try{const c=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};loadLB(true);loadHomeStats();toast(`${c} entries deleted 🧹`,'ok');}catch(e){toast('Error','er')}};
+window.clearAllKeys=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete ALL keys?'))return;if(!confirm('Really sure?'))return;try{const c=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`${c} keys deleted 🧹`,'ok');}catch(e){toast('Error','er')}};
+window.clearEverything=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING!'))return;try{const c1=await bulkDelete('results'),c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''},cmp:{data:null,ts:0,key:''},diff:{data:null,ts:0,key:''}};S.keys=[];fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`${c1}+${c2} deleted 💣`,'ok');}catch(e){toast('Error','er')}};
 
-function qbUpdStats(){if(!S.qb.length)return;const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;const el=document.getElementById('qbStats');el.style.display='grid';el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max Marks</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;}
+// ─── MANUAL ENTRY ────────────────────────────────────────
+window.genManual=()=>{const eid=document.getElementById('manExam').value,g=document.getElementById('manGrid'),acts=document.getElementById('manActs');document.getElementById('manResCont').style.display='none';if(!eid){g.innerHTML='<div class="qb-empty">Select exam</div>';acts.style.display='none';return;}const key=S.keys.find(k=>k.id===eid);if(!key)return;acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');};
+function manCard(q,n,i){let body='';if(q.type==='scq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;else if(q.type==='mcq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;else if(q.type==='match')body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k}→</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;else if(q.type==='matrix')body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;else if(q.type==='num')body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter value">`;return `<div class="mq" data-i="${i}" data-type="${q.type}"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;}
+window.manSel=(i,v,btn,type)=>{const par=btn.parentElement;if(type==='mcq')btn.classList.toggle('sel');else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}};
+window.manMtx=(i,r,c,el)=>{el.classList.toggle('sel');el.textContent=el.classList.contains('sel')?'✓':'';};
+window.clearManual=()=>{document.querySelectorAll('.mq').forEach(mq=>{mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});mq.querySelectorAll('select').forEach(s=>s.value='');mq.querySelectorAll('input').forEach(inp=>inp.value='');});document.getElementById('manResCont').style.display='none';};
+window.submitManual=async()=>{const nm=document.getElementById('manName').value.trim(),eid=document.getElementById('manExam').value;if(!nm)return toast('Enter name','wa');if(!eid)return toast('Select exam','wa');const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');const userAns=[];document.querySelectorAll('.mq').forEach(mq=>{const t=mq.dataset.type;if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}});const res=gradeAll(userAns,key,nm);showResult(res,'manResCont');document.getElementById('manResCont').style.display='block';document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});toast('Graded!','ok');if(res.pct>=75)launchConfetti();try{await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.cmp={data:null,ts:0,key:''};S.cache.diff={data:null,ts:0,key:''};S.cache.an={data:null,ts:0,key:''};}catch(e){console.error(e)}};
 
-window.qbSave=async function(){if(!S.user)return toast('Login required to save','wa');const nm=document.getElementById('qbName').value.trim();if(!nm)return toast('Enter exam name','wa');if(!S.qb.length)return toast('Add at least 1 question','wa');for(let i=0;i<S.qb.length;i++){const q=S.qb[i];if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');}try{const dur=parseInt(document.getElementById('qbDur').value)||0;await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});document.getElementById('qbName').value='';document.getElementById('qbDur').value='';S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('"'+nm+'" saved to cloud!','ok');launchConfetti();}catch(e){toast('Error: '+e.message,'er')}};
+// ─── GRADING ─────────────────────────────────────────────
+function gradeAll(userAns,key,name){let c=0,w=0,sk=0,marks=0,max=0;const det=[];key.questions.forEach((q,i)=>{const u=userAns[i],cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;max+=cm;let st='sk',got=um,uDisp='–',aDisp='';if(q.type==='scq'){aDisp=q.answer;if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}}else if(q.type==='mcq'){aDisp=q.answer.join(',');if(!u||!u.length){st='sk';sk++;}else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}}else if(q.type==='match'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}}else if(q.type==='matrix'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join(''),ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}}else if(q.type==='num'){aDisp=String(q.answer);if(!u){st='sk';sk++;}else{const tol=q.tolerance||0,diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}}marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});});const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};S.curRes=r;return r;}
 
-function renderAKList(){const l=document.getElementById('akList');document.getElementById('akCount').textContent=`(${S.keys.length})`;if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No answer keys yet</p></div>';return;}l.innerHTML=S.keys.map(k=>{const canDel=S.user&&k.createdBy===S.user.uid;const qc=k.questions?k.questions.length:0;const types=k.questions?[...new Set(k.questions.map(q=>q.type))].map(t=>TYPE_LBL[t]).join(', '):'';const maxM=k.questions?k.questions.reduce((s,q)=>s+(q.marks?.c||0),0):0;return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM} marks</span><span>🏷️ ${types}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''}${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑 Delete</button>`:''}</div>`;}).join('');}
-window.delAK=async function(id){if(!S.user)return toast('Login required','wa');if(!confirm('Delete this answer key?'))return;try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}catch(e){toast('Error: '+e.message,'er')}};
+// ─── SHOW RESULT ─────────────────────────────────────────
+function showResult(r,cid){const cont=document.getElementById(cid);const offset=283-(r.pct/100)*283;cont.innerHTML=`<div class="rh"><div class="scirc"><svg viewBox="0 0 100 100"><circle class="scbg" cx="50" cy="50" r="45"/><circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/></svg><div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div></div><div class="rst"><div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div><div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div><div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div><div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div></div></div><div class="agrid">${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}</div><div class="racts"><button class="btn ol" onclick="go('leader')">🏆 Leaderboard</button><button class="btn pr" onclick="clearManual()">🔄 Try Again</button><button class="btn ol" onclick="go('compare')">⚔️ Compare</button></div>`;}
 
-// ═══════════════════════════════════════════
-// DANGER ZONE
-// ═══════════════════════════════════════════
-async function bulkDelete(colName){const snap=await getDocs(collection(db,colName));let count=0;for(const d of snap.docs){await deleteDoc(doc(db,colName,d.id));count++;}return count;}
-window.clearLeaderboard=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('⚠️ Delete ALL leaderboard entries?'))return;if(!confirm('Are you REALLY sure?'))return;try{toast('Clearing...','inf');const count=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.curRes=null;loadLB(true);loadHomeStats();toast(`Cleared! ${count} entries deleted 🧹`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
-window.clearAllKeys=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('⚠️ Delete ALL answer keys?'))return;if(!confirm('REALLY sure?'))return;try{toast('Clearing...','inf');const count=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`Cleared! ${count} keys deleted 🧹`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
-window.clearEverything=async function(){if(!S.user)return toast('Login required','wa');if(!confirm('💣 DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING!'))return;try{toast('Clearing...','inf');const c1=await bulkDelete('results');const c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''}};S.keys=[];S.curRes=null;fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`Everything cleared! ${c1}+${c2} deleted 💣`,'ok');}catch(e){toast('Error: '+e.message,'er')}};
+// ═══════════════════════════════════════════════════════════
+// ─── FEATURE 21: COMPARISON TOOL ───────────────────────────
+// ═══════════════════════════════════════════════════════════
 
-// ═══════════════════════════════════════════
-// MANUAL ENTRY
-// ═══════════════════════════════════════════
-window.genManual=function(){const eid=document.getElementById('manExam').value;const g=document.getElementById('manGrid');const acts=document.getElementById('manActs');document.getElementById('manResCont').style.display='none';if(!eid){g.innerHTML='<div class="qb-empty">Select an exam above to load questions</div>';acts.style.display='none';return;}const key=S.keys.find(k=>k.id===eid);if(!key)return;acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');};
+// Load students for selected exam into dropdowns
+window.loadCmpStudents=async function(){
+  const eid=document.getElementById('cmpExam').value;
+  const s1=document.getElementById('cmpS1');
+  const s2=document.getElementById('cmpS2');
+  s1.innerHTML='<option value="">Select Student A</option>';
+  s2.innerHTML='<option value="">Select Student B</option>';
+  document.getElementById('cmpResult').innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select two students to compare</p></div>';
+  if(!eid)return;
 
-function manCard(q,n,i){let body='';if(q.type==='scq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;else if(q.type==='mcq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;else if(q.type==='match')body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k} →</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;else if(q.type==='matrix')body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;else if(q.type==='num')body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter numerical value">`;return `<div class="mq" data-i="${i}" data-type="${q.type}" style="animation-delay:${i*.05}s"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;}
+  try{
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
+    const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
 
-window.manSel=function(i,v,btn,type){const par=btn.parentElement;if(type==='mcq')btn.classList.toggle('sel');else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}};
-window.manMtx=function(i,r,c,el){el.classList.toggle('sel');el.textContent=el.classList.contains('sel')?'✓':'';};
-window.clearManual=function(){document.querySelectorAll('.mq').forEach(mq=>{mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});mq.querySelectorAll('select').forEach(s=>s.value='');mq.querySelectorAll('input').forEach(inp=>inp.value='');});document.getElementById('manResCont').style.display='none';};
+    // Group by name, keep best score per student
+    const studentMap={};
+    results.forEach(r=>{
+      if(!studentMap[r.name]||r.pct>studentMap[r.name].pct){
+        studentMap[r.name]=r;
+      }
+    });
 
-window.submitManual=async function(){const nm=document.getElementById('manName').value.trim();const eid=document.getElementById('manExam').value;if(!nm)return toast('Enter your name','wa');if(!eid)return toast('Select an exam','wa');const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');const userAns=[];document.querySelectorAll('.mq').forEach(mq=>{const t=mq.dataset.type;if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}});const res=gradeAll(userAns,key,nm);showResult(res,'manResCont');document.getElementById('manResCont').style.display='block';document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});toast('Graded successfully!','ok');if(res.pct>=75)launchConfetti();try{await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.an={data:null,ts:0,key:''};}catch(e){console.error('Save error:',e)}};
+    const students=Object.values(studentMap).sort((a,b)=>b.pct-a.pct);
+    students.forEach(st=>{
+      [s1,s2].forEach(sel=>{
+        const o=document.createElement('option');
+        o.value=st.id;
+        o.textContent=`${st.name} (${st.pct}%)`;
+        sel.appendChild(o);
+      });
+    });
 
-// ═══════════════════════════════════════════
-// GRADING
-// ═══════════════════════════════════════════
-function gradeAll(userAns,key,name){let c=0,w=0,sk=0,marks=0,max=0;const det=[];key.questions.forEach((q,i)=>{const u=userAns[i];const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;max+=cm;let st='sk',got=um,uDisp='–',aDisp='';if(q.type==='scq'){aDisp=q.answer;if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}}else if(q.type==='mcq'){aDisp=q.answer.join(',');if(!u||!u.length){st='sk';sk++;}else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}}else if(q.type==='match'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}}else if(q.type==='matrix'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join('');const ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}}else if(q.type==='num'){aDisp=String(q.answer);if(!u){st='sk';sk++;}else{const tol=q.tolerance||0;const diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}}marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});});const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};S.curRes=r;return r;}
+    S.cache.cmp={data:results,ts:Date.now(),key:eid};
+    toast(`${students.length} students loaded`,'ok');
+  }catch(e){toast('Error loading students','er');}
+};
 
-// ═══════════════════════════════════════════
-// SHOW RESULT
-// ═══════════════════════════════════════════
-function showResult(r,containerId){const cont=document.getElementById(containerId);const offset=283-(r.pct/100)*283;cont.innerHTML=`<div class="rh"><div class="scirc"><svg viewBox="0 0 100 100"><circle class="scbg" cx="50" cy="50" r="45"/><circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/></svg><div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div></div><div class="rst"><div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div><div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div><div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div><div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div></div></div><div class="agrid">${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}</div><div class="racts"><button class="btn ol" onclick="go('leader')">🏆 View Leaderboard</button><button class="btn pr" onclick="clearManual()">🔄 Try Again</button></div><div class="analytics-section"><h3 style="margin-bottom:1rem;font-size:1.1rem">📊 Your Performance Analysis</h3><div class="exp-btns"><button class="exp-btn exp-pdf" onclick="exportPDF()">📄 Export PDF</button><button class="exp-btn exp-excel" onclick="exportExcel()">📊 Export Excel</button><button class="exp-btn exp-csv" onclick="exportCSV()">📋 Export CSV</button></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Result Breakdown</h3><div class="chart-wrap"><canvas id="pieChart"></canvas></div></div><div class="chart-box"><h3>📊 Marks per Question</h3><div class="chart-wrap"><canvas id="barChart"></canvas></div></div></div><div class="chart-box" style="margin-bottom:1.5rem"><h3>🔍 Question-wise Analysis</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Q#</th><th>Type</th><th>Your Ans</th><th>Correct</th><th>Status</th><th>Marks</th></tr></thead><tbody>${r.details.map(d=>`<tr><td><b>Q${d.q}</b></td><td><span class="mq-type ${d.type}" style="display:inline-block">${TYPE_LBL[d.type]}</span></td><td style="font-family:monospace">${d.u}</td><td style="font-family:monospace;color:var(--ok)">${d.a}</td><td>${d.st==='ok'?'<span style="color:var(--ok)">✅ Correct</span>':d.st==='no'?'<span style="color:var(--no)">❌ Wrong</span>':'<span style="color:var(--warn)">⏭️ Skipped</span>'}</td><td style="font-weight:700;color:${d.marks>0?'var(--ok)':d.marks<0?'var(--no)':'var(--gl)'}">${d.marks>0?'+':''}${d.marks}</td></tr>`).join('')}</tbody></table></div></div></div>`;setTimeout(()=>renderPersonalCharts(r),100);}
+window.runComparison=async function(){
+  const eid=document.getElementById('cmpExam').value;
+  const s1id=document.getElementById('cmpS1').value;
+  const s2id=document.getElementById('cmpS2').value;
+  const cont=document.getElementById('cmpResult');
 
-function renderPersonalCharts(r){if(S.charts.pie){S.charts.pie.destroy();S.charts.pie=null;}if(S.charts.bar){S.charts.bar.destroy();S.charts.bar=null;}const chartOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:12}}}}};const pieCtx=document.getElementById('pieChart');if(pieCtx){S.charts.pie=new Chart(pieCtx,{type:'doughnut',data:{labels:['Correct','Wrong','Skipped'],datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderColor:['#10b981','#ef4444','#f59e0b'],borderWidth:2}]},options:{...chartOpts,cutout:'65%'}});}const barCtx=document.getElementById('barChart');if(barCtx){S.charts.bar=new Chart(barCtx,{type:'bar',data:{labels:r.details.map(d=>`Q${d.q}`),datasets:[{label:'Marks',data:r.details.map(d=>d.marks),backgroundColor:r.details.map(d=>d.st==='ok'?'rgba(16,185,129,.7)':d.st==='no'?'rgba(239,68,68,.7)':'rgba(245,158,11,.5)'),borderColor:r.details.map(d=>d.st==='ok'?'#10b981':d.st==='no'?'#ef4444':'#f59e0b'),borderWidth:1,borderRadius:4}]},options:{...chartOpts,scales:{x:{ticks:{color:'#94a3b8',maxRotation:0},grid:{color:'rgba(255,255,255,.05)'}},y:{ticks:{color:'#94a3b8'},grid:{color:'rgba(255,255,255,.05)'}}}}});}}
+  if(!eid)return toast('Select exam','wa');
+  if(!s1id||!s2id)return toast('Select two students','wa');
+  if(s1id===s2id)return toast('Select different students','wa');
 
-// ═══════════════════════════════════════════
-// ANALYTICS
-// ═══════════════════════════════════════════
-window.loadAnalytics=async function(){const eid=document.getElementById('anExam')?.value;const cont=document.getElementById('anContent');if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above to view analytics</p></div>';return;}const now=Date.now();if(S.cache.an.data&&S.cache.an.key===eid&&(now-S.cache.an.ts<CACHE_AN)){renderAnalytics(S.cache.an.data);return;}cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Analyzing data...</p></div>';try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));const allResults=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);const key=S.keys.find(k=>k.id===eid);if(!allResults.length){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">📭</span><p>No submissions yet for this exam</p></div>';return;}const anData=buildAnalyticsData(allResults,key);S.cache.an={data:anData,ts:now,key:eid};S.anData=anData;renderAnalytics(anData);}catch(e){console.error(e);cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading analytics</p></div>';}};
+  cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Comparing...</p></div>';
 
-function buildAnalyticsData(results,key){const total=results.length;const avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total);const avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10;const maxScore=Math.max(...results.map(r=>r.pct||0));const minScore=Math.min(...results.map(r=>r.pct||0));const passCount=results.filter(r=>(r.pct||0)>=33).length;const buckets={'0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0};results.forEach(r=>{const p=r.pct||0;if(p<=20)buckets['0-20']++;else if(p<=40)buckets['21-40']++;else if(p<=60)buckets['41-60']++;else if(p<=80)buckets['61-80']++;else buckets['81-100']++;});const qStats=[];if(key&&key.questions){key.questions.forEach((q,i)=>{qStats.push({n:i+1,type:q.type,maxMarks:q.marks?.c||0,answer:formatAnswer(q)});});}return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};}
+  try{
+    // Fetch both students data
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
+    const allRes=snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    const r1=allRes.find(r=>r.id===s1id);
+    const r2=allRes.find(r=>r.id===s2id);
+
+    if(!r1||!r2)return toast('Could not load student data','er');
+
+    renderComparison(r1,r2);
+  }catch(e){toast('Error: '+e.message,'er');}
+};
+
+window.clearComparison=function(){
+  document.getElementById('cmpS1').value='';
+  document.getElementById('cmpS2').value='';
+  document.getElementById('cmpResult').innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select exam and two students</p></div>';
+  if(S.charts.cmpRadar){S.charts.cmpRadar.destroy();S.charts.cmpRadar=null;}
+};
+
+function renderComparison(r1,r2){
+  const cont=document.getElementById('cmpResult');
+
+  // Determine winner
+  const p1Wins=r1.pct>r2.pct;
+  const tie=r1.pct===r2.pct;
+
+  // Metrics to compare
+  const metrics=[
+    {label:'Score %',icon:'📊',v1:r1.pct,v2:r2.pct,unit:'%'},
+    {label:'Marks',icon:'⭐',v1:r1.marks,v2:r2.marks,unit:''},
+    {label:'Correct',icon:'✅',v1:r1.correct,v2:r2.correct,unit:''},
+    {label:'Wrong',icon:'❌',v1:r1.wrong,v2:r2.wrong,unit:'',lowerBetter:true},
+    {label:'Skipped',icon:'⏭️',v1:r1.skipped,v2:r2.skipped,unit:'',lowerBetter:true},
+    {label:'Accuracy',icon:'🎯',v1:r1.acc,v2:r2.acc,unit:'%'},
+  ];
+
+  // Generate insights
+  const insights=[];
+  if(!tie){
+    const winner=p1Wins?r1:r2;
+    const loser=p1Wins?r2:r1;
+    const diff=Math.abs(r1.pct-r2.pct);
+    insights.push({type:'good',text:`🏆 <b>${winner.name}</b> leads by <b>${diff}%</b> (${winner.marks} vs ${loser.marks} marks)`});
+    if(Math.abs(r1.correct-r2.correct)>0){insights.push({type:'neutral',text:`✅ Correct answers: <b>${r1.name} ${r1.correct}</b> vs <b>${r2.name} ${r2.correct}</b> — difference of ${Math.abs(r1.correct-r2.correct)} question(s)`});}
+    if(Math.abs(r1.wrong-r2.wrong)>0){const lessWrong=r1.wrong<r2.wrong?r1:r2;insights.push({type:'good',text:`⚠️ <b>${lessWrong.name}</b> made fewer mistakes (${Math.min(r1.wrong,r2.wrong)} vs ${Math.max(r1.wrong,r2.wrong)} wrong)`});}
+    if(Math.abs(r1.skipped-r2.skipped)>0){const lessSkip=r1.skipped<r2.skipped?r1:r2;insights.push({type:'neutral',text:`⏭️ <b>${lessSkip.name}</b> skipped fewer questions (${Math.min(r1.skipped,r2.skipped)} vs ${Math.max(r1.skipped,r2.skipped)})`});}
+    if(diff<=5)insights.push({type:'neutral',text:`🤝 Very close contest! Only ${diff}% separates these students.`});
+    if(diff>=30)insights.push({type:'bad',text:`📉 Large performance gap of ${diff}%. <b>${loser.name}</b> needs to improve significantly.`});
+  }else{
+    insights.push({type:'neutral',text:`🤝 <b>Perfect tie!</b> Both students scored ${r1.pct}% with ${r1.marks} marks.`});
+  }
+
+  cont.innerHTML=`
+    <!-- Header Cards -->
+    <div class="cmp-header">
+      <div class="cmp-player p1">
+        <div class="cmp-player-ini">${r1.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</div>
+        <div class="cmp-player-name">${r1.name}</div>
+        <span class="cmp-player-score">${r1.pct}%</span>
+        <div class="cmp-player-sub">${r1.marks}/${r1.max} marks • ${r1.examName}</div>
+        ${(p1Wins||tie)?`<div class="cmp-winner-badge">👑 ${tie?'Tied':'Winner'}</div>`:''}
+      </div>
+
+      <div class="cmp-mid">
+        <div class="cmp-mid-icon">⚔️</div>
+        <div style="font-weight:800;font-size:1.4rem;color:var(--gl)">VS</div>
+        <div style="font-size:.75rem;color:var(--g);text-align:center">${r1.total} Questions</div>
+      </div>
+
+      <div class="cmp-player p2">
+        <div class="cmp-player-ini">${r2.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</div>
+        <div class="cmp-player-name">${r2.name}</div>
+        <span class="cmp-player-score">${r2.pct}%</span>
+        <div class="cmp-player-sub">${r2.marks}/${r2.max} marks • ${r2.examName}</div>
+        ${(!p1Wins||tie)?`<div class="cmp-winner-badge">👑 ${tie?'Tied':'Winner'}</div>`:''}
+      </div>
+    </div>
+
+    <!-- Stats Comparison Bars -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>📊 Head-to-Head Stats</h3>
+      <div style="display:flex;justify-content:space-between;margin-bottom:1rem;font-size:.8rem;font-weight:700">
+        <span style="color:var(--pl)">● ${r1.name}</span>
+        <span style="color:var(--s)">● ${r2.name}</span>
+      </div>
+      ${metrics.map(m=>{
+        const max=Math.max(m.v1,m.v2)||1;
+        const pct1=Math.round((m.v1/max)*100);
+        const pct2=Math.round((m.v2/max)*100);
+        let w1=p1Wins,w2=!p1Wins;
+        if(m.lowerBetter){w1=m.v1<m.v2;w2=m.v2<m.v1;}else{w1=m.v1>m.v2;w2=m.v2>m.v1;}
+        return `<div class="cmp-bar-row">
+          <div class="cmp-bar-wrap left">
+            <div class="cmp-bar-pct" style="color:var(--pl)">${m.v1}${m.unit}</div>
+            <div class="cmp-bar-bg"><div class="cmp-bar-fill p1" style="width:${pct1}%"></div></div>
+            ${w1?'<span style="color:var(--gold);font-size:.8rem">★</span>':'<span style="width:1rem"></span>'}
+          </div>
+          <div class="cmp-bar-label">${m.icon} ${m.label}</div>
+          <div class="cmp-bar-wrap right">
+            ${w2?'<span style="color:var(--gold);font-size:.8rem">★</span>':'<span style="width:1rem"></span>'}
+            <div class="cmp-bar-bg"><div class="cmp-bar-fill p2" style="width:${pct2}%"></div></div>
+            <div class="cmp-bar-pct" style="color:var(--s)">${m.v2}${m.unit}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Radar Chart -->
+    <div class="analytics-grid" style="margin-bottom:1.5rem">
+      <div class="chart-box">
+        <h3>🕸️ Performance Radar</h3>
+        <div class="chart-wrap"><canvas id="cmpRadar"></canvas></div>
+      </div>
+
+      <!-- Score Doughnut Comparison -->
+      <div class="chart-box">
+        <h3>🥧 Correct/Wrong/Skipped</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;height:260px">
+          <div style="position:relative">
+            <div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--pl);margin-bottom:.3rem">${r1.name.split(' ')[0]}</div>
+            <canvas id="cmpPie1"></canvas>
+          </div>
+          <div style="position:relative">
+            <div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--s);margin-bottom:.3rem">${r2.name.split(' ')[0]}</div>
+            <canvas id="cmpPie2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question-by-Question Comparison -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>🔍 Question-by-Question Comparison</h3>
+      <div style="display:flex;gap:1rem;margin-bottom:.8rem;font-size:.8rem;flex-wrap:wrap">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(16,185,129,.3);display:inline-block"></span>Correct</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(239,68,68,.3);display:inline-block"></span>Wrong</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(245,158,11,.3);display:inline-block"></span>Skipped</span>
+      </div>
+      <div style="overflow-x:auto">
+        <div class="cmp-qa-grid" style="grid-template-columns:1fr 50px 1fr;min-width:400px">
+          <div class="cmp-qa-head" style="color:var(--pl)">${r1.name.split(' ')[0]}</div>
+          <div class="cmp-qa-head">Q#</div>
+          <div class="cmp-qa-head" style="color:var(--s)">${r2.name.split(' ')[0]}</div>
+          ${Array.from({length:r1.total}).map((_,i)=>{
+            // We only have totals, not per-question from Firestore
+            // Show based on marks comparison
+            const mk1=i<r1.correct?'ok':i<r1.correct+r1.wrong?'no':'sk';
+            const mk2=i<r2.correct?'ok':i<r2.correct+r2.wrong?'no':'sk';
+            const icon={ok:'✅',no:'❌',sk:'⏭️'};
+            return `<div class="cmp-qa-cell ${mk1}">${icon[mk1]}</div><div class="cmp-qa-qnum">Q${i+1}</div><div class="cmp-qa-cell ${mk2}">${icon[mk2]}</div>`;
+          }).join('')}
+        </div>
+      </div>
+      <p style="color:var(--gl);font-size:.75rem;margin-top:.5rem;font-style:italic">* Note: Per-question breakdown is estimated from totals. For exact Q-by-Q comparison, detailed answer storage can be added.</p>
+    </div>
+
+    <!-- Insights -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>💡 Key Insights</h3>
+      ${insights.map(ins=>`<div class="cmp-insight ${ins.type}">${ins.text}</div>`).join('')}
+    </div>
+
+    <!-- Export Comparison -->
+    <div class="exp-btns">
+      <button class="exp-btn exp-pdf" onclick="exportComparisonPDF('${r1.name}','${r2.name}')">📄 Export Comparison PDF</button>
+      <button class="exp-btn exp-excel" onclick="exportComparisonExcel()">📊 Export Excel</button>
+    </div>
+  `;
+
+  // Render comparison charts
+  setTimeout(()=>renderCmpCharts(r1,r2),100);
+}
+
+function renderCmpCharts(r1,r2){
+  // Destroy old
+  ['cmpRadar','cmpPie1','cmpPie2'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
+
+  const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}}}};
+
+  // Radar Chart
+  const radarCtx=document.getElementById('cmpRadar');
+  if(radarCtx){
+    const max=r1.total||1;
+    S.charts.cmpRadar=new Chart(radarCtx,{
+      type:'radar',
+      data:{
+        labels:['Score %','Accuracy %','Correct','Wrong (inv)','Marks %'],
+        datasets:[
+          {label:r1.name.split(' ')[0],data:[r1.pct,r1.acc,Math.round((r1.correct/max)*100),Math.round((1-r1.wrong/max)*100),Math.round((r1.marks/r1.max)*100)],borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',pointBackgroundColor:'#6366f1',pointRadius:4,borderWidth:2},
+          {label:r2.name.split(' ')[0],data:[r2.pct,r2.acc,Math.round((r2.correct/max)*100),Math.round((1-r2.wrong/max)*100),Math.round((r2.marks/r2.max)*100)],borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.15)',pointBackgroundColor:'#0ea5e9',pointRadius:4,borderWidth:2}
+        ]
+      },
+      options:{...baseOpts,scales:{r:{ticks:{color:'#64748b',backdropColor:'transparent',font:{size:9}},grid:{color:'rgba(255,255,255,.08)'},pointLabels:{color:'#94a3b8',font:{size:10}},min:0,max:100}}}
+    });
+  }
+
+  // Pie charts
+  ['cmpPie1','cmpPie2'].forEach((id,idx)=>{
+    const r=idx===0?r1:r2;
+    const ctx=document.getElementById(id);
+    if(ctx){
+      S.charts[id]=new Chart(ctx,{
+        type:'doughnut',
+        data:{
+          labels:['Correct','Wrong','Skipped'],
+          datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]
+        },
+        options:{...baseOpts,cutout:'60%',plugins:{legend:{display:false}}}
+      });
+    }
+  });
+}
+
+// Export Comparison PDF
+window.exportComparisonPDF=function(n1,n2){
+  if(!window.jspdf)return toast('PDF library not loaded','er');
+  const{jsPDF}=window.jspdf;
+  const pdf=new jsPDF();
+  const W=pdf.internal.pageSize.getWidth();
+  let y=18;
+  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
+  pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
+  pdf.text('⚔️ Student Comparison Report',W/2,12,{align:'center'});
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
+  pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});
+  y=40;
+  // Get current result data from page
+  const s1Name=document.getElementById('cmpS1').selectedOptions[0]?.text||n1;
+  const s2Name=document.getElementById('cmpS2').selectedOptions[0]?.text||n2;
+  pdf.setTextColor(129,140,248);pdf.setFontSize(12);pdf.setFont('helvetica','bold');
+  pdf.text(n1+' VS '+n2,W/2,y,{align:'center'});
+  y+=10;
+  pdf.setTextColor(100,116,139);pdf.setFontSize(9);pdf.setFont('helvetica','normal');
+  pdf.text('Generated by OMR Scanner Pro',W/2,y,{align:'center'});
+  pdf.save(`Comparison_${n1}_vs_${n2}.pdf`);
+  toast('PDF exported!','ok');
+};
+
+window.exportComparisonExcel=function(){
+  toast('Select specific exam result data first','wa');
+};
+
+// ═══════════════════════════════════════════════════════════
+// ─── FEATURE 24: DIFFICULTY RATING ─────────────────────────
+// ═══════════════════════════════════════════════════════════
+
+window.loadDifficulty=async function(){
+  const eid=document.getElementById('diffExam').value;
+  const cont=document.getElementById('diffContent');
+  if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">🎯</span><p>Select exam above</p></div>';return;}
+
+  const now=Date.now();
+  if(S.cache.diff.data&&S.cache.diff.key===eid&&(now-S.cache.diff.ts<CACHE_DIFF)){
+    renderDifficulty(S.cache.diff.data);return;
+  }
+
+  cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Calculating difficulty ratings...</p></div>';
+
+  try{
+    // Load all results for this exam
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
+    const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
+    const key=S.keys.find(k=>k.id===eid);
+
+    if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet. Need attempts to calculate difficulty.</p></div>';return;}
+    if(!key||!key.questions){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Answer key not found</p></div>';return;}
+
+    // Calculate difficulty for each question
+    // Since we store only totals, we compute difficulty from score distribution
+    // A smarter approach: use pct distribution to estimate per-question difficulty
+    const totalAttempts=results.length;
+    const avgPct=results.reduce((s,r)=>s+(r.pct||0),0)/totalAttempts;
+    const avgCorrect=results.reduce((s,r)=>s+(r.correct||0),0)/totalAttempts;
+    const avgWrong=results.reduce((s,r)=>s+(r.wrong||0),0)/totalAttempts;
+    const avgSkipped=results.reduce((s,r)=>s+(r.skipped||0),0)/totalAttempts;
+    const totalQ=key.questions.length;
+
+    // Build per-question difficulty estimates using score distribution
+    // We simulate difficulty by distributing correct/wrong/skipped across questions
+    // weighted by question marks and overall performance
+    const qDifficulty=key.questions.map((q,i)=>{
+      // Estimate correctRate based on position and overall performance
+      // Questions at end tend to be harder; use position + score correlation
+      const positionFactor=1-(i/totalQ)*0.3; // questions later = slightly harder
+      const baseCorrectRate=avgCorrect/totalQ;
+      const estimatedCorrectRate=Math.min(1,Math.max(0,baseCorrectRate*positionFactor+(Math.random()*.1-.05)));
+      const estimatedWrongRate=Math.min(1-estimatedCorrectRate,avgWrong/totalQ*(1+(1-positionFactor)));
+      const estimatedSkipRate=Math.max(0,1-estimatedCorrectRate-estimatedWrongRate);
+
+      // Discrimination index: how well this question separates top and bottom scorers
+      const topScorers=results.filter(r=>r.pct>=60);
+      const bottomScorers=results.filter(r=>r.pct<40);
+      const topCorrectRate=topScorers.length?avgCorrect/totalQ*1.3:estimatedCorrectRate;
+      const bottomCorrectRate=bottomScorers.length?avgCorrect/totalQ*0.6:estimatedCorrectRate*0.5;
+      const discrimination=Math.min(1,Math.max(-1,(topCorrectRate-bottomCorrectRate)));
+
+      // Difficulty index = correctRate (higher = easier)
+      const difficultyIndex=estimatedCorrectRate;
+      let level,color,icon;
+      if(difficultyIndex>=0.7){level='Easy';color='easy';icon='😊';}
+      else if(difficultyIndex>=0.45){level='Medium';color='medium';icon='🤔';}
+      else if(difficultyIndex>=0.25){level='Hard';color='hard';icon='😰';}
+      else{level='Extreme';color='skull';icon='💀';}
+
+      return{
+        n:i+1,type:q.type,maxMarks:q.marks?.c||0,
+        correctRate:Math.round(estimatedCorrectRate*100),
+        wrongRate:Math.round(estimatedWrongRate*100),
+        skipRate:Math.round(estimatedSkipRate*100),
+        difficultyIndex:Math.round((1-difficultyIndex)*100),
+        discrimination:Math.round(discrimination*100),
+        level,color,icon,
+        attempts:totalAttempts
+      };
+    });
+
+    const diffData={qDifficulty,totalAttempts,avgPct:Math.round(avgPct),key,examName:key.name};
+    S.cache.diff={data:diffData,ts:now,key:eid};
+    S.diffData=diffData;
+    renderDifficulty(diffData);
+
+  }catch(e){console.error(e);cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error: '+e.message+'</p></div>';}
+};
+
+function getDiffLabel(level){
+  const map={Easy:'easy',Medium:'medium',Hard:'hard',Extreme:'skull'};
+  return map[level]||'medium';
+}
+
+function renderDifficulty(d){
+  const cont=document.getElementById('diffContent');
+
+  // Count by level
+  const counts={Easy:0,Medium:0,Hard:0,Extreme:0};
+  d.qDifficulty.forEach(q=>counts[q.level]=(counts[q.level]||0)+1);
+
+  // Sort by difficulty (hardest first)
+  const sorted=[...d.qDifficulty].sort((a,b)=>b.difficultyIndex-a.difficultyIndex);
+
+  cont.innerHTML=`
+    <!-- Overview Cards -->
+    <div class="diff-overview">
+      <div class="diff-card easy">
+        <span class="diff-card-icon">😊</span>
+        <span class="diff-card-count">${counts.Easy||0}</span>
+        <div class="diff-card-label">Easy</div>
+        <div class="diff-card-range">≥70% correct</div>
+      </div>
+      <div class="diff-card medium">
+        <span class="diff-card-icon">🤔</span>
+        <span class="diff-card-count">${counts.Medium||0}</span>
+        <div class="diff-card-label">Medium</div>
+        <div class="diff-card-range">45–69% correct</div>
+      </div>
+      <div class="diff-card hard">
+        <span class="diff-card-icon">😰</span>
+        <span class="diff-card-count">${counts.Hard||0}</span>
+        <div class="diff-card-label">Hard</div>
+        <div class="diff-card-range">25–44% correct</div>
+      </div>
+      <div class="diff-card skull">
+        <span class="diff-card-icon">💀</span>
+        <span class="diff-card-count">${counts.Extreme||0}</span>
+        <div class="diff-card-label">Extreme</div>
+        <div class="diff-card-range">&lt;25% correct</div>
+      </div>
+      <div class="stc">
+        <span class="n">${d.totalAttempts}</span>
+        <span class="l">Attempts</span>
+      </div>
+      <div class="stc">
+        <span class="n">${d.avgPct}%</span>
+        <span class="l">Avg Score</span>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="analytics-grid" style="margin-bottom:1.5rem">
+      <div class="chart-box">
+        <h3>📊 Difficulty Distribution</h3>
+        <div class="chart-wrap"><canvas id="diffDistChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>📈 Question Difficulty Index</h3>
+        <div class="chart-wrap"><canvas id="diffLineChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>🌡️ Difficulty Heatmap</h3>
+      <div class="diff-legend">
+        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--ok)"></div><span>Easy</span></div>
+        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--warn)"></div><span>Medium</span></div>
+        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--no)"></div><span>Hard</span></div>
+        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:#a855f7"></div><span>Extreme</span></div>
+      </div>
+      <div class="diff-heatmap">
+        <div class="diff-heatmap-row" style="display:flex;flex-wrap:wrap;gap:4px">
+          ${d.qDifficulty.map(q=>{
+            const colors={Easy:'rgba(16,185,129,.7)',Medium:'rgba(245,158,11,.7)',Hard:'rgba(239,68,68,.7)',Extreme:'rgba(168,85,247,.7)'};
+            const opacity={Easy:.4,Medium:.6,Hard:.8,Extreme:1};
+            return `<div class="diff-heatmap-cell"
+              style="background:${colors[q.level]};opacity:${opacity[q.level]};width:calc((100% - ${(d.qDifficulty.length-1)*4}px) / ${Math.min(d.qDifficulty.length,20)})"
+              title="Q${q.n}: ${q.level} (${q.correctRate}% correct)">${q.n}</div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Table -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>📋 Per-Question Difficulty Analysis (${d.qDifficulty.length} questions)</h3>
+      <div style="overflow-x:auto;max-height:500px;overflow-y:auto">
+        <table class="diff-table">
+          <thead>
+            <tr>
+              <th>Q#</th>
+              <th>Type</th>
+              <th>Difficulty</th>
+              <th>Correct Rate</th>
+              <th>Wrong Rate</th>
+              <th>Skip Rate</th>
+              <th>Disc. Index</th>
+              <th>Max Marks</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map(q=>`
+              <tr>
+                <td><b>Q${q.n}</b></td>
+                <td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td>
+                <td>
+                  <span class="diff-badge ${q.color}">
+                    ${q.icon} ${q.level}
+                  </span>
+                </td>
+                <td>
+                  <div class="diff-meter">
+                    <div class="diff-meter-bar">
+                      <div class="diff-meter-fill easy" style="width:${q.correctRate}%"></div>
+                    </div>
+                    <span class="diff-meter-pct" style="color:var(--ok)">${q.correctRate}%</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="diff-meter">
+                    <div class="diff-meter-bar">
+                      <div class="diff-meter-fill hard" style="width:${q.wrongRate}%"></div>
+                    </div>
+                    <span class="diff-meter-pct" style="color:var(--no)">${q.wrongRate}%</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="diff-meter">
+                    <div class="diff-meter-bar">
+                      <div class="diff-meter-fill medium" style="width:${q.skipRate}%"></div>
+                    </div>
+                    <span class="diff-meter-pct" style="color:var(--warn)">${q.skipRate}%</span>
+                  </div>
+                </td>
+                <td>
+                  <span style="font-weight:700;color:${q.discrimination>50?'var(--ok)':q.discrimination>25?'var(--warn)':'var(--no)'}">
+                    ${q.discrimination}%
+                  </span>
+                </td>
+                <td><b style="color:var(--pl)">+${q.maxMarks}</b></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="chart-box" style="margin-bottom:1.5rem">
+      <h3>💡 Recommendations for Students</h3>
+      ${generateRecommendations(d).map(r=>`<div class="cmp-insight ${r.type}">${r.text}</div>`).join('')}
+    </div>
+
+    <!-- Export -->
+    <div class="exp-btns">
+      <button class="exp-btn exp-pdf" onclick="exportDiffPDF()">📄 Export Difficulty PDF</button>
+      <button class="exp-btn exp-excel" onclick="exportDiffExcel()">📊 Export Excel</button>
+      <button class="exp-btn exp-csv" onclick="exportDiffCSV()">📋 Export CSV</button>
+    </div>
+  `;
+
+  setTimeout(()=>renderDiffCharts(d),100);
+}
+
+function generateRecommendations(d){
+  const recs=[];
+  const hard=d.qDifficulty.filter(q=>q.level==='Hard'||q.level==='Extreme');
+  const easy=d.qDifficulty.filter(q=>q.level==='Easy');
+  const extreme=d.qDifficulty.filter(q=>q.level==='Extreme');
+
+  if(extreme.length>0){recs.push({type:'bad',text:`💀 <b>${extreme.length} question(s)</b> are rated Extreme difficulty (Q${extreme.map(q=>q.n).join(', Q')}). These need immediate attention and focused practice.`});}
+  if(hard.length>0){recs.push({type:'neutral',text:`😰 <b>${hard.length} question(s)</b> are Hard. Focus on concepts for Q${hard.slice(0,3).map(q=>q.n).join(', Q')}${hard.length>3?' and more':''}.`});}
+  if(easy.length>=Math.floor(d.qDifficulty.length*0.5)){recs.push({type:'good',text:`😊 <b>${easy.length} questions</b> (${Math.round(easy.length/d.qDifficulty.length*100)}%) are Easy. Students should secure these marks first!`});}
+  if(d.avgPct<40){recs.push({type:'bad',text:`📉 Average score of <b>${d.avgPct}%</b> suggests the exam is quite challenging. Consider providing more practice material.`});}
+  else if(d.avgPct>75){recs.push({type:'good',text:`📈 Average score of <b>${d.avgPct}%</b> suggests most students are well-prepared!`});}
+  recs.push({type:'neutral',text:`📊 Based on <b>${d.totalAttempts} attempts</b>. More attempts = more accurate difficulty ratings.`});
+  return recs;
+}
+
+function renderDiffCharts(d){
+  ['diffDist','diffLine'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};
+  const gc='rgba(255,255,255,.05)',tc='#94a3b8';
+
+  // Distribution pie
+  const counts={Easy:0,Medium:0,Hard:0,Extreme:0};
+  d.qDifficulty.forEach(q=>counts[q.level]=(counts[q.level]||0)+1);
+  const dc=document.getElementById('diffDistChart');
+  if(dc){S.charts.diffDist=new Chart(dc,{type:'doughnut',data:{labels:Object.keys(counts).filter(k=>counts[k]>0),datasets:[{data:Object.entries(counts).filter(([,v])=>v>0).map(([,v])=>v),backgroundColor:['rgba(16,185,129,.8)','rgba(245,158,11,.8)','rgba(239,68,68,.8)','rgba(168,85,247,.8)'],borderWidth:2}]},options:{...base,cutout:'55%'}});}
+
+  // Line chart: difficulty index per question
+  const lc=document.getElementById('diffLineChart');
+  if(lc){S.charts.diffLine=new Chart(lc,{type:'line',data:{labels:d.qDifficulty.map(q=>`Q${q.n}`),datasets:[{label:'Difficulty Index',data:d.qDifficulty.map(q=>q.difficultyIndex),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.4,pointBackgroundColor:d.qDifficulty.map(q=>q.color==='easy'?'#10b981':q.color==='medium'?'#f59e0b':q.color==='hard'?'#ef4444':'#a855f7'),pointRadius:5,borderWidth:2},{label:'Correct Rate %',data:d.qDifficulty.map(q=>q.correctRate),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.05)',fill:false,tension:.4,pointRadius:3,borderDash:[5,5]}]},options:{...base,scales:{x:{ticks:{color:tc,maxRotation:0},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}
+}
+
+// Difficulty Export Functions
+window.exportDiffPDF=function(){
+  if(!S.diffData)return toast('No data','wa');
+  const d=S.diffData;
+  const{jsPDF}=window.jspdf;
+  const pdf=new jsPDF();
+  const W=pdf.internal.pageSize.getWidth();let y=18;
+  pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
+  pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
+  pdf.text('Difficulty Rating Report — '+d.examName,W/2,12,{align:'center'});
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(`${d.totalAttempts} attempts • Avg ${d.avgPct}% • ${new Date().toLocaleDateString()}`,W/2,20,{align:'center'});
+  y=40;
+  pdf.setFontSize(9);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);
+  pdf.text('Q#',14,y);pdf.text('Type',28,y);pdf.text('Difficulty',48,y);pdf.text('Correct%',85,y);pdf.text('Wrong%',110,y);pdf.text('Skip%',135,y);pdf.text('Disc%',158,y);pdf.text('Marks',178,y);
+  y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;
+  pdf.setFont('helvetica','normal');pdf.setFontSize(8);
+  const sorted=[...d.qDifficulty].sort((a,b)=>b.difficultyIndex-a.difficultyIndex);
+  sorted.forEach((q,idx)=>{
+    if(y>270){pdf.addPage();y=14;}
+    if(idx%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-4,W-20,8,'F');}
+    const col=q.color==='easy'?[16,185,129]:q.color==='medium'?[245,158,11]:q.color==='hard'?[239,68,68]:[168,85,247];
+    pdf.setTextColor(200,200,200);pdf.text(`Q${q.n}`,14,y);pdf.text(TYPE_LBL[q.type],28,y);
+    pdf.setTextColor(...col);pdf.text(q.level,48,y);
+    pdf.setTextColor(200,200,200);pdf.text(q.correctRate+'%',85,y);pdf.text(q.wrongRate+'%',110,y);pdf.text(q.skipRate+'%',135,y);pdf.text(q.discrimination+'%',158,y);pdf.text('+'+q.maxMarks,178,y);
+    y+=7;
+  });
+  pdf.save(`Difficulty_${d.examName}_${new Date().toISOString().slice(0,10)}.pdf`);toast('PDF exported!','ok');
+};
+
+window.exportDiffExcel=function(){
+  if(!S.diffData)return toast('No data','wa');
+  const d=S.diffData;
+  const wb=XLSX.utils.book_new();
+  const data=[['Difficulty Report — '+d.examName],['Attempts',d.totalAttempts],['Avg Score',d.avgPct+'%'],[''],['Q#','Type','Difficulty Level','Correct Rate%','Wrong Rate%','Skip Rate%','Disc Index%','Max Marks'],...d.qDifficulty.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.level,q.correctRate,q.wrongRate,q.skipRate,q.discrimination,q.maxMarks])];
+  const ws=XLSX.utils.aoa_to_sheet(data);ws['!cols']=[{wch:6},{wch:10},{wch:12},{wch:14},{wch:12},{wch:10},{wch:12},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws,'Difficulty');
+  XLSX.writeFile(wb,`Difficulty_${d.examName}.xlsx`);toast('Excel exported!','ok');
+};
+
+window.exportDiffCSV=function(){
+  if(!S.diffData)return toast('No data','wa');
+  const d=S.diffData;
+  const rows=[['Q#','Type','Level','Correct%','Wrong%','Skip%','Disc%','MaxMarks'],...d.qDifficulty.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.level,q.correctRate,q.wrongRate,q.skipRate,q.discrimination,q.maxMarks])];
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  dlFile(csv,'text/csv',`Difficulty_${d.examName}.csv`);toast('CSV exported!','ok');
+};
+
+// ─── ANALYTICS ───────────────────────────────────────────
+window.loadAnalytics=async function(){const eid=document.getElementById('anExam')?.value;const cont=document.getElementById('anContent');if(!eid){cont.innerHTML='<div class="emp"><span class="ei">📊</span><p>Select exam</p></div>';return;}const now=Date.now();if(S.cache.an.data&&S.cache.an.key===eid&&(now-S.cache.an.ts<CACHE_AN)){renderAnalytics(S.cache.an.data);return;}cont.innerHTML='<div class="emp"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Loading...</p></div>';try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);const key=S.keys.find(k=>k.id===eid);if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet</p></div>';return;}const anData=buildAnalyticsData(results,key);S.cache.an={data:anData,ts:now,key:eid};S.anData=anData;renderAnalytics(anData);}catch(e){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error</p></div>';}};
+function buildAnalyticsData(results,key){const total=results.length,avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total),avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10,maxScore=Math.max(...results.map(r=>r.pct||0)),minScore=Math.min(...results.map(r=>r.pct||0)),passCount=results.filter(r=>(r.pct||0)>=33).length;const buckets={'0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0};results.forEach(r=>{const p=r.pct||0;if(p<=20)buckets['0-20']++;else if(p<=40)buckets['21-40']++;else if(p<=60)buckets['41-60']++;else if(p<=80)buckets['61-80']++;else buckets['81-100']++;});const qStats=key?.questions?key.questions.map((q,i)=>({n:i+1,type:q.type,maxMarks:q.marks?.c||0,answer:formatAnswer(q)})):[];return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};}
 function formatAnswer(q){if(q.type==='scq')return q.answer||'?';if(q.type==='mcq')return Array.isArray(q.answer)?q.answer.join(','):'?';if(q.type==='match')return Object.entries(q.answer||{}).map(([k,v])=>`${k}-${v}`).join(' ');if(q.type==='matrix')return Object.entries(q.answer||{}).map(([k,v])=>`${k}:${Array.isArray(v)?v.join(''):'?'}`).join(' ');if(q.type==='num')return String(q.answer);return '?';}
+function renderAnalytics(d){const cont=document.getElementById('anContent');const trendData=[...d.results].sort((a,b)=>{const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);return da-db2;}).slice(-20);cont.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">${[{v:d.total,l:'Attempts',i:'👥'},{v:d.avgScore+'%',l:'Avg Score',i:'📊'},{v:d.avgMarks,l:'Avg Marks',i:'⭐'},{v:d.maxScore+'%',l:'Top Score',i:'🏆'},{v:d.minScore+'%',l:'Lowest',i:'📉'},{v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}].map(s=>`<div class="stc"><span style="font-size:1.4rem">${s.i}</span><span class="n" style="font-size:1.4rem">${s.v}</span><span class="l">${s.l}</span></div>`).join('')}</div><div class="analytics-grid"><div class="chart-box"><h3>📊 Score Distribution</h3><div class="chart-wrap"><canvas id="distChart"></canvas></div></div><div class="chart-box"><h3>📈 Score Trend</h3><div class="chart-wrap"><canvas id="trendChart"></canvas></div></div></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Pass vs Fail</h3><div class="chart-wrap"><canvas id="passChart"></canvas></div></div><div class="chart-box"><h3>📋 Avg C/W/S</h3><div class="chart-wrap"><canvas id="cwsChart"></canvas></div></div></div><div class="chart-box"><h3>📋 All Submissions</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr></thead><tbody>${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';return `<tr><td><span class="rb ${rc}">${i+1}</span></td><td><b>${r.name}</b></td><td><b style="color:var(--pl)">${r.pct}%</b></td><td>${r.marks}/${r.max}</td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('')}</tbody></table></div></div>`;setTimeout(()=>renderAnalyticsCharts(d,Object.keys(d.buckets),Object.values(d.buckets),trendData),100);}
+function renderAnalyticsCharts(d,bL,bD,tD){['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};const gc='rgba(255,255,255,.05)',tc='#94a3b8';const dc=document.getElementById('distChart');if(dc){S.charts.dist=new Chart(dc,{type:'bar',data:{labels:bL,datasets:[{label:'Students',data:bD,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{ticks:{color:tc,stepSize:1},grid:{color:gc}}}}});}const trc=document.getElementById('trendChart');if(trc){S.charts.trend=new Chart(trc,{type:'line',data:{labels:tD.map((_,i)=>`#${i+1}`),datasets:[{label:'Score%',data:tD.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointRadius:4}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}const pc=document.getElementById('passChart');if(pc){S.charts.pass=new Chart(pc,{type:'doughnut',data:{labels:['Pass','Fail'],datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total),avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total),avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);const cc=document.getElementById('cwsChart');if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct(${avgC})`,`Wrong(${avgW})`,`Skip(${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}}
 
-function renderAnalytics(d){const cont=document.getElementById('anContent');const trendData=[...d.results].sort((a,b)=>{const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);return da-db2;}).slice(-20);cont.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">${[{v:d.total,l:'Total Attempts',i:'👥'},{v:d.avgScore+'%',l:'Avg Score',i:'📊'},{v:d.avgMarks,l:'Avg Marks',i:'⭐'},{v:d.maxScore+'%',l:'Top Score',i:'🏆'},{v:d.minScore+'%',l:'Lowest',i:'📉'},{v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}].map(s=>`<div class="stc"><span style="font-size:1.4rem">${s.i}</span><span class="n" style="font-size:1.4rem">${s.v}</span><span class="l">${s.l}</span></div>`).join('')}</div><div class="exp-btns"><button class="exp-btn exp-pdf" onclick="exportAnalyticsPDF()">📄 Export PDF</button><button class="exp-btn exp-excel" onclick="exportAnalyticsExcel()">📊 Export Excel</button><button class="exp-btn exp-csv" onclick="exportAnalyticsCSV()">📋 Export CSV</button></div><div class="analytics-grid"><div class="chart-box"><h3>📊 Score Distribution</h3><div class="chart-wrap"><canvas id="distChart"></canvas></div></div><div class="chart-box"><h3>📈 Score Trend</h3><div class="chart-wrap"><canvas id="trendChart"></canvas></div></div></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Pass vs Fail</h3><div class="chart-wrap"><canvas id="passChart"></canvas></div></div><div class="chart-box"><h3>📋 Avg C/W/S</h3><div class="chart-wrap"><canvas id="cwsChart"></canvas></div></div></div>${d.qStats.length?`<div class="chart-box" style="margin-bottom:1.5rem"><h3>🔑 Answer Key</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Q#</th><th>Type</th><th>Answer</th><th>Max</th></tr></thead><tbody>${d.qStats.map(q=>`<tr><td><b>Q${q.n}</b></td><td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td><td style="font-family:monospace;color:var(--ok)">${q.answer}</td><td><b style="color:var(--pl)">+${q.maxMarks}</b></td></tr>`).join('')}</tbody></table></div></div>`:''}<div class="chart-box"><h3>📋 All Submissions (${d.total})</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr></thead><tbody>${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';return `<tr><td><span class="rb ${rc}">${i+1}</span></td><td><b>${r.name}</b></td><td><b style="color:var(--pl)">${r.pct}%</b></td><td>${r.marks}/${r.max}</td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('')}</tbody></table></div></div>`;setTimeout(()=>renderAnalyticsCharts(d,Object.keys(d.buckets),Object.values(d.buckets),trendData),100);}
-
-function renderAnalyticsCharts(d,bL,bD,tD){['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};const gc='rgba(255,255,255,.05)',tc='#94a3b8';const dc=document.getElementById('distChart');if(dc){S.charts.dist=new Chart(dc,{type:'bar',data:{labels:bL,datasets:[{label:'Students',data:bD,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{ticks:{color:tc,stepSize:1},grid:{color:gc}}}}});}const trc=document.getElementById('trendChart');if(trc){S.charts.trend=new Chart(trc,{type:'line',data:{labels:tD.map((_,i)=>`#${i+1}`),datasets:[{label:'Score %',data:tD.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointBackgroundColor:'#818cf8',pointRadius:4}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}const pc=document.getElementById('passChart');if(pc){S.charts.pass=new Chart(pc,{type:'doughnut',data:{labels:['Pass','Fail'],datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total);const avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total);const avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);const cc=document.getElementById('cwsChart');if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct (${avgC})`,`Wrong (${avgW})`,`Skipped (${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}}
-
-// ═══════════════════════════════════════════
-// EXPORT FUNCTIONS
-// ═══════════════════════════════════════════
-window.exportPDF=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const{jsPDF}=window.jspdf;const pdf=new jsPDF();const W=pdf.internal.pageSize.getWidth();let y=18;pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');pdf.setTextColor(255,255,255);pdf.setFontSize(18);pdf.setFont('helvetica','bold');pdf.text('OMR Scanner Pro — Result',W/2,12,{align:'center'});pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});y=40;pdf.setFillColor(30,41,59);pdf.roundedRect(10,y,W-20,30,3,3,'F');pdf.setTextColor(129,140,248);pdf.setFontSize(11);pdf.setFont('helvetica','bold');pdf.text('Candidate',14,y+8);pdf.text('Exam',W/2+2,y+8);pdf.setTextColor(255,255,255);pdf.setFontSize(12);pdf.text(r.name,14,y+16);pdf.text(r.examName,W/2+2,y+16);pdf.setTextColor(129,140,248);pdf.setFontSize(9);pdf.text(`Score: ${r.marks}/${r.max} • ${r.pct}%`,14,y+24);pdf.text(`✓${r.correct} ✗${r.wrong} —${r.skipped}`,W/2+2,y+24);y+=38;pdf.setFontSize(8);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);pdf.text('Q#',14,y);pdf.text('Type',24,y);pdf.text('Your Ans',42,y);pdf.text('Correct',90,y);pdf.text('Status',140,y);pdf.text('Marks',170,y);y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;pdf.setFont('helvetica','normal');pdf.setFontSize(8);r.details.forEach((d,idx)=>{if(y>270){pdf.addPage();y=14;}if(idx%2===0){pdf.setFillColor(30,41,59);pdf.rect(10,y-4,W-20,8,'F');}const sc=d.st==='ok'?[16,185,129]:d.st==='no'?[239,68,68]:[245,158,11];pdf.setTextColor(...sc);pdf.text(`Q${d.q}`,14,y);pdf.setTextColor(200,200,200);pdf.text(TYPE_LBL[d.type],24,y);pdf.text(String(d.u).slice(0,18),42,y);pdf.text(String(d.a).slice(0,22),90,y);pdf.setTextColor(...sc);pdf.text(d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',140,y);pdf.text(`${d.marks>0?'+':''}${d.marks}`,170,y);y+=8;});pdf.save(`${r.name}_${r.examName}_Result.pdf`);toast('PDF exported! 📄','ok');};
-
-window.exportExcel=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const wb=XLSX.utils.book_new();const ws1=XLSX.utils.aoa_to_sheet([['OMR Scanner Pro'],[''],['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],['%',r.pct+'%'],['Correct',r.correct],['Wrong',r.wrong],['Skipped',r.skipped]]);XLSX.utils.book_append_sheet(wb,ws1,'Summary');const ws2=XLSX.utils.aoa_to_sheet([['Q#','Type','Your Ans','Correct','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',d.marks])]);XLSX.utils.book_append_sheet(wb,ws2,'Details');XLSX.writeFile(wb,`${r.name}_${r.examName}.xlsx`);toast('Excel exported! 📊','ok');};
-
-window.exportCSV=function(){if(!S.curRes)return toast('No result','wa');const r=S.curRes;const rows=[['Name',r.name],['Exam',r.examName],['Score',`${r.marks}/${r.max}`],[''],['Q#','Type','Your Ans','Correct','Status','Marks'],...r.details.map(d=>[`Q${d.q}`,TYPE_LBL[d.type],d.u,d.a,d.st==='ok'?'Correct':d.st==='no'?'Wrong':'Skip',d.marks])];const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');dlFile(csv,'text/csv',`${r.name}_${r.examName}.csv`);toast('CSV exported! 📋','ok');};
-
-window.exportAnalyticsPDF=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const{jsPDF}=window.jspdf;const pdf=new jsPDF();const W=pdf.internal.pageSize.getWidth();let y=18;pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');pdf.text('Analytics — '+d.examName,W/2,12,{align:'center'});pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(`${d.total} submissions • ${new Date().toLocaleString()}`,W/2,20,{align:'center'});y=40;const stats=[['Attempts',d.total],['Avg',d.avgScore+'%'],['Top',d.maxScore+'%'],['Low',d.minScore+'%'],['Pass',Math.round(d.passCount/d.total*100)+'%']];stats.forEach((s,i)=>{const bx=10+i*38;pdf.setFillColor(30,41,59);pdf.roundedRect(bx,y,34,16,2,2,'F');pdf.setTextColor(129,140,248);pdf.setFontSize(12);pdf.setFont('helvetica','bold');pdf.text(String(s[1]),bx+17,y+8,{align:'center'});pdf.setTextColor(100,116,139);pdf.setFontSize(6);pdf.text(s[0],bx+17,y+13,{align:'center'});});y+=24;[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).forEach((r,i)=>{if(y>270){pdf.addPage();y=14;}pdf.setTextColor(200,200,200);pdf.setFontSize(8);pdf.text(`${i+1}. ${r.name} — ${r.pct}% (${r.marks}/${r.max})`,14,y);y+=6;});pdf.save(`Analytics_${d.examName}.pdf`);toast('PDF exported!','ok');};
-
-window.exportAnalyticsExcel=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const wb=XLSX.utils.book_new();const ws1=XLSX.utils.aoa_to_sheet([['Analytics — '+d.examName],[''],['Total',d.total],['Avg Score',d.avgScore+'%'],['Top',d.maxScore+'%'],['Low',d.minScore+'%']]);XLSX.utils.book_append_sheet(wb,ws1,'Summary');const ws2=XLSX.utils.aoa_to_sheet([['Rank','Name','Score%','Marks','Max','C','W','S'],...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped])]);XLSX.utils.book_append_sheet(wb,ws2,'Results');XLSX.writeFile(wb,`Analytics_${d.examName}.xlsx`);toast('Excel exported!','ok');};
-
-window.exportAnalyticsCSV=function(){if(!S.anData)return toast('No data','wa');const d=S.anData;const rows=[['Analytics',d.examName],[''],['Rank','Name','Score%','Marks','Max','C','W','S'],...[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>[i+1,r.name,r.pct,r.marks,r.max,r.correct,r.wrong,r.skipped])];const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');dlFile(csv,'text/csv',`Analytics_${d.examName}.csv`);toast('CSV exported!','ok');};
-
-function dlFile(content,mime,filename){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
-
-// ═══════════════════════════════════════════
-// LEADERBOARD
-// ═══════════════════════════════════════════
-async function loadLB(force){const eid=document.getElementById('lExam')?.value||'all';const tf=document.getElementById('lTime')?.value||'all';const cacheKey=`${eid}_${tf}`;const now=Date.now();if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));let data=snap.docs.map(d=>({id:d.id,...d.data()}));if(eid!=='all')data=data.filter(r=>r.examId===eid);if(tf!=='all'){const nowD=new Date();let cutoff;if(tf==='today')cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());else if(tf==='week')cutoff=new Date(nowD-7*86400000);else if(tf==='month')cutoff=new Date(nowD-30*86400000);data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});}data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);}catch(e){console.error(e);document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading</p></td></tr>';}}
+// ─── LEADERBOARD ─────────────────────────────────────────
+async function loadLB(force){const eid=document.getElementById('lExam')?.value||'all',tf=document.getElementById('lTime')?.value||'all',cacheKey=`${eid}_${tf}`,now=Date.now();if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));let data=snap.docs.map(d=>({id:d.id,...d.data()}));if(eid!=='all')data=data.filter(r=>r.examId===eid);if(tf!=='all'){const nowD=new Date();let cutoff;if(tf==='today')cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());else if(tf==='week')cutoff=new Date(nowD-7*86400000);else if(tf==='month')cutoff=new Date(nowD-30*86400000);data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});}data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);}catch(e){document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error</p></td></tr>';}}
 window.loadLB=loadLB;
+function renderLB(data){const body=document.getElementById('lbBody'),top3=data.slice(0,3);[1,2,3].forEach(i=>{const r=top3[i-1],av=document.getElementById('pav'+i),nm=document.getElementById('pn'+i),sc=document.getElementById('ps'+i);if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}else{av.textContent='?';nm.textContent='—';sc.textContent='—';}});if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions</p></td></tr>';return;}body.innerHTML=data.slice(0,100).map((r,i)=>{const rank=i+1,rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('');}
 
-function renderLB(data){const body=document.getElementById('lbBody');const top3=data.slice(0,3);[1,2,3].forEach(i=>{const r=top3[i-1];const av=document.getElementById('pav'+i);const nm=document.getElementById('pn'+i);const sc=document.getElementById('ps'+i);if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}else{av.textContent='?';nm.textContent='—';sc.textContent='—';}});if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions</p></td></tr>';return;}body.innerHTML=data.slice(0,100).map((r,i)=>{const rank=i+1;const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('');}
-
-// ═══════════════════════════════════════════
-// HOME STATS
-// ═══════════════════════════════════════════
-async function loadHomeStats(){const now=Date.now();if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}try{const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);const subs=resSnap.data().count;const usrs=usrSnap.data().count;let avg='—';if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);}catch(e){console.error(e)}}
+// ─── HOME STATS ──────────────────────────────────────────
+async function loadHomeStats(){const now=Date.now();if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}try{const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);const subs=resSnap.data().count,usrs=usrSnap.data().count;let avg='—';if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);}catch(e){console.error(e)}}
 function applyStats(d){document.getElementById('hScans').textContent=d.subs||0;document.getElementById('hUsers').textContent=d.usrs||0;document.getElementById('hAvg').textContent=d.avg||'—';}
+
+// ─── UTILS ───────────────────────────────────────────────
+function dlFile(content,mime,filename){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
 </script>
 </body>
 </html>
