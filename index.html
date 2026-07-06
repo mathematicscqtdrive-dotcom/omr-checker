@@ -569,7 +569,7 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 <section id="analytics" class="sec">
   <div class="sh"><h2>📊 Analytics</h2><p>Question-wise analysis, charts & export</p></div>
   <div style="max-width:1100px;margin:0 auto">
-    <div class="lf"><select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px"><option value="">Select Exam to Analyse</option></select><button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button></div>
+    <div class="lf"><select id="anExam" class="fs" onchange="loadAnalytics()" style="max-width:300px"><option value="">Select Exam to Analyse</option></select><button class="btn ol sm" onclick="loadAnalytics()">🔄 Refresh</button><button class="btn pr sm" onclick="exportAnalyticsPDF()">📄 Export PDF</button></div>
     <div id="anContent"><div class="emp" style="padding:3rem 0"><span class="ei">📊</span><p>Select an exam above</p></div></div>
   </div>
 </section>
@@ -2099,7 +2099,321 @@ function renderAnCharts(d,bL,bD,tD){
   const cc=document.getElementById('cwsChart');
   if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct (${avgC})`,`Wrong (${avgW})`,`Skip (${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}
 }
+// ═══════════════════════════════════════════════════════════
+// 📊 ANALYTICS PDF EXPORT — With Charts as Images
+// ═══════════════════════════════════════════════════════════
+window.exportAnalyticsPDF = async function(){
+  const d = S.anData;
+  if(!d){toast('Load an exam first','wa');return;}
+  
+  toast('Generating PDF...','inf');
+  
+  try{
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pW = pdf.internal.pageSize.getWidth();
+    const pH = pdf.internal.pageSize.getHeight();
+    let y = 0;
 
+    // ─── HEADER ─────────────────────────────
+    pdf.setFillColor(99,102,241);
+    pdf.rect(0,0,pW,32,'F');
+    pdf.setTextColor(255,255,255);
+    pdf.setFontSize(20);
+    pdf.setFont('helvetica','bold');
+    pdf.text('Analytics Report',pW/2,14,{align:'center'});
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica','normal');
+    pdf.text(d.examName,pW/2,22,{align:'center'});
+    y = 40;
+
+    // ─── EXAM INFO ──────────────────────────
+    pdf.setFillColor(241,245,249);
+    pdf.roundedRect(10,y,pW-20,20,3,3,'F');
+    pdf.setTextColor(30,41,59);
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica','bold');
+    pdf.text('EXAM:',15,y+7);
+    pdf.text('GENERATED:',15,y+14);
+    pdf.setFont('helvetica','normal');
+    pdf.text(d.examName,45,y+7);
+    pdf.text(new Date().toLocaleString(),45,y+14);
+    y += 28;
+
+    // ─── KEY STATS (6 cards) ────────────────
+    pdf.setTextColor(30,41,59);
+    pdf.setFontSize(13);
+    pdf.setFont('helvetica','bold');
+    pdf.text('Overall Statistics',10,y);
+    y += 5;
+
+    const stats = [
+      {l:'ATTEMPTS',v:String(d.total),c:[99,102,241]},
+      {l:'AVG SCORE',v:`${d.avgScore}%`,c:[59,130,246]},
+      {l:'AVG MARKS',v:String(d.avgMarks),c:[168,85,247]},
+      {l:'TOP SCORE',v:`${d.maxScore}%`,c:[16,185,129]},
+      {l:'LOWEST',v:`${d.minScore}%`,c:[239,68,68]},
+      {l:'PASS RATE',v:`${Math.round(d.passCount/d.total*100)}%`,c:[14,165,233]}
+    ];
+    const cardsPerRow = 3;
+    const cardW = (pW-20-((cardsPerRow-1)*4))/cardsPerRow;
+    stats.forEach((s,i)=>{
+      const row = Math.floor(i/cardsPerRow);
+      const col = i%cardsPerRow;
+      const x = 10 + col*(cardW+4);
+      const yy = y + row*24;
+      pdf.setFillColor(...s.c);
+      pdf.roundedRect(x,yy,cardW,20,2,2,'F');
+      pdf.setTextColor(255,255,255);
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica','bold');
+      pdf.text(s.v,x+cardW/2,yy+10,{align:'center'});
+      pdf.setFontSize(7);
+      pdf.setFont('helvetica','normal');
+      pdf.text(s.l,x+cardW/2,yy+16,{align:'center'});
+    });
+    y += 52;
+
+    // ─── SCORE DISTRIBUTION (Text + Bars) ───
+    pdf.setTextColor(30,41,59);
+    pdf.setFontSize(13);
+    pdf.setFont('helvetica','bold');
+    pdf.text('Score Distribution',10,y);
+    y += 6;
+
+    const bucketColors = [[239,68,68],[245,158,11],[99,102,241],[14,165,233],[16,185,129]];
+    const bucketKeys = Object.keys(d.buckets);
+    const maxBucket = Math.max(...Object.values(d.buckets),1);
+    
+    bucketKeys.forEach((k,i)=>{
+      const count = d.buckets[k];
+      const pct = (count/d.total*100);
+      const barPct = (count/maxBucket*100);
+      pdf.setTextColor(30,41,59);
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica','bold');
+      pdf.text(k+'%',15,y+5);
+      // Bar bg
+      pdf.setFillColor(230,230,240);
+      pdf.roundedRect(38,y+1,120,6,1,1,'F');
+      // Bar fill
+      if(count>0){
+        pdf.setFillColor(...bucketColors[i]);
+        pdf.roundedRect(38,y+1,Math.max(2,120*barPct/100),6,1,1,'F');
+      }
+      pdf.setFont('helvetica','normal');
+      pdf.setTextColor(60,60,60);
+      pdf.text(`${count} students (${pct.toFixed(1)}%)`,163,y+5);
+      y += 9;
+    });
+    y += 4;
+
+    // ─── CAPTURE CHARTS AS IMAGES ───────────
+    const chartIds = [
+      {id:'distChart',title:'Score Distribution Chart'},
+      {id:'trendChart',title:'Score Trend'},
+      {id:'passChart',title:'Pass vs Fail'},
+      {id:'cwsChart',title:'Avg Correct/Wrong/Skipped'}
+    ];
+
+    for(let idx=0;idx<chartIds.length;idx+=2){
+      // New page for charts
+      pdf.addPage();
+      y = 15;
+      pdf.setTextColor(30,41,59);
+      pdf.setFontSize(13);
+      pdf.setFont('helvetica','bold');
+      pdf.text('Visual Analytics',10,y);
+      y += 8;
+
+      for(let j=0;j<2 && (idx+j)<chartIds.length;j++){
+        const ch = chartIds[idx+j];
+        const canvas = document.getElementById(ch.id);
+        if(canvas){
+          try{
+            const imgData = canvas.toDataURL('image/png',1.0);
+            pdf.setTextColor(30,41,59);
+            pdf.setFontSize(11);
+            pdf.setFont('helvetica','bold');
+            pdf.text(ch.title,10,y);
+            y += 4;
+            // Add image (max 180mm wide, 90mm tall)
+            const imgW = 180;
+            const imgH = 85;
+            pdf.addImage(imgData,'PNG',15,y,imgW,imgH);
+            y += imgH + 8;
+          }catch(err){
+            console.warn('Chart capture failed:',ch.id,err);
+          }
+        }
+      }
+    }
+
+    // ─── ALL SUBMISSIONS TABLE ──────────────
+    pdf.addPage();
+    y = 15;
+    pdf.setTextColor(30,41,59);
+    pdf.setFontSize(13);
+    pdf.setFont('helvetica','bold');
+    pdf.text('All Submissions (Ranked)',10,y);
+    y += 8;
+
+    // Table header
+    pdf.setFillColor(30,41,59);
+    pdf.rect(10,y,pW-20,8,'F');
+    pdf.setTextColor(255,255,255);
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica','bold');
+    pdf.text('RANK',14,y+5.5);
+    pdf.text('NAME',30,y+5.5);
+    pdf.text('SCORE',95,y+5.5);
+    pdf.text('MARKS',120,y+5.5);
+    pdf.text('C/W/S',145,y+5.5);
+    pdf.text('DATE',175,y+5.5);
+    y += 8;
+
+    const sorted = [...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0));
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica','normal');
+
+    sorted.forEach((r,i)=>{
+      if(y > pH-15){pdf.addPage();y=15;}
+      
+      // Medal colors
+      if(i===0){pdf.setFillColor(255,239,199);pdf.rect(10,y,pW-20,7,'F');}
+      else if(i===1){pdf.setFillColor(235,235,240);pdf.rect(10,y,pW-20,7,'F');}
+      else if(i===2){pdf.setFillColor(245,222,190);pdf.rect(10,y,pW-20,7,'F');}
+      else if(i%2===0){pdf.setFillColor(248,250,252);pdf.rect(10,y,pW-20,7,'F');}
+      
+      const rank = i===0?'#1':i===1?'#2':i===2?'#3':`#${i+1}`;
+      const dt = r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+      
+      pdf.setTextColor(30,41,59);
+      pdf.setFont('helvetica','bold');
+      pdf.text(rank,14,y+5);
+      pdf.setFont('helvetica','normal');
+      pdf.text(String(r.name||'N/A').substring(0,28),30,y+5);
+      pdf.setFont('helvetica','bold');
+      pdf.setTextColor(99,102,241);
+      pdf.text(`${r.pct||0}%`,95,y+5);
+      pdf.setTextColor(30,41,59);
+      pdf.setFont('helvetica','normal');
+      pdf.text(`${r.marks||0}/${r.max||0}`,120,y+5);
+      // C/W/S with colors
+      pdf.setTextColor(16,185,129);
+      pdf.text(String(r.correct||0),145,y+5);
+      pdf.setTextColor(60,60,60);
+      pdf.text('/',151,y+5);
+      pdf.setTextColor(239,68,68);
+      pdf.text(String(r.wrong||0),154,y+5);
+      pdf.setTextColor(60,60,60);
+      pdf.text('/',160,y+5);
+      pdf.setTextColor(245,158,11);
+      pdf.text(String(r.skipped||0),163,y+5);
+      pdf.setTextColor(120,120,120);
+      pdf.setFontSize(8);
+      pdf.text(dt,175,y+5);
+      pdf.setFontSize(9);
+      
+      y += 7;
+    });
+
+    // ─── QUESTION-WISE ANALYSIS (from details) ─
+    const qStats = {};
+    d.results.forEach(r=>{
+      if(r.details && Array.isArray(r.details)){
+        r.details.forEach(dd=>{
+          const q = dd.q;
+          if(!qStats[q])qStats[q]={q,type:dd.type,correct:0,wrong:0,skipped:0,partial:0,total:0};
+          qStats[q].total++;
+          if(dd.st==='correct')qStats[q].correct++;
+          else if(dd.st==='wrong')qStats[q].wrong++;
+          else if(dd.st==='skipped')qStats[q].skipped++;
+          else if(dd.st==='partial')qStats[q].partial++;
+        });
+      }
+    });
+
+    const qArr = Object.values(qStats).sort((a,b)=>a.q-b.q);
+    if(qArr.length){
+      pdf.addPage();
+      y = 15;
+      pdf.setTextColor(30,41,59);
+      pdf.setFontSize(13);
+      pdf.setFont('helvetica','bold');
+      pdf.text('Question-wise Performance',10,y);
+      y += 8;
+
+      pdf.setFillColor(30,41,59);
+      pdf.rect(10,y,pW-20,8,'F');
+      pdf.setTextColor(255,255,255);
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica','bold');
+      pdf.text('Q#',14,y+5.5);
+      pdf.text('TYPE',30,y+5.5);
+      pdf.text('CORRECT',55,y+5.5);
+      pdf.text('WRONG',85,y+5.5);
+      pdf.text('SKIP',110,y+5.5);
+      pdf.text('SUCCESS %',135,y+5.5);
+      pdf.text('DIFFICULTY',170,y+5.5);
+      y += 8;
+
+      const tMap = {scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
+      pdf.setFontSize(9);
+      
+      qArr.forEach((q,i)=>{
+        if(y > pH-15){pdf.addPage();y=15;}
+        if(i%2===0){pdf.setFillColor(248,250,252);pdf.rect(10,y,pW-20,7,'F');}
+        
+        const successPct = q.total?((q.correct+q.partial*0.5)/q.total*100):0;
+        let diff='Medium',dc=[245,158,11];
+        if(successPct>=75){diff='Easy';dc=[16,185,129];}
+        else if(successPct>=50){diff='Medium';dc=[59,130,246];}
+        else if(successPct>=25){diff='Hard';dc=[239,68,68];}
+        else{diff='Very Hard';dc=[168,85,247];}
+
+        pdf.setTextColor(30,41,59);
+        pdf.setFont('helvetica','bold');
+        pdf.text(`Q${q.q}`,14,y+5);
+        pdf.setFont('helvetica','normal');
+        pdf.text(tMap[q.type]||q.type,30,y+5);
+        pdf.setTextColor(16,185,129);
+        pdf.setFont('helvetica','bold');
+        pdf.text(String(q.correct),55,y+5);
+        pdf.setTextColor(239,68,68);
+        pdf.text(String(q.wrong),85,y+5);
+        pdf.setTextColor(245,158,11);
+        pdf.text(String(q.skipped),110,y+5);
+        pdf.setTextColor(30,41,59);
+        pdf.text(`${successPct.toFixed(0)}%`,135,y+5);
+        pdf.setTextColor(...dc);
+        pdf.text(diff,170,y+5);
+        
+        y += 7;
+      });
+    }
+
+    // ─── FOOTER ─────────────────────────────
+    const tp = pdf.internal.getNumberOfPages();
+    for(let i=1;i<=tp;i++){
+      pdf.setPage(i);
+      pdf.setFillColor(15,23,42);
+      pdf.rect(0,pH-12,pW,12,'F');
+      pdf.setTextColor(148,163,184);
+      pdf.setFontSize(8);
+      pdf.text('OMR Scanner Pro - Analytics Report',10,pH-5);
+      pdf.text(`Page ${i}/${tp}`,pW-10,pH-5,{align:'right'});
+    }
+
+    // ─── SAVE ───────────────────────────────
+    const fn = `Analytics_${d.examName.replace(/\s+/g,'_')}_${Date.now()}.pdf`;
+    pdf.save(fn);
+    toast('Analytics PDF downloaded!','ok');
+  }catch(e){
+    console.error('Analytics PDF Error:',e);
+    toast('Failed: '+e.message,'er');
+  }
+};
 // ─── LEADERBOARD ─────────────────────────────────────────
 async function loadLB(force){
   const eid=document.getElementById('lExam')?.value||'all';
