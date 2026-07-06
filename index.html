@@ -36,6 +36,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--d);color:var(-
 @keyframes orbPulse{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:.2;transform:scale(1.3)}}
 .grid-pattern{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(99,102,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.03) 1px,transparent 1px);background-size:50px 50px;animation:gridShift 20s linear infinite}
 @keyframes gridShift{to{background-position:50px 50px}}
+@keyframes loadDot{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.5);opacity:1}}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;background:rgba(15,23,42,.92);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(20px)}
 .brand{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:800}
@@ -47,11 +48,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .tab.on{color:var(--pl)}
 .tab:hover{transform:translateY(-1px)}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.88rem;font-family:inherit;transition:all .3s ease;position:relative;overflow:hidden}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important}
 .pr{background:linear-gradient(135deg,var(--p),var(--s));color:var(--w);box-shadow:0 4px 15px rgba(99,102,241,.3)}
-.pr:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
+.pr:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 25px rgba(99,102,241,.4)}
 .ol{background:0 0;color:var(--pl);border:2px solid var(--p)}
-.ol:hover{background:rgba(99,102,241,.1);transform:translateY(-1px)}
+.ol:hover:not(:disabled){background:rgba(99,102,241,.1);transform:translateY(-1px)}
 .dn{background:var(--no);color:var(--w)}
+.dn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 4px 15px rgba(239,68,68,.3)}
 .sm{padding:5px 12px;font-size:.78rem}
 .lg{padding:13px 26px;font-size:1rem}
 .bl{width:100%;justify-content:center}
@@ -64,6 +67,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .fs option{background:var(--d2)}
 .fg{margin-bottom:1rem}
 .fg label{display:block;margin-bottom:5px;font-size:.8rem;font-weight:700;color:var(--gl);text-transform:uppercase;letter-spacing:.5px}
+.pass-wrap{position:relative}
+.pass-wrap .fi{padding-right:42px}
+.pass-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:0 0;border:0;color:var(--gl);cursor:pointer;font-size:1rem;transition:.3s;padding:4px}
+.pass-toggle:hover{color:var(--w)}
 main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
 .sec{display:none;animation:fadeSlideIn .5s ease}
 .sec.on{display:block}
@@ -200,13 +207,18 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .akm span{background:rgba(30,41,59,.8);padding:2px 8px;border-radius:5px}
 .mov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:1rem;backdrop-filter:blur(8px)}
 .mov.show{display:flex}
-.modal{background:var(--d2);border-radius:16px;border:1px solid var(--d3);padding:1.8rem;width:100%;max-width:420px;position:relative;animation:modalPop .4s ease}
+.modal{background:var(--d2);border-radius:16px;border:1px solid var(--d3);padding:1.8rem;width:100%;max-width:420px;position:relative;animation:modalPop .4s ease;max-height:90vh;overflow-y:auto}
 @keyframes modalPop{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.mcl{position:absolute;top:.8rem;right:1rem;background:0 0;border:0;color:var(--g);font-size:1.4rem;cursor:pointer;transition:.3s}
+.mcl{position:absolute;top:.8rem;right:1rem;background:0 0;border:0;color:var(--g);font-size:1.4rem;cursor:pointer;transition:.3s;z-index:1}
 .mcl:hover{color:var(--w);transform:rotate(90deg)}
 .mts{display:flex;margin-bottom:1.2rem;border-bottom:2px solid var(--d3)}
 .mtab{flex:1;padding:10px;background:0 0;border:0;color:var(--g);font-family:inherit;font-size:.95rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.3s}
 .mtab.on{color:var(--pl);border-bottom-color:var(--p)}
+.back-link{background:0 0;border:0;color:var(--pl);font-size:.85rem;cursor:pointer;font-family:inherit;margin-top:.8rem;text-decoration:underline;display:block;text-align:center;transition:.3s;width:100%;padding:4px}
+.back-link:hover{color:var(--w)}
+.fp-success{text-align:center;padding:1rem 0}
+.fp-success .fp-icon{font-size:3rem;display:block;margin-bottom:.8rem;animation:fadeSlideIn .5s ease}
+.fp-success p{color:var(--gl);font-size:.9rem;line-height:1.7}
 .loadscr{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem}
 .loadscr p{color:var(--gl)}
 .load-atom{position:relative;width:80px;height:80px}
@@ -219,8 +231,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .load-orbit:nth-child(2) .load-e{background:var(--s);box-shadow:0 0 10px var(--s)}
 .load-orbit:nth-child(3) .load-e{background:#a855f7;box-shadow:0 0 10px #a855f7}
 @keyframes atomSpin{to{transform:rotate(360deg)}}
-.load-text{margin-top:.5rem;font-size:.85rem;color:var(--gl);animation:loadTextPulse 2s ease-in-out infinite}
-@keyframes loadTextPulse{0%,100%{opacity:.5}50%{opacity:1}}
 .toasts{position:fixed;top:80px;right:16px;z-index:3000;display:flex;flex-direction:column;gap:8px;max-width:90vw}
 .toast{display:flex;align-items:center;gap:10px;padding:12px 18px;background:rgba(30,41,59,.95);border-radius:var(--r);border:1px solid var(--d3);min-width:280px;font-size:.9rem;animation:slideIn .3s ease;backdrop-filter:blur(10px)}
 @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -298,10 +308,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5000;overflow:hidden}
 .confetti{position:absolute;width:10px;height:10px;top:-10px;opacity:0;animation:confettiFall linear forwards}
 @keyframes confettiFall{0%{transform:translateX(0) rotateZ(0deg);opacity:1}100%{transform:translateX(var(--drift)) rotateZ(720deg);opacity:0;top:110vh}}
-
-/* ═══════════════════════════════════
-   FEATURE 21: COMPARISON TOOL
-   ═══════════════════════════════════ */
 .cmp-section{max-width:1100px;margin:0 auto}
 .cmp-selector{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end;margin-bottom:2rem;padding:1.5rem;background:rgba(30,41,59,.8);border-radius:16px;border:1px solid var(--d3);backdrop-filter:blur(10px)}
 .cmp-vs{display:flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));font-weight:800;font-size:1rem;box-shadow:0 0 20px rgba(99,102,241,.4);animation:vsPulse 2s ease-in-out infinite;align-self:center}
@@ -330,8 +336,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .cmp-stat-val{padding:.8rem 1rem;border-radius:8px;text-align:center;font-weight:700;font-size:1.1rem;position:relative;overflow:hidden}
 .cmp-stat-val.p1{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2)}
 .cmp-stat-val.p2{background:rgba(14,165,233,.1);border:1px solid rgba(14,165,233,.2)}
-.cmp-stat-val.winner-p1.p1{background:rgba(99,102,241,.25);border-color:var(--p);box-shadow:0 0 10px rgba(99,102,241,.2)}
-.cmp-stat-val.winner-p2.p2{background:rgba(14,165,233,.25);border-color:var(--s);box-shadow:0 0 10px rgba(14,165,233,.2)}
 .cmp-stat-label{padding:.8rem;text-align:center;font-size:.78rem;font-weight:700;color:var(--gl);text-transform:uppercase;display:flex;align-items:center;justify-content:center}
 .cmp-bar-section{margin-bottom:1.5rem}
 .cmp-bar-row{display:grid;grid-template-columns:1fr 60px 1fr;gap:.5rem;align-items:center;margin-bottom:.8rem}
@@ -357,10 +361,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .cmp-insight.good{border-left-color:var(--ok)}
 .cmp-insight.bad{border-left-color:var(--no)}
 .cmp-insight.neutral{border-left-color:var(--warn)}
-
-/* ═══════════════════════════════════
-   FEATURE 24: DIFFICULTY RATING
-   ═══════════════════════════════════ */
 .diff-section{max-width:1100px;margin:0 auto}
 .diff-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem}
 .diff-card{padding:1.2rem;border-radius:16px;text-align:center;position:relative;overflow:hidden;transition:all .3s}
@@ -407,8 +407,6 @@ main{margin-top:64px;padding:1.5rem;max-width:1300px;margin-left:auto;margin-rig
 .diff-heatmap-row{display:grid;gap:4px;align-items:center}
 .diff-heatmap-cell{height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;cursor:default;transition:all .3s;position:relative}
 .diff-heatmap-cell:hover{transform:scale(1.1);z-index:1}
-.diff-heatmap-cell[title]:hover::after{content:attr(title);position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:var(--d2);border:1px solid var(--d3);padding:4px 8px;border-radius:6px;font-size:.7rem;white-space:nowrap;z-index:100;pointer-events:none}
-
 footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-top:1px solid var(--d3);margin-top:2rem;position:relative;z-index:1}
 @media(max-width:1024px){
   .hero{grid-template-columns:1fr;text-align:center}
@@ -468,14 +466,13 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
     <div class="load-orbit"><div class="load-e"></div></div>
     <div class="load-nucleus"></div>
   </div>
-  <p class="load-text">Initializing quantum scanner...</p>
+  <p class="load-text" style="animation:loadDot 2s ease-in-out infinite">Initializing quantum scanner...</p>
   <div style="display:flex;gap:4px;margin-top:8px">
     <div style="width:6px;height:6px;border-radius:50%;background:var(--p);animation:loadDot 1.4s ease-in-out infinite"></div>
     <div style="width:6px;height:6px;border-radius:50%;background:var(--s);animation:loadDot 1.4s ease-in-out infinite .2s"></div>
     <div style="width:6px;height:6px;border-radius:50%;background:#a855f7;animation:loadDot 1.4s ease-in-out infinite .4s"></div>
   </div>
 </div>
-<style>@keyframes loadDot{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.5);opacity:1}}</style>
 
 <nav>
   <div class="brand"><div class="dot"></div><span>OMR Scanner Pro</span></div>
@@ -503,7 +500,6 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 </div>
 
 <main>
-
 <!-- HOME -->
 <section id="home" class="sec on">
   <div class="hero">
@@ -578,17 +574,10 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     FEATURE 21: COMPARISON TOOL
-     ══════════════════════════════════════ -->
+<!-- COMPARE -->
 <section id="compare" class="sec">
-  <div class="sh">
-    <h2>⚔️ Student Comparison</h2>
-    <p>Compare two students head-to-head with detailed analysis</p>
-  </div>
+  <div class="sh"><h2>⚔️ Student Comparison</h2><p>Compare two students head-to-head</p></div>
   <div class="cmp-section">
-
-    <!-- Selectors -->
     <div class="cmp-selector">
       <div>
         <div class="fg"><label>📋 Select Exam</label><select id="cmpExam" class="fs" onchange="loadCmpStudents()"><option value="">Select Exam</option></select></div>
@@ -599,34 +588,20 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
         <div class="fg" style="margin-top:3.2rem"><label>👤 Student B</label><select id="cmpS2" class="fs"><option value="">Select Student</option></select></div>
       </div>
     </div>
-
     <div style="text-align:center;margin-bottom:1.5rem">
-      <button class="btn pr lg" onclick="runComparison()">⚔️ Compare Now</button>
+      <button class="btn pr lg" id="cmpBtn" onclick="runComparison()">⚔️ Compare Now</button>
       <button class="btn ol" onclick="clearComparison()" style="margin-left:.8rem">🔄 Reset</button>
     </div>
-
-    <div id="cmpResult">
-      <div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select exam and two students to compare</p></div>
-    </div>
+    <div id="cmpResult"><div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select exam and two students to compare</p></div></div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     FEATURE 24: DIFFICULTY RATING
-     ══════════════════════════════════════ -->
+<!-- DIFFICULTY -->
 <section id="difficulty" class="sec">
-  <div class="sh">
-    <h2>🎯 Question Difficulty Rating</h2>
-    <p>Auto-rated based on actual student performance data</p>
-  </div>
+  <div class="sh"><h2>🎯 Question Difficulty Rating</h2><p>Auto-rated based on actual student performance</p></div>
   <div class="diff-section">
-    <div class="lf">
-      <select id="diffExam" class="fs" onchange="loadDifficulty()" style="max-width:300px"><option value="">Select Exam</option></select>
-      <button class="btn ol sm" onclick="loadDifficulty()">🔄 Refresh</button>
-    </div>
-    <div id="diffContent">
-      <div class="emp" style="padding:3rem 0"><span class="ei">🎯</span><p>Select an exam to see difficulty ratings</p></div>
-    </div>
+    <div class="lf"><select id="diffExam" class="fs" onchange="loadDifficulty()" style="max-width:300px"><option value="">Select Exam</option></select><button class="btn ol sm" onclick="loadDifficulty()">🔄 Refresh</button></div>
+    <div id="diffContent"><div class="emp" style="padding:3rem 0"><span class="ei">🎯</span><p>Select an exam to see difficulty ratings</p></div></div>
   </div>
 </section>
 
@@ -675,35 +650,95 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 </section>
 </main>
 
-<!-- MODALS -->
+<!-- AUTH MODAL -->
 <div class="mov" id="authMod">
   <div class="modal">
-    <button class="mcl" onclick="document.getElementById('authMod').classList.remove('show')">✕</button>
-    <div class="mts"><button class="mtab on" id="ltab" onclick="authTab('l')">Login</button><button class="mtab" id="rtab" onclick="authTab('r')">Register</button></div>
-    <div id="lForm">
-      <div class="fg"><label>Email</label><input type="email" id="lEmail" class="fi"></div>
-      <div class="fg"><label>Password</label><input type="password" id="lPass" class="fi"></div>
-      <button class="btn pr bl" onclick="doLogin()">🔑 Login</button>
+    <button class="mcl" onclick="closeAuthMod()">✕</button>
+
+    <!-- Login / Register -->
+    <div id="authMain">
+      <div class="mts">
+        <button class="mtab on" id="ltab" onclick="authTab('l')">Login</button>
+        <button class="mtab" id="rtab" onclick="authTab('r')">Register</button>
+      </div>
+
+      <!-- Login -->
+      <div id="lForm">
+        <div class="fg"><label>Email</label><input type="email" id="lEmail" class="fi" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div class="fg">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="lPass" class="fi" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+            <button class="pass-toggle" onclick="togglePass('lPass',this)" type="button">👁️</button>
+          </div>
+        </div>
+        <button class="btn pr bl" id="lBtn" onclick="doLogin()">🔑 Login</button>
+        <button class="back-link" onclick="showForgot()">🔓 Forgot Password?</button>
+      </div>
+
+      <!-- Register -->
+      <div id="rForm" style="display:none">
+        <div class="fg"><label>Full Name</label><input type="text" id="rName" class="fi" placeholder="John Doe"></div>
+        <div class="fg"><label>Email</label><input type="email" id="rEmail" class="fi" placeholder="you@email.com"></div>
+        <div class="fg">
+          <label>Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="rPass" class="fi" placeholder="Min 6 characters">
+            <button class="pass-toggle" onclick="togglePass('rPass',this)" type="button">👁️</button>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Confirm Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="rPass2" class="fi" placeholder="Re-enter password">
+            <button class="pass-toggle" onclick="togglePass('rPass2',this)" type="button">👁️</button>
+          </div>
+        </div>
+        <button class="btn pr bl" id="rBtn" onclick="doReg()">👤 Register</button>
+      </div>
     </div>
-    <div id="rForm" style="display:none">
-      <div class="fg"><label>Full Name</label><input type="text" id="rName" class="fi"></div>
-      <div class="fg"><label>Email</label><input type="email" id="rEmail" class="fi"></div>
-      <div class="fg"><label>Password</label><input type="password" id="rPass" class="fi"></div>
-      <div class="fg"><label>Confirm</label><input type="password" id="rPass2" class="fi"></div>
-      <button class="btn pr bl" onclick="doReg()">👤 Register</button>
+
+    <!-- Forgot Password -->
+    <div id="forgotForm" style="display:none">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🔓</div>
+        <h3 style="margin-bottom:.3rem">Forgot Password?</h3>
+        <p style="color:var(--gl);font-size:.85rem;line-height:1.6">Enter your email and we'll send a<br>password reset link instantly.</p>
+      </div>
+      <div id="fpInputArea">
+        <div class="fg"><label>Email Address</label><input type="email" id="fpEmail" class="fi" placeholder="you@email.com" onkeydown="if(event.key==='Enter')doForgot()"></div>
+        <button class="btn pr bl" id="fpBtn" onclick="doForgot()">📧 Send Reset Link</button>
+        <button class="back-link" onclick="hideForgot()">← Back to Login</button>
+      </div>
+      <div id="fpSuccess" style="display:none" class="fp-success">
+        <span class="fp-icon">📬</span>
+        <h3 style="margin-bottom:.5rem;color:var(--ok)">Email Sent!</h3>
+        <p>Reset link sent to<br><b id="fpSentTo" style="color:var(--pl)"></b><br><br>Check inbox &amp; spam folder.<br>Link expires in <b>1 hour</b>.</p>
+        <div style="margin-top:1.2rem;display:flex;flex-direction:column;gap:.6rem">
+          <button class="btn pr bl" onclick="doForgot(true)">🔄 Resend Email</button>
+          <button class="back-link" onclick="hideForgot()">← Back to Login</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ADMIN MODAL -->
 <div class="mov" id="admMod">
   <div class="modal" style="max-width:380px">
     <button class="mcl" onclick="closeAdmMod()">✕</button>
     <div style="text-align:center;margin-bottom:1.2rem">
       <div style="font-size:2.5rem">🔒</div>
       <h3>Admin Access</h3>
-      <p style="color:var(--gl);font-size:.85rem">Enter password</p>
+      <p style="color:var(--gl);font-size:.85rem">Enter password to continue</p>
     </div>
-    <div class="fg"><label>Password</label><input type="password" id="admPass" class="fi" onkeydown="if(event.key==='Enter')checkAdm()"></div>
+    <div class="fg">
+      <label>Password</label>
+      <div class="pass-wrap">
+        <input type="password" id="admPass" class="fi" onkeydown="if(event.key==='Enter')checkAdm()">
+        <button class="pass-toggle" onclick="togglePass('admPass',this)" type="button">👁️</button>
+      </div>
+    </div>
     <button class="btn pr bl" onclick="checkAdm()">🔓 Unlock</button>
   </div>
 </div>
@@ -714,86 +749,735 @@ footer{text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem;border-t
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import{getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged,updateProfile,sendPasswordResetEmail}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import{getFirestore,collection,addDoc,getDocs,doc,deleteDoc,query,orderBy,limit,serverTimestamp,setDoc,getCountFromServer}from"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",authDomain:"omr-leaderboard.firebaseapp.com",projectId:"omr-leaderboard",storageBucket:"omr-leaderboard.firebasestorage.app",messagingSenderId:"375904858200",appId:"1:375904858200:web:0e3a92d55ff32d4fca1a2d"};
-const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
-const S={user:null,keys:[],curRes:null,qb:[],qbId:0,admOk:false,charts:{},anData:null,cmpData:null,diffData:null,cache:{lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''},cmp:{data:null,ts:0,key:''},diff:{data:null,ts:0,key:''}}};
-const CACHE_LB=60000,CACHE_STATS=300000,CACHE_KEYS=120000,CACHE_AN=120000,CACHE_CMP=120000,CACHE_DIFF=120000;
+// ─── CONFIG ──────────────────────────────────────────────
+const FB={apiKey:"AIzaSyAN0LKx71uXqgA93tvEiGdXCYC01k2DRPc",authDomain:"omr-leaderboard.firebaseapp.com",projectId:"omr-leaderboard",storageBucket:"omr-leaderboard.firebasestorage.app",messagingSenderId:"375904858200",appId:"1:375904858200:web:0e3a92d55ff32d4fca1a2d"};
+const app=initializeApp(FB);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+// ─── STATE ───────────────────────────────────────────────
+const S={
+  user:null,keys:[],curRes:null,
+  qb:[],qbId:0,admOk:false,
+  charts:{},anData:null,diffData:null,
+  cache:{
+    lb:{data:null,ts:0,key:''},
+    stats:{data:null,ts:0},
+    keys:{data:null,ts:0},
+    an:{data:null,ts:0,key:''},
+    cmp:{data:null,ts:0,key:''},
+    diff:{data:null,ts:0,key:''}
+  }
+};
+
+// ─── CONSTANTS ───────────────────────────────────────────
+const CACHE={LB:60000,STATS:300000,KEYS:120000,AN:120000,CMP:120000,DIFF:120000};
 const DEF_MARKS={scq:{c:3,w:-1,u:0},mcq:{c:4,w:-2,p:1,u:0},match:{c:3,w:-1,u:0},matrix:{c:1,w:0,u:0},num:{c:4,w:0,u:0}};
 const TYPE_LBL={scq:'SCQ',mcq:'MCQ',match:'Match',matrix:'Matrix',num:'Num'};
-const ADM_PASS='delta';
+
+// Simple hash for admin password (obfuscated)
+function simpleHash(s){let h=0;for(let i=0;i<s.length;i++){h=Math.imul(31,h)+s.charCodeAt(i)|0;}return Math.abs(h).toString(16);}
+const ADM_HASH=simpleHash('delta');
+
+// ─── LOADING SPINNER HTML ────────────────────────────────
+const SPIN=`<div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div>`;
 
 // ─── SCIENCE CANVAS ──────────────────────────────────────
-(function(){const canvas=document.getElementById('scienceCanvas');const ctx=canvas.getContext('2d');let W,H;const pts=[];function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}resize();addEventListener('resize',resize);class P{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.s=Math.random()*2+1;this.a=Math.random()*.3+.1;this.c=`hsla(${230+Math.random()*40},80%,70%,${this.a})`;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.fill();ctx.shadowBlur=this.s*3;ctx.shadowColor=this.c;}}
-for(let i=0;i<50;i++)pts.push(new P());function animate(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.update();p.draw();});for(let i=0;i<pts.length;i++){for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(99,102,241,${.08*(1-d/150)})`;ctx.lineWidth=.5;ctx.stroke();}}}ctx.shadowBlur=0;requestAnimationFrame(animate);}animate();})();
+(function(){
+  const canvas=document.getElementById('scienceCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  const pts=[];
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  resize();
+  addEventListener('resize',resize);
+  class P{
+    constructor(){this.reset();}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.s=Math.random()*2+1;this.a=Math.random()*.3+.1;this.c=`hsla(${230+Math.random()*40},80%,70%,${this.a})`;}
+    update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1;}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle=this.c;ctx.fill();}
+  }
+  for(let i=0;i<50;i++)pts.push(new P());
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    ctx.shadowBlur=0;
+    pts.forEach(p=>{p.update();p.draw();});
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<150){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(99,102,241,${.08*(1-d/150)})`;ctx.lineWidth=.5;ctx.stroke();}
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
 
 // ─── MATH BG ─────────────────────────────────────────────
-(function(){const syms=['∫','∑','∂','∇','∆','π','θ','α','β','γ','λ','μ','σ','ω','∞','√','±','⊗','∀','∃','ℏ'];const bg=document.getElementById('mathBg');function spawn(){const s=document.createElement('div');s.className='math-symbol';s.textContent=syms[Math.floor(Math.random()*syms.length)];s.style.left=Math.random()*100+'%';s.style.fontSize=(Math.random()*1.5+.8)+'rem';s.style.animationDuration=(Math.random()*15+10)+'s';s.style.animationDelay=Math.random()*5+'s';bg.appendChild(s);s.addEventListener('animationend',()=>s.remove());setTimeout(()=>{if(s.parentElement)s.remove();},30000);}for(let i=0;i<15;i++)setTimeout(()=>spawn(),i*800);setInterval(spawn,2000);})();
+(function(){
+  const syms=['∫','∑','∂','∇','∆','π','θ','α','β','γ','λ','μ','σ','ω','∞','√','±','⊗','∀','∃','ℏ'];
+  const bg=document.getElementById('mathBg');
+  function spawn(){
+    const s=document.createElement('div');
+    s.className='math-symbol';
+    s.textContent=syms[Math.floor(Math.random()*syms.length)];
+    s.style.left=Math.random()*100+'%';
+    s.style.fontSize=(Math.random()*1.5+.8)+'rem';
+    s.style.animationDuration=(Math.random()*15+10)+'s';
+    s.style.animationDelay=Math.random()*3+'s';
+    bg.appendChild(s);
+    s.addEventListener('animationend',()=>s.remove());
+    setTimeout(()=>{if(s.parentElement)s.remove();},30000);
+  }
+  for(let i=0;i<15;i++)setTimeout(()=>spawn(),i*800);
+  setInterval(spawn,2000);
+})();
 
 // ─── CONFETTI ────────────────────────────────────────────
-function launchConfetti(){const container=document.getElementById('confettiContainer');const colors=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7'];for(let i=0;i<80;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'%';c.style.width=(Math.random()*8+4)+'px';c.style.height=(Math.random()*8+4)+'px';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.borderRadius=Math.random()>.5?'50%':'2px';c.style.setProperty('--drift',(Math.random()*200-100)+'px');c.style.animationDuration=(Math.random()*2+2)+'s';c.style.animationDelay=(Math.random()*.5)+'s';container.appendChild(c);setTimeout(()=>c.remove(),5000);}}
+function launchConfetti(){
+  const container=document.getElementById('confettiContainer');
+  const colors=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7'];
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.cssText=`left:${Math.random()*100}%;width:${Math.random()*8+4}px;height:${Math.random()*8+4}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};--drift:${Math.random()*200-100}px;animation-duration:${Math.random()*2+2}s;animation-delay:${Math.random()*.5}s`;
+    container.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
 
 // ─── TOAST ───────────────────────────────────────────────
-window.toast=function(msg,type='inf'){const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};const t=document.createElement('div');t.className='toast '+type;t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;document.getElementById('toasts').appendChild(t);setTimeout(()=>{t.style.animation='slideIn .3s ease reverse';setTimeout(()=>t.remove(),300);},3000);};
-function fbErr(e){const m={'auth/invalid-email':'Invalid email','auth/user-not-found':'Not found','auth/wrong-password':'Wrong password','auth/email-already-in-use':'Already registered','auth/weak-password':'Too weak','auth/invalid-credential':'Invalid credentials'};return m[e.code]||e.message;}
+window.toast=function(msg,type='inf'){
+  const icons={ok:'✅',er:'❌',inf:'ℹ️',wa:'⚠️'};
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  t.innerHTML=`<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>{
+    t.style.animation='slideIn .3s ease reverse';
+    setTimeout(()=>t.remove(),300);
+  },3500);
+};
 
-// ─── AUTH ────────────────────────────────────────────────
-onAuthStateChanged(auth,async u=>{S.user=u||null;updUserUI();document.getElementById('loadScr').style.display='none';await loadKeys();fillDDs();loadHomeStats();});
-window.showAuth=()=>document.getElementById('authMod').classList.add('show');
-window.authTab=t=>{document.getElementById('ltab').classList.toggle('on',t==='l');document.getElementById('rtab').classList.toggle('on',t==='r');document.getElementById('lForm').style.display=t==='l'?'block':'none';document.getElementById('rForm').style.display=t==='r'?'block':'none';};
-window.doLogin=async()=>{const e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;if(!e||!p)return toast('Fill all fields','wa');try{await signInWithEmailAndPassword(auth,e,p);document.getElementById('authMod').classList.remove('show');toast('Welcome back!','ok');}catch(err){toast(fbErr(err),'er')}};
-window.doReg=async()=>{const n=document.getElementById('rName').value.trim(),e=document.getElementById('rEmail').value.trim(),p=document.getElementById('rPass').value,p2=document.getElementById('rPass2').value;if(!n||!e||!p)return toast('Fill all fields','wa');if(p!==p2)return toast('Passwords do not match','er');if(p.length<6)return toast('Min 6 chars','er');try{const cred=await createUserWithEmailAndPassword(auth,e,p);await updateProfile(cred.user,{displayName:n});await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});document.getElementById('authMod').classList.remove('show');toast('Welcome, '+n+'!','ok');S.cache.stats.ts=0;loadHomeStats();}catch(err){toast(fbErr(err),'er')}};
-window.logout=async()=>{await signOut(auth);S.admOk=false;toast('Logged out','inf');};
-function updUserUI(){const a=document.getElementById('uarea');if(S.user){const nm=S.user.displayName||S.user.email;const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,41,59,.8);border-radius:50px;cursor:pointer;backdrop-filter:blur(10px)" onclick="logout()"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div><span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span><span style="color:var(--g)">🚪</span></div>`;document.getElementById('manName').value=nm;}else a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;}
+// ─── FIREBASE ERROR MESSAGES ─────────────────────────────
+function fbErr(e){
+  const m={
+    'auth/invalid-email':'Invalid email address',
+    'auth/user-not-found':'No account found with this email',
+    'auth/wrong-password':'Incorrect password',
+    'auth/email-already-in-use':'Email already registered',
+    'auth/weak-password':'Password too weak (min 6 chars)',
+    'auth/invalid-credential':'Invalid email or password',
+    'auth/too-many-requests':'Too many attempts. Try again later',
+    'auth/network-request-failed':'Network error. Check connection'
+  };
+  return m[e.code]||e.message;
+}
+
+// ─── AUTH STATE ──────────────────────────────────────────
+onAuthStateChanged(auth,async u=>{
+  S.user=u||null;
+  updUserUI();
+  document.getElementById('loadScr').style.display='none';
+  await loadKeys();
+  fillDDs();
+  loadHomeStats();
+});
+
+// ─── AUTH MODAL ──────────────────────────────────────────
+window.showAuth=function(){
+  document.getElementById('authMod').classList.add('show');
+  authTab('l');
+  hideForgot();
+};
+
+window.closeAuthMod=function(){
+  document.getElementById('authMod').classList.remove('show');
+  setTimeout(hideForgot,300);
+};
+
+// Close on backdrop click
+document.getElementById('authMod').addEventListener('click',function(e){
+  if(e.target===this)closeAuthMod();
+});
+
+window.authTab=function(t){
+  document.getElementById('ltab').classList.toggle('on',t==='l');
+  document.getElementById('rtab').classList.toggle('on',t==='r');
+  document.getElementById('lForm').style.display=t==='l'?'block':'none';
+  document.getElementById('rForm').style.display=t==='r'?'block':'none';
+};
+
+// ─── PASSWORD TOGGLE ─────────────────────────────────────
+window.togglePass=function(id,btn){
+  const inp=document.getElementById(id);
+  const isPass=inp.type==='password';
+  inp.type=isPass?'text':'password';
+  btn.textContent=isPass?'🙈':'👁️';
+};
+
+// ─── LOGIN ───────────────────────────────────────────────
+window.doLogin=async function(){
+  const e=document.getElementById('lEmail').value.trim();
+  const p=document.getElementById('lPass').value;
+  if(!e||!p)return toast('Fill all fields','wa');
+  if(!e.includes('@'))return toast('Enter valid email','wa');
+  const btn=document.getElementById('lBtn');
+  btn.disabled=true;btn.textContent='Logging in...';
+  try{
+    await signInWithEmailAndPassword(auth,e,p);
+    closeAuthMod();
+    toast('Welcome back! 👋','ok');
+  }catch(err){toast(fbErr(err),'er');}
+  finally{btn.disabled=false;btn.innerHTML='🔑 Login';}
+};
+
+// ─── REGISTER ────────────────────────────────────────────
+window.doReg=async function(){
+  const n=document.getElementById('rName').value.trim();
+  const e=document.getElementById('rEmail').value.trim();
+  const p=document.getElementById('rPass').value;
+  const p2=document.getElementById('rPass2').value;
+  if(!n||!e||!p)return toast('Fill all fields','wa');
+  if(!e.includes('@'))return toast('Enter valid email','wa');
+  if(p!==p2)return toast('Passwords do not match','er');
+  if(p.length<6)return toast('Min 6 characters','er');
+  const btn=document.getElementById('rBtn');
+  btn.disabled=true;btn.textContent='Registering...';
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,e,p);
+    await updateProfile(cred.user,{displayName:n});
+    await setDoc(doc(db,'users',cred.user.uid),{name:n,email:e,createdAt:serverTimestamp()});
+    closeAuthMod();
+    toast('Welcome, '+n+'! 🎉','ok');
+    launchConfetti();
+    S.cache.stats.ts=0;
+    loadHomeStats();
+  }catch(err){toast(fbErr(err),'er');}
+  finally{btn.disabled=false;btn.innerHTML='👤 Register';}
+};
+
+// ─── LOGOUT ──────────────────────────────────────────────
+window.logout=async function(){
+  await signOut(auth);
+  S.admOk=false;
+  toast('Logged out','inf');
+};
+
+// ─── FORGOT PASSWORD ─────────────────────────────────────
+window.showForgot=function(){
+  document.getElementById('authMain').style.display='none';
+  document.getElementById('forgotForm').style.display='block';
+  document.getElementById('fpInputArea').style.display='block';
+  document.getElementById('fpSuccess').style.display='none';
+  // Pre-fill email from login field
+  const le=document.getElementById('lEmail').value.trim();
+  if(le)document.getElementById('fpEmail').value=le;
+  setTimeout(()=>document.getElementById('fpEmail').focus(),100);
+};
+
+function hideForgot(){
+  document.getElementById('authMain').style.display='block';
+  document.getElementById('forgotForm').style.display='none';
+  document.getElementById('fpEmail').value='';
+  document.getElementById('fpSuccess').style.display='none';
+  document.getElementById('fpInputArea').style.display='block';
+  const btn=document.getElementById('fpBtn');
+  btn.disabled=false;
+  btn.textContent='📧 Send Reset Link';
+}
+window.hideForgot=hideForgot;
+
+window.doForgot=async function(resend=false){
+  const email=document.getElementById('fpEmail').value.trim();
+  const btn=document.getElementById('fpBtn');
+  if(!email)return toast('Enter your email','wa');
+  if(!email.includes('@')||!email.includes('.'))return toast('Enter valid email','wa');
+  btn.disabled=true;
+  btn.innerHTML='<span style="display:flex;align-items:center;gap:8px;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:atomSpin 1s linear infinite"><circle cx="12" cy="12" r="10" stroke-opacity=".3"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>Sending...</span>';
+  try{
+    await sendPasswordResetEmail(auth,email,{url:window.location.href,handleCodeInApp:false});
+    document.getElementById('fpInputArea').style.display='none';
+    document.getElementById('fpSentTo').textContent=email;
+    document.getElementById('fpSuccess').style.display='block';
+    toast(resend?'Reset email resent! 📧':'Reset link sent to '+email,'ok');
+  }catch(err){
+    btn.disabled=false;
+    btn.textContent='📧 Send Reset Link';
+    const msgs={
+      'auth/user-not-found':'No account found with this email',
+      'auth/invalid-email':'Enter a valid email address',
+      'auth/too-many-requests':'Too many attempts. Wait a few minutes',
+      'auth/network-request-failed':'Network error. Check connection'
+    };
+    toast(msgs[err.code]||err.message,'er');
+  }
+};
+
+// ─── USER UI ─────────────────────────────────────────────
+function updUserUI(){
+  const a=document.getElementById('uarea');
+  if(S.user){
+    const nm=S.user.displayName||S.user.email;
+    const ini=nm.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    a.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(30,41,59,.8);border-radius:50px;cursor:pointer;backdrop-filter:blur(10px)" onclick="logout()"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem">${ini}</div><span style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${nm}</span><span style="color:var(--g)">🚪</span></div>`;
+    document.getElementById('manName').value=nm;
+  }else{
+    a.innerHTML=`<button class="btn pr" onclick="showAuth()">🔑 Login</button>`;
+  }
+}
 
 // ─── NAVIGATION ──────────────────────────────────────────
-window.go=function(id){if(id==='admin'&&!S.admOk){document.getElementById('admMod').classList.add('show');setTimeout(()=>document.getElementById('admPass').focus(),100);return;}document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById(id)?.classList.add('on');document.querySelectorAll('#navTabs .tab').forEach(t=>t.classList.remove('on'));const map={home:0,manual:1,leader:2,analytics:3,compare:4,difficulty:5,admin:6};const tabs=document.querySelectorAll('#navTabs .tab');if(map[id]!==undefined&&tabs[map[id]])tabs[map[id]].classList.add('on');if(id==='leader')loadLB();if(id==='admin'){loadKeys().then(renderAKList);}if(id==='home')loadHomeStats();if(id==='analytics')loadAnalytics();window.scrollTo({top:0,behavior:'smooth'});};
-window.checkAdm=()=>{const p=document.getElementById('admPass').value;if(p===ADM_PASS){S.admOk=true;document.getElementById('admPass').value='';document.getElementById('admMod').classList.remove('show');toast('Admin granted 🔓','ok');go('admin');}else{toast('Wrong password','er');document.getElementById('admPass').value='';}};
-window.closeAdmMod=()=>{document.getElementById('admMod').classList.remove('show');document.getElementById('admPass').value='';};
-window.lockAdmin=()=>{S.admOk=false;toast('Admin locked 🔒','inf');go('home');};
+window.go=function(id){
+  if(id==='admin'&&!S.admOk){
+    document.getElementById('admMod').classList.add('show');
+    setTimeout(()=>document.getElementById('admPass').focus(),100);
+    return;
+  }
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id)?.classList.add('on');
+  const map={home:0,manual:1,leader:2,analytics:3,compare:4,difficulty:5,admin:6};
+  document.querySelectorAll('#navTabs .tab').forEach((t,i)=>t.classList.toggle('on',i===map[id]));
+  if(id==='leader')loadLB();
+  if(id==='admin'){loadKeys().then(renderAKList);}
+  if(id==='home')loadHomeStats();
+  if(id==='analytics')loadAnalytics();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+window.checkAdm=function(){
+  const p=document.getElementById('admPass').value;
+  if(simpleHash(p)===ADM_HASH){
+    S.admOk=true;
+    document.getElementById('admPass').value='';
+    document.getElementById('admMod').classList.remove('show');
+    toast('Admin access granted 🔓','ok');
+    go('admin');
+  }else{
+    toast('Wrong password','er');
+    document.getElementById('admPass').value='';
+  }
+};
+
+window.closeAdmMod=function(){
+  document.getElementById('admMod').classList.remove('show');
+  document.getElementById('admPass').value='';
+};
+
+window.lockAdmin=function(){
+  S.admOk=false;
+  toast('Admin locked 🔒','inf');
+  go('home');
+};
 
 // ─── KEYS ────────────────────────────────────────────────
-async function loadKeys(force){const now=Date.now();if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE_KEYS)){S.keys=S.cache.keys.data;fillDDs();return;}try{const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));S.cache.keys={data:S.keys,ts:now};fillDDs();}catch(e){console.error(e)}}
-function fillDDs(){['manExam','lExam','anExam','cmpExam','diffExam'].forEach(id=>{const s=document.getElementById(id);if(!s)return;const v=s.value;s.innerHTML=id==='lExam'?'<option value="all">All Exams</option>':id==='anExam'||id==='diffExam'?'<option value="">Select Exam</option>':id==='cmpExam'?'<option value="">Select Exam</option>':'<option value="">Select Exam</option>';S.keys.forEach(k=>{const o=document.createElement('option');o.value=k.id;o.textContent=`${k.name} (${k.questions?k.questions.length:0}Q)`;s.appendChild(o);});if(v)s.value=v;});}
+async function loadKeys(force){
+  const now=Date.now();
+  if(!force&&S.cache.keys.data&&(now-S.cache.keys.ts<CACHE.KEYS)){
+    S.keys=S.cache.keys.data;
+    fillDDs();
+    return;
+  }
+  try{
+    const snap=await getDocs(query(collection(db,'answerKeys'),orderBy('createdAt','desc'),limit(50)));
+    S.keys=snap.docs.map(d=>({id:d.id,...d.data()}));
+    S.cache.keys={data:S.keys,ts:now};
+    fillDDs();
+  }catch(e){console.error('loadKeys:',e);}
+}
+
+function fillDDs(){
+  const dds=[
+    {id:'manExam',pre:'<option value="">Select Exam</option>'},
+    {id:'lExam',  pre:'<option value="all">All Exams</option>'},
+    {id:'anExam', pre:'<option value="">Select Exam to Analyse</option>'},
+    {id:'cmpExam',pre:'<option value="">Select Exam</option>'},
+    {id:'diffExam',pre:'<option value="">Select Exam</option>'}
+  ];
+  dds.forEach(({id,pre})=>{
+    const s=document.getElementById(id);
+    if(!s)return;
+    const v=s.value;
+    s.innerHTML=pre+S.keys.map(k=>`<option value="${k.id}">${k.name} (${k.questions?.length||0}Q)</option>`).join('');
+    if(v)s.value=v;
+  });
+}
 
 // ─── QUESTION BUILDER ────────────────────────────────────
-window.qbAdd=()=>{const t=document.getElementById('qbType').value,c=parseInt(document.getElementById('qbCount').value)||1;for(let i=0;i<c;i++){S.qbId++;S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});}qbRender();};
-function defAns(t){return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';}
-window.qbClear=()=>{if(!S.qb.length)return;if(!confirm('Clear all?'))return;S.qb=[];S.qbId=0;qbRender();};
-window.qbDel=id=>{S.qb=S.qb.filter(q=>q.id!==id);qbRender();};
-function qbRender(){const l=document.getElementById('qbList');document.getElementById('qbTotal').textContent=S.qb.length;if(!S.qb.length){l.innerHTML='<p class="qb-empty">No questions yet.</p>';document.getElementById('qbStats').style.display='none';document.getElementById('qbStatsInline').textContent='';return;}l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');qbUpdStats();}
-function qbCard(q,n){let body='';if(q.type==='scq')body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='mcq')body=`<span class="qb-lbl">Correct Answers</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;else if(q.type==='match')body=`<span class="qb-lbl">Match</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k}→</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;else if(q.type==='matrix')body=`<span class="qb-lbl">Matrix</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;else if(q.type==='num')body=`<span class="qb-lbl">Numerical</span><div class="qb-num"><input type="number" step="any" class="fi" value="${q.answer}" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Dec" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="±Tol" oninput="qbTol(${q.id},this.value)"></div>`;const marks=q.type==='mcq'?`<div class="qb-marks four"><div><label>Cor</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Part</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wr</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Un</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`:`<div class="qb-marks"><div><label>Correct+</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong-</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unatt.</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️</button></div><div class="qb-body">${body}${marks}</div></div>`;}
-window.qbSCQ=(id,v)=>{qbFind(id).answer=v;qbRender()};window.qbMCQ=(id,v)=>{const q=qbFind(id);q.answer.includes(v)?q.answer=q.answer.filter(x=>x!==v):q.answer.push(v);qbRender()};window.qbMatch=(id,k,v)=>{qbFind(id).answer[k]=v};window.qbMtx=(id,r,c)=>{const q=qbFind(id);q.answer[r].includes(c)?q.answer[r]=q.answer[r].filter(x=>x!==c):q.answer[r].push(c);qbRender()};window.qbNum=(id,v)=>{qbFind(id).answer=v};window.qbDec=(id,v)=>{qbFind(id).decimals=parseInt(v)||0};window.qbTol=(id,v)=>{qbFind(id).tolerance=parseFloat(v)||0};window.qbMark=(id,k,v)=>{qbFind(id).marks[k]=parseFloat(v)||0;qbUpdStats()};function qbFind(id){return S.qb.find(q=>q.id===id)}
-function qbUpdStats(){if(!S.qb.length)return;const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);const byType={};S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;const el=document.getElementById('qbStats');el.style.display='grid';el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;}
-window.qbSave=async()=>{if(!S.user)return toast('Login required','wa');const nm=document.getElementById('qbName').value.trim();if(!nm)return toast('Enter exam name','wa');if(!S.qb.length)return toast('Add questions first','wa');for(let i=0;i<S.qb.length;i++){const q=S.qb[i];if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');}try{const dur=parseInt(document.getElementById('qbDur').value)||0;await addDoc(collection(db,'answerKeys'),{name:nm,duration:dur,questions:S.qb,createdBy:S.user.uid,createdByName:S.user.displayName||S.user.email,createdAt:serverTimestamp()});document.getElementById('qbName').value='';document.getElementById('qbDur').value='';S.qb=[];S.qbId=0;qbRender();S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('"'+nm+'" saved!','ok');launchConfetti();}catch(e){toast('Error: '+e.message,'er')}};
-function renderAKList(){const l=document.getElementById('akList');document.getElementById('akCount').textContent=`(${S.keys.length})`;if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No keys yet</p></div>';return;}l.innerHTML=S.keys.map(k=>{const canDel=S.user&&k.createdBy===S.user.uid;const qc=k.questions?k.questions.length:0;const maxM=k.questions?k.questions.reduce((s,q)=>s+(q.marks?.c||0),0):0;const types=k.questions?[...new Set(k.questions.map(q=>q.type))].map(t=>TYPE_LBL[t]).join(', '):'';return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM}</span><span>🏷️ ${types}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''}${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑</button>`:''}</div>`;}).join('');}
-window.delAK=async id=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete key?'))return;try{await deleteDoc(doc(db,'answerKeys',id));S.cache.keys.ts=0;await loadKeys(true);renderAKList();toast('Deleted','inf');}catch(e){toast('Error: '+e.message,'er')}};
-async function bulkDelete(cn){const s=await getDocs(collection(db,cn));let c=0;for(const d of s.docs){await deleteDoc(doc(db,cn,d.id));c++;}return c;}
-window.clearLeaderboard=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete ALL results?'))return;if(!confirm('Really sure?'))return;try{const c=await bulkDelete('results');S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};loadLB(true);loadHomeStats();toast(`${c} entries deleted 🧹`,'ok');}catch(e){toast('Error','er')}};
-window.clearAllKeys=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('Delete ALL keys?'))return;if(!confirm('Really sure?'))return;try{const c=await bulkDelete('answerKeys');S.cache.keys={data:null,ts:0};S.keys=[];fillDDs();renderAKList();toast(`${c} keys deleted 🧹`,'ok');}catch(e){toast('Error','er')}};
-window.clearEverything=async()=>{if(!S.user)return toast('Login required','wa');if(!confirm('DELETE EVERYTHING?'))return;if(!confirm('FINAL WARNING!'))return;try{const c1=await bulkDelete('results'),c2=await bulkDelete('answerKeys');S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''},cmp:{data:null,ts:0,key:''},diff:{data:null,ts:0,key:''}};S.keys=[];fillDDs();renderAKList();loadLB(true);loadHomeStats();toast(`${c1}+${c2} deleted 💣`,'ok');}catch(e){toast('Error','er')}};
+window.qbAdd=function(){
+  const t=document.getElementById('qbType').value;
+  const c=Math.min(50,parseInt(document.getElementById('qbCount').value)||1);
+  for(let i=0;i<c;i++){
+    S.qbId++;
+    S.qb.push({id:S.qbId,type:t,answer:defAns(t),marks:{...DEF_MARKS[t]},tolerance:t==='num'?0:null,decimals:t==='num'?2:null});
+  }
+  qbRender();
+};
+
+function defAns(t){
+  return t==='scq'?null:t==='mcq'?[]:t==='match'?{P:null,Q:null,R:null,S:null}:t==='matrix'?{A:[],B:[],C:[],D:[]}:'';
+}
+
+window.qbClear=function(){
+  if(!S.qb.length)return;
+  if(!confirm('Clear all questions?'))return;
+  S.qb=[];S.qbId=0;qbRender();
+};
+
+window.qbDel=function(id){
+  S.qb=S.qb.filter(q=>q.id!==id);qbRender();
+};
+
+function qbRender(){
+  const l=document.getElementById('qbList');
+  document.getElementById('qbTotal').textContent=S.qb.length;
+  if(!S.qb.length){
+    l.innerHTML='<p class="qb-empty">No questions yet.</p>';
+    document.getElementById('qbStats').style.display='none';
+    document.getElementById('qbStatsInline').textContent='';
+    return;
+  }
+  l.innerHTML=S.qb.map((q,i)=>qbCard(q,i+1)).join('');
+  qbUpdStats();
+}
+
+function qbCard(q,n){
+  let body='';
+  if(q.type==='scq'){
+    body=`<span class="qb-lbl">Correct Answer</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer===o?'on':''}" onclick="qbSCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;
+  }else if(q.type==='mcq'){
+    body=`<span class="qb-lbl">Correct Answers (multi)</span><div class="qb-opts">${['A','B','C','D'].map(o=>`<div class="qb-opt ${q.answer.includes(o)?'on':''}" onclick="qbMCQ(${q.id},'${o}')">${o}</div>`).join('')}</div>`;
+  }else if(q.type==='match'){
+    body=`<span class="qb-lbl">Match Pairs</span>${['P','Q','R','S'].map(k=>`<div class="qb-mrow"><span>${k}→</span><select class="fs" onchange="qbMatch(${q.id},'${k}',this.value)"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}" ${q.answer[k]==m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}`;
+  }else if(q.type==='matrix'){
+    body=`<span class="qb-lbl">Matrix (A-D rows, P-T cols)</span><div class="qb-mtx"><div></div>${['P','Q','R','S','T'].map(c=>`<div class="h">${c}</div>`).join('')}${['A','B','C','D'].map(r=>`<div class="r">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="c ${q.answer[r].includes(c)?'on':''}" onclick="qbMtx(${q.id},'${r}','${c}')">${q.answer[r].includes(c)?'✓':''}</div>`).join('')}`).join('')}</div>`;
+  }else if(q.type==='num'){
+    body=`<span class="qb-lbl">Numerical Answer</span><div class="qb-num"><input type="number" step="any" class="fi" placeholder="Value" value="${q.answer}" oninput="qbNum(${q.id},this.value)"><input type="number" class="fi" value="${q.decimals}" min="0" max="6" placeholder="Decimals" oninput="qbDec(${q.id},this.value)"><input type="number" step="any" class="fi" value="${q.tolerance}" placeholder="±Tolerance" oninput="qbTol(${q.id},this.value)"></div>`;
+  }
+  const marks=q.type==='mcq'
+    ?`<div class="qb-marks four"><div><label>Correct</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Partial</label><input type="number" step="any" value="${q.marks.p}" oninput="qbMark(${q.id},'p',this.value)"></div><div><label>Wrong</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unattempted</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`
+    :`<div class="qb-marks"><div><label>Correct +</label><input type="number" step="any" value="${q.marks.c}" oninput="qbMark(${q.id},'c',this.value)"></div><div><label>Wrong −</label><input type="number" step="any" value="${q.marks.w}" oninput="qbMark(${q.id},'w',this.value)"></div><div><label>Unattempted</label><input type="number" step="any" value="${q.marks.u}" oninput="qbMark(${q.id},'u',this.value)"></div></div>`;
+  return `<div class="qb-q"><div class="qb-qh"><div style="display:flex;gap:8px;align-items:center"><span class="qb-qn">Q${n}</span><span class="qb-qt ${q.type}">${TYPE_LBL[q.type]}</span></div><button class="qb-del" onclick="qbDel(${q.id})">🗑️ Del</button></div><div class="qb-body">${body}${marks}</div></div>`;
+}
+
+window.qbSCQ=id=>{qbFind(id).answer=arguments[1];qbRender()};
+// Fix: use proper parameter
+window.qbSCQ=(id,v)=>{qbFind(id).answer=v;qbRender();};
+window.qbMCQ=(id,v)=>{const q=qbFind(id);q.answer.includes(v)?q.answer=q.answer.filter(x=>x!==v):q.answer.push(v);qbRender();};
+window.qbMatch=(id,k,v)=>{qbFind(id).answer[k]=v;};
+window.qbMtx=(id,r,c)=>{const q=qbFind(id);q.answer[r].includes(c)?q.answer[r]=q.answer[r].filter(x=>x!==c):q.answer[r].push(c);qbRender();};
+window.qbNum=(id,v)=>{qbFind(id).answer=v;};
+window.qbDec=(id,v)=>{qbFind(id).decimals=parseInt(v)||0;};
+window.qbTol=(id,v)=>{qbFind(id).tolerance=parseFloat(v)||0;};
+window.qbMark=(id,k,v)=>{qbFind(id).marks[k]=parseFloat(v)||0;qbUpdStats();};
+function qbFind(id){return S.qb.find(q=>q.id===id);}
+
+function qbUpdStats(){
+  if(!S.qb.length)return;
+  const tot=S.qb.reduce((s,q)=>s+(q.marks.c||0),0);
+  const byType={};
+  S.qb.forEach(q=>byType[q.type]=(byType[q.type]||0)+1);
+  document.getElementById('qbStatsInline').textContent=`• Max ${tot} marks`;
+  const el=document.getElementById('qbStats');
+  el.style.display='grid';
+  el.innerHTML=`<div class="qb-stat"><div class="qb-stat-v">${S.qb.length}</div><div class="qb-stat-l">Total Q</div></div><div class="qb-stat"><div class="qb-stat-v">${tot}</div><div class="qb-stat-l">Max Marks</div></div>${Object.entries(byType).map(([t,c])=>`<div class="qb-stat"><div class="qb-stat-v">${c}</div><div class="qb-stat-l">${TYPE_LBL[t]}</div></div>`).join('')}`;
+}
+
+window.qbSave=async function(){
+  if(!S.user)return toast('Login required','wa');
+  const nm=document.getElementById('qbName').value.trim();
+  if(!nm)return toast('Enter exam name','wa');
+  if(!S.qb.length)return toast('Add at least one question','wa');
+  // Validation
+  for(let i=0;i<S.qb.length;i++){
+    const q=S.qb[i];
+    if(q.type==='scq'&&!q.answer)return toast(`Set answer for Q${i+1}`,'wa');
+    if(q.type==='mcq'&&!q.answer.length)return toast(`Set answer for Q${i+1}`,'wa');
+    if(q.type==='match'&&Object.values(q.answer).some(v=>!v))return toast(`Complete match pairs for Q${i+1}`,'wa');
+    if(q.type==='matrix'&&Object.values(q.answer).every(v=>!v.length))return toast(`Set matrix answer for Q${i+1}`,'wa');
+    if(q.type==='num'&&q.answer==='')return toast(`Set value for Q${i+1}`,'wa');
+  }
+  try{
+    const dur=parseInt(document.getElementById('qbDur').value)||0;
+    await addDoc(collection(db,'answerKeys'),{
+      name:nm,duration:dur,questions:S.qb,
+      createdBy:S.user.uid,
+      createdByName:S.user.displayName||S.user.email,
+      createdAt:serverTimestamp()
+    });
+    document.getElementById('qbName').value='';
+    document.getElementById('qbDur').value='';
+    S.qb=[];S.qbId=0;qbRender();
+    S.cache.keys.ts=0;
+    await loadKeys(true);
+    renderAKList();
+    toast(`"${nm}" saved! 🎉`,'ok');
+    launchConfetti();
+  }catch(e){toast('Error: '+e.message,'er');}
+};
+
+function renderAKList(){
+  const l=document.getElementById('akList');
+  document.getElementById('akCount').textContent=`(${S.keys.length})`;
+  if(!S.keys.length){l.innerHTML='<div class="emp"><span class="ei">🔑</span><p>No keys yet</p></div>';return;}
+  l.innerHTML=S.keys.map(k=>{
+    const canDel=S.user&&k.createdBy===S.user.uid;
+    const qc=k.questions?.length||0;
+    const maxM=k.questions?.reduce((s,q)=>s+(q.marks?.c||0),0)||0;
+    const types=[...new Set(k.questions?.map(q=>q.type)||[])].map(t=>TYPE_LBL[t]).join(', ');
+    return `<div class="akc"><h4>${k.name}</h4><div class="akm"><span>📝 ${qc}Q</span><span>⭐ ${maxM}pts</span><span>🏷️ ${types||'—'}</span>${k.createdByName?`<span>👤 ${k.createdByName}</span>`:''} ${k.duration?`<span>⏱️ ${k.duration}m</span>`:''}</div>${canDel?`<button class="btn dn sm" onclick="delAK('${k.id}')">🗑 Delete</button>`:''}</div>`;
+  }).join('');
+}
+
+window.delAK=async function(id){
+  if(!S.user)return toast('Login required','wa');
+  if(!confirm('Delete this answer key?'))return;
+  try{
+    await deleteDoc(doc(db,'answerKeys',id));
+    S.cache.keys.ts=0;
+    await loadKeys(true);
+    renderAKList();
+    toast('Key deleted','inf');
+  }catch(e){toast('Error: '+e.message,'er');}
+};
+
+async function bulkDelete(cn){
+  const s=await getDocs(collection(db,cn));
+  const dels=s.docs.map(d=>deleteDoc(doc(db,cn,d.id)));
+  await Promise.all(dels);
+  return s.docs.length;
+}
+
+function resetCache(){
+  S.cache={lb:{data:null,ts:0,key:''},stats:{data:null,ts:0},keys:{data:null,ts:0},an:{data:null,ts:0,key:''},cmp:{data:null,ts:0,key:''},diff:{data:null,ts:0,key:''}};
+}
+
+window.clearLeaderboard=async function(){
+  if(!S.user)return toast('Login required','wa');
+  if(!confirm('Delete ALL results?'))return;
+  if(!confirm('This cannot be undone. Continue?'))return;
+  try{const c=await bulkDelete('results');resetCache();loadLB(true);loadHomeStats();toast(`${c} results deleted 🧹`,'ok');}catch(e){toast('Error','er');}
+};
+
+window.clearAllKeys=async function(){
+  if(!S.user)return toast('Login required','wa');
+  if(!confirm('Delete ALL answer keys?'))return;
+  if(!confirm('This cannot be undone. Continue?'))return;
+  try{const c=await bulkDelete('answerKeys');resetCache();S.keys=[];fillDDs();renderAKList();toast(`${c} keys deleted 🧹`,'ok');}catch(e){toast('Error','er');}
+};
+
+window.clearEverything=async function(){
+  if(!S.user)return toast('Login required','wa');
+  if(!confirm('DELETE EVERYTHING? Results + Keys?'))return;
+  if(!confirm('FINAL WARNING! This is permanent!'))return;
+  try{
+    const[c1,c2]=await Promise.all([bulkDelete('results'),bulkDelete('answerKeys')]);
+    resetCache();S.keys=[];fillDDs();renderAKList();loadLB(true);loadHomeStats();
+    toast(`${c1} results + ${c2} keys deleted 💣`,'ok');
+  }catch(e){toast('Error','er');}
+};
 
 // ─── MANUAL ENTRY ────────────────────────────────────────
-window.genManual=()=>{const eid=document.getElementById('manExam').value,g=document.getElementById('manGrid'),acts=document.getElementById('manActs');document.getElementById('manResCont').style.display='none';if(!eid){g.innerHTML='<div class="qb-empty">Select exam</div>';acts.style.display='none';return;}const key=S.keys.find(k=>k.id===eid);if(!key)return;acts.style.display='flex';g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');};
-function manCard(q,n,i){let body='';if(q.type==='scq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;else if(q.type==='mcq')body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;else if(q.type==='match')body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k}→</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;else if(q.type==='matrix')body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;else if(q.type==='num')body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter value">`;return `<div class="mq" data-i="${i}" data-type="${q.type}"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;}
-window.manSel=(i,v,btn,type)=>{const par=btn.parentElement;if(type==='mcq')btn.classList.toggle('sel');else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}};
-window.manMtx=(i,r,c,el)=>{el.classList.toggle('sel');el.textContent=el.classList.contains('sel')?'✓':'';};
-window.clearManual=()=>{document.querySelectorAll('.mq').forEach(mq=>{mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});mq.querySelectorAll('select').forEach(s=>s.value='');mq.querySelectorAll('input').forEach(inp=>inp.value='');});document.getElementById('manResCont').style.display='none';};
-window.submitManual=async()=>{const nm=document.getElementById('manName').value.trim(),eid=document.getElementById('manExam').value;if(!nm)return toast('Enter name','wa');if(!eid)return toast('Select exam','wa');const key=S.keys.find(k=>k.id===eid);if(!key)return toast('Key not found','er');const userAns=[];document.querySelectorAll('.mq').forEach(mq=>{const t=mq.dataset.type;if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}});const res=gradeAll(userAns,key,nm);showResult(res,'manResCont');document.getElementById('manResCont').style.display='block';document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});toast('Graded!','ok');if(res.pct>=75)launchConfetti();try{await addDoc(collection(db,'results'),{name:res.name,examId:res.examId,examName:res.examName,total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,userId:res.userId,createdAt:serverTimestamp()});S.cache.lb={data:null,ts:0,key:''};S.cache.stats={data:null,ts:0};S.cache.cmp={data:null,ts:0,key:''};S.cache.diff={data:null,ts:0,key:''};S.cache.an={data:null,ts:0,key:''};}catch(e){console.error(e)}};
+window.genManual=function(){
+  const eid=document.getElementById('manExam').value;
+  const g=document.getElementById('manGrid');
+  const acts=document.getElementById('manActs');
+  document.getElementById('manResCont').style.display='none';
+  if(!eid){g.innerHTML='<div class="qb-empty">Select an exam to load questions</div>';acts.style.display='none';return;}
+  const key=S.keys.find(k=>k.id===eid);
+  if(!key)return;
+  acts.style.display='flex';
+  g.innerHTML=key.questions.map((q,i)=>manCard(q,i+1,i)).join('');
+};
+
+function manCard(q,n,i){
+  let body='';
+  if(q.type==='scq'){
+    body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'scq')">${o}</button>`).join('')}</div>`;
+  }else if(q.type==='mcq'){
+    body=`<div class="mq-opts">${['A','B','C','D'].map(o=>`<button class="ob" data-o="${o}" onclick="manSel(${i},'${o}',this,'mcq')">${o}</button>`).join('')}</div>`;
+  }else if(q.type==='match'){
+    body=`<div class="mq-match">${['P','Q','R','S'].map(k=>`<span>${k}→</span><select class="fs" data-k="${k}"><option value="">-</option>${[1,2,3,4].map(m=>`<option value="${m}">${m}</option>`).join('')}</select>`).join('')}</div>`;
+  }else if(q.type==='matrix'){
+    body=`<div class="mq-matrix"><div class="mq-matrix-head"><div></div>${['P','Q','R','S','T'].map(c=>`<div>${c}</div>`).join('')}</div>${['A','B','C','D'].map(r=>`<div class="mq-matrix-row"><div class="rl">${r}</div>${['P','Q','R','S','T'].map(c=>`<div class="mc" data-r="${r}" data-c="${c}" onclick="manMtx(${i},'${r}','${c}',this)"></div>`).join('')}</div>`).join('')}</div>`;
+  }else if(q.type==='num'){
+    body=`<input type="number" step="any" class="mq-num-input" placeholder="Enter numerical value">`;
+  }
+  return `<div class="mq" data-i="${i}" data-type="${q.type}"><div class="mq-head"><span class="mq-num">Q${n}</span><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></div>${body}</div>`;
+}
+
+window.manSel=function(i,v,btn,type){
+  const par=btn.parentElement;
+  if(type==='mcq'){btn.classList.toggle('sel');}
+  else{par.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');}
+};
+
+window.manMtx=function(i,r,c,el){
+  el.classList.toggle('sel');
+  el.textContent=el.classList.contains('sel')?'✓':'';
+};
+
+window.clearManual=function(){
+  document.querySelectorAll('.mq').forEach(mq=>{
+    mq.querySelectorAll('.ob').forEach(b=>b.classList.remove('sel'));
+    mq.querySelectorAll('.mc').forEach(c=>{c.classList.remove('sel');c.textContent='';});
+    mq.querySelectorAll('select').forEach(s=>s.value='');
+    mq.querySelectorAll('input').forEach(inp=>inp.value='');
+  });
+  document.getElementById('manResCont').style.display='none';
+};
+
+window.submitManual=async function(){
+  const nm=document.getElementById('manName').value.trim();
+  const eid=document.getElementById('manExam').value;
+  if(!nm)return toast('Enter your name','wa');
+  if(!eid)return toast('Select an exam','wa');
+  const key=S.keys.find(k=>k.id===eid);
+  if(!key)return toast('Key not found','er');
+
+  const userAns=[];
+  document.querySelectorAll('.mq').forEach(mq=>{
+    const t=mq.dataset.type;
+    if(t==='scq'){const s=mq.querySelector('.ob.sel');userAns.push(s?s.dataset.o:null);}
+    else if(t==='mcq'){const sels=mq.querySelectorAll('.ob.sel');userAns.push(sels.length?[...sels].map(s=>s.dataset.o):null);}
+    else if(t==='match'){const o={};let any=false;mq.querySelectorAll('select').forEach(s=>{if(s.value){o[s.dataset.k]=s.value;any=true;}});userAns.push(any?o:null);}
+    else if(t==='matrix'){const o={A:[],B:[],C:[],D:[]};let any=false;mq.querySelectorAll('.mc.sel').forEach(c=>{o[c.dataset.r].push(c.dataset.c);any=true;});userAns.push(any?o:null);}
+    else if(t==='num'){const v=mq.querySelector('input').value;userAns.push(v===''?null:v);}
+  });
+
+  const res=gradeAll(userAns,key,nm);
+  showResult(res,'manResCont');
+  document.getElementById('manResCont').style.display='block';
+  document.getElementById('manResCont').scrollIntoView({behavior:'smooth',block:'start'});
+  toast('Graded successfully!','ok');
+  if(res.pct>=75)launchConfetti();
+
+  // Save to Firestore with details
+  try{
+    await addDoc(collection(db,'results'),{
+      name:res.name,examId:res.examId,examName:res.examName,
+      total:res.total,correct:res.correct,wrong:res.wrong,skipped:res.skipped,
+      marks:res.marks,max:res.max,pct:res.pct,acc:res.acc,
+      userId:res.userId,
+      details:res.details.map(d=>({q:d.q,type:d.type,st:d.st,marks:d.marks})),
+      createdAt:serverTimestamp()
+    });
+    // Invalidate relevant caches
+    S.cache.lb={data:null,ts:0,key:''};
+    S.cache.stats={data:null,ts:0};
+    S.cache.cmp={data:null,ts:0,key:''};
+    S.cache.diff={data:null,ts:0,key:''};
+    S.cache.an={data:null,ts:0,key:''};
+  }catch(e){console.error('Save result:',e);}
+};
 
 // ─── GRADING ─────────────────────────────────────────────
-function gradeAll(userAns,key,name){let c=0,w=0,sk=0,marks=0,max=0;const det=[];key.questions.forEach((q,i)=>{const u=userAns[i],cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;max+=cm;let st='sk',got=um,uDisp='–',aDisp='';if(q.type==='scq'){aDisp=q.answer;if(!u){st='sk';sk++;}else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}else{st='no';got=wm;w++;uDisp=u;}}else if(q.type==='mcq'){aDisp=q.answer.join(',');if(!u||!u.length){st='sk';sk++;}else{const cor=q.answer,uArr=Array.isArray(u)?u:[u];const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));const anyW=uArr.some(x=>!cor.includes(x));if(allC){st='ok';got=cm;c++;}else if(!anyW){got=uArr.length*pm;st='ok';c++;}else{st='no';got=wm;w++;}uDisp=uArr.join(',');}}else if(q.type==='match'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');if(!u){st='sk';sk++;}else{const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');}}else if(q.type==='matrix'){aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');if(!u){st='sk';sk++;}else{let rowsC=0;['A','B','C','D'].forEach(r=>{const ua=[...(u[r]||[])].sort().join(''),ka=[...q.answer[r]].sort().join('');if(ua===ka)rowsC++;});got=rowsC*cm;if(rowsC===4){st='ok';c++;}else if(rowsC>0){st='ok';c++;}else{st='no';w++;}uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');}}else if(q.type==='num'){aDisp=String(q.answer);if(!u){st='sk';sk++;}else{const tol=q.tolerance||0,diff=Math.abs(parseFloat(u)-parseFloat(q.answer));if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}uDisp=parseFloat(u).toFixed(q.decimals||2);}}marks+=got;det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});});const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;const r={name,examId:key.id,examName:key.name,total:key.questions.length,correct:c,wrong:w,skipped:sk,marks:Math.round(marks*100)/100,max,pct,acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,details:det,userId:S.user?.uid||null};S.curRes=r;return r;}
+function gradeAll(userAns,key,name){
+  let c=0,w=0,sk=0,marks=0,max=0;
+  const det=[];
+  key.questions.forEach((q,i)=>{
+    const u=userAns[i];
+    const cm=q.marks.c,wm=q.marks.w,um=q.marks.u,pm=q.marks.p||0;
+    max+=cm;
+    let st='sk',got=um,uDisp='–',aDisp='';
+
+    if(q.type==='scq'){
+      aDisp=q.answer||'?';
+      if(!u){st='sk';sk++;}
+      else if(u===q.answer){st='ok';got=cm;c++;uDisp=u;}
+      else{st='no';got=wm;w++;uDisp=u;}
+    }
+    else if(q.type==='mcq'){
+      aDisp=q.answer.join(',');
+      if(!u||!u.length){st='sk';sk++;}
+      else{
+        const cor=q.answer,uArr=Array.isArray(u)?u:[u];
+        const allC=cor.every(x=>uArr.includes(x))&&uArr.every(x=>cor.includes(x));
+        const anyW=uArr.some(x=>!cor.includes(x));
+        if(allC){st='ok';got=cm;c++;}
+        else if(!anyW){got=uArr.length*pm;st='ok';c++;}
+        else{st='no';got=wm;w++;}
+        uDisp=uArr.join(',');
+      }
+    }
+    else if(q.type==='match'){
+      aDisp=Object.entries(q.answer).map(([k,v])=>`${k}-${v}`).join(' ');
+      if(!u){st='sk';sk++;}
+      else{
+        const allC=['P','Q','R','S'].every(k=>String(u[k])===String(q.answer[k]));
+        if(allC){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}
+        uDisp=Object.entries(u).map(([k,v])=>`${k}-${v||'-'}`).join(' ');
+      }
+    }
+    else if(q.type==='matrix'){
+      aDisp=Object.entries(q.answer).map(([k,v])=>`${k}:${v.join('')}`).join(' ');
+      if(!u){st='sk';sk++;}
+      else{
+        let rowsC=0;
+        ['A','B','C','D'].forEach(r=>{
+          const ua=[...(u[r]||[])].sort().join(''),ka=[...q.answer[r]].sort().join('');
+          if(ua===ka)rowsC++;
+        });
+        got=rowsC*cm;
+        st=rowsC>0?'ok':'no';
+        rowsC>0?c++:w++;
+        uDisp=Object.entries(u).map(([k,v])=>`${k}:${v.join('')||'-'}`).join(' ');
+      }
+    }
+    else if(q.type==='num'){
+      aDisp=String(q.answer);
+      if(!u){st='sk';sk++;}
+      else{
+        const tol=q.tolerance||0,diff=Math.abs(parseFloat(u)-parseFloat(q.answer));
+        if(diff<=tol){st='ok';got=cm;c++;}else{st='no';got=wm;w++;}
+        uDisp=parseFloat(u).toFixed(q.decimals||2);
+      }
+    }
+    marks+=got;
+    det.push({q:i+1,type:q.type,u:uDisp,a:aDisp,st,marks:got});
+  });
+
+  const pct=max>0?Math.max(0,Math.round((marks/max)*100)):0;
+  const r={
+    name,examId:key.id,examName:key.name,
+    total:key.questions.length,correct:c,wrong:w,skipped:sk,
+    marks:Math.round(marks*100)/100,max,pct,
+    acc:key.questions.length>0?Math.round((c/key.questions.length)*100):0,
+    details:det,userId:S.user?.uid||null
+  };
+  S.curRes=r;
+  return r;
+}
 
 // ─── SHOW RESULT ─────────────────────────────────────────
-function showResult(r,cid){const cont=document.getElementById(cid);const offset=283-(r.pct/100)*283;cont.innerHTML=`<div class="rh"><div class="scirc"><svg viewBox="0 0 100 100"><circle class="scbg" cx="50" cy="50" r="45"/><circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/></svg><div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div></div><div class="rst"><div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div><div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div><div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div><div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div></div></div><div class="agrid">${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}</div><div class="racts"><button class="btn ol" onclick="go('leader')">🏆 Leaderboard</button><button class="btn pr" onclick="clearManual()">🔄 Try Again</button><button class="btn ol" onclick="go('compare')">⚔️ Compare</button></div>`;}
+function showResult(r,cid){
+  const cont=document.getElementById(cid);
+  const offset=283-(r.pct/100)*283;
+  cont.innerHTML=`
+    <div class="rh">
+      <div class="scirc">
+        <svg viewBox="0 0 100 100"><circle class="scbg" cx="50" cy="50" r="45"/><circle class="scf" cx="50" cy="50" r="45" style="stroke-dashoffset:${offset}"/></svg>
+        <div class="sct"><span class="scv">${r.pct}%</span><span class="scl">Score</span></div>
+      </div>
+      <div class="rst">
+        <div class="rs ok"><span class="ri">✅</span><span class="rv">${r.correct}</span><span class="rl">Correct</span></div>
+        <div class="rs no"><span class="ri">❌</span><span class="rv">${r.wrong}</span><span class="rl">Wrong</span></div>
+        <div class="rs sk"><span class="ri">⏭️</span><span class="rv">${r.skipped}</span><span class="rl">Skipped</span></div>
+        <div class="rs"><span class="ri">⭐</span><span class="rv">${r.marks}/${r.max}</span><span class="rl">Marks</span></div>
+      </div>
+    </div>
+    <div class="agrid">${r.details.map(d=>`<div class="ai ${d.st}"><span class="qn">Q${d.q}</span><span class="qa">You: ${d.u} | Ans: ${d.a}</span><span class="qi">${d.marks>0?'+':''}${d.marks}</span></div>`).join('')}</div>
+    <div class="racts">
+      <button class="btn ol" onclick="go('leader')">🏆 Leaderboard</button>
+      <button class="btn pr" onclick="clearManual()">🔄 Try Again</button>
+      <button class="btn ol" onclick="go('compare')">⚔️ Compare</button>
+    </div>`;
+}
 
-// ═══════════════════════════════════════════════════════════
-// ─── FEATURE 21: COMPARISON TOOL ───────────────────────────
-// ═══════════════════════════════════════════════════════════
-
-// Load students for selected exam into dropdowns
+// ─── COMPARISON TOOL ─────────────────────────────────────
 window.loadCmpStudents=async function(){
   const eid=document.getElementById('cmpExam').value;
   const s1=document.getElementById('cmpS1');
@@ -802,29 +1486,20 @@ window.loadCmpStudents=async function(){
   s2.innerHTML='<option value="">Select Student B</option>';
   document.getElementById('cmpResult').innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select two students to compare</p></div>';
   if(!eid)return;
-
   try{
     const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
     const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
-
-    // Group by name, keep best score per student
-    const studentMap={};
-    results.forEach(r=>{
-      if(!studentMap[r.name]||r.pct>studentMap[r.name].pct){
-        studentMap[r.name]=r;
-      }
-    });
-
-    const students=Object.values(studentMap).sort((a,b)=>b.pct-a.pct);
+    // Best score per student
+    const map={};
+    results.forEach(r=>{if(!map[r.name]||r.pct>map[r.name].pct)map[r.name]=r;});
+    const students=Object.values(map).sort((a,b)=>b.pct-a.pct);
     students.forEach(st=>{
       [s1,s2].forEach(sel=>{
         const o=document.createElement('option');
-        o.value=st.id;
-        o.textContent=`${st.name} (${st.pct}%)`;
+        o.value=st.id;o.textContent=`${st.name} (${st.pct}%)`;
         sel.appendChild(o);
       });
     });
-
     S.cache.cmp={data:results,ts:Date.now(),key:eid};
     toast(`${students.length} students loaded`,'ok');
   }catch(e){toast('Error loading students','er');}
@@ -835,86 +1510,73 @@ window.runComparison=async function(){
   const s1id=document.getElementById('cmpS1').value;
   const s2id=document.getElementById('cmpS2').value;
   const cont=document.getElementById('cmpResult');
-
+  const btn=document.getElementById('cmpBtn');
   if(!eid)return toast('Select exam','wa');
   if(!s1id||!s2id)return toast('Select two students','wa');
   if(s1id===s2id)return toast('Select different students','wa');
-
-  cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Comparing...</p></div>';
-
+  btn.disabled=true;btn.textContent='Comparing...';
+  cont.innerHTML=`<div class="emp" style="padding:3rem 0">${SPIN}<p>Comparing students...</p></div>`;
   try{
-    // Fetch both students data
     const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
     const allRes=snap.docs.map(d=>({id:d.id,...d.data()}));
-
     const r1=allRes.find(r=>r.id===s1id);
     const r2=allRes.find(r=>r.id===s2id);
-
     if(!r1||!r2)return toast('Could not load student data','er');
-
     renderComparison(r1,r2);
-  }catch(e){toast('Error: '+e.message,'er');}
+  }catch(e){
+    toast('Error: '+e.message,'er');
+    cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading data</p></div>';
+  }finally{btn.disabled=false;btn.innerHTML='⚔️ Compare Now';}
 };
 
 window.clearComparison=function(){
   document.getElementById('cmpS1').value='';
   document.getElementById('cmpS2').value='';
   document.getElementById('cmpResult').innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">⚔️</span><p>Select exam and two students</p></div>';
-  if(S.charts.cmpRadar){S.charts.cmpRadar.destroy();S.charts.cmpRadar=null;}
+  ['cmpRadar','cmpPie1','cmpPie2'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
 };
 
 function renderComparison(r1,r2){
   const cont=document.getElementById('cmpResult');
-
-  // Determine winner
-  const p1Wins=r1.pct>r2.pct;
-  const tie=r1.pct===r2.pct;
-
-  // Metrics to compare
+  const p1Wins=r1.pct>r2.pct,tie=r1.pct===r2.pct;
   const metrics=[
     {label:'Score %',icon:'📊',v1:r1.pct,v2:r2.pct,unit:'%'},
     {label:'Marks',icon:'⭐',v1:r1.marks,v2:r2.marks,unit:''},
     {label:'Correct',icon:'✅',v1:r1.correct,v2:r2.correct,unit:''},
-    {label:'Wrong',icon:'❌',v1:r1.wrong,v2:r2.wrong,unit:'',lowerBetter:true},
-    {label:'Skipped',icon:'⏭️',v1:r1.skipped,v2:r2.skipped,unit:'',lowerBetter:true},
-    {label:'Accuracy',icon:'🎯',v1:r1.acc,v2:r2.acc,unit:'%'},
+    {label:'Wrong',icon:'❌',v1:r1.wrong,v2:r2.wrong,unit:'',lb:true},
+    {label:'Skipped',icon:'⏭️',v1:r1.skipped,v2:r2.skipped,unit:'',lb:true},
+    {label:'Accuracy',icon:'🎯',v1:r1.acc,v2:r2.acc,unit:'%'}
   ];
-
-  // Generate insights
-  const insights=[];
+  // Insights
+  const ins=[];
   if(!tie){
-    const winner=p1Wins?r1:r2;
-    const loser=p1Wins?r2:r1;
-    const diff=Math.abs(r1.pct-r2.pct);
-    insights.push({type:'good',text:`🏆 <b>${winner.name}</b> leads by <b>${diff}%</b> (${winner.marks} vs ${loser.marks} marks)`});
-    if(Math.abs(r1.correct-r2.correct)>0){insights.push({type:'neutral',text:`✅ Correct answers: <b>${r1.name} ${r1.correct}</b> vs <b>${r2.name} ${r2.correct}</b> — difference of ${Math.abs(r1.correct-r2.correct)} question(s)`});}
-    if(Math.abs(r1.wrong-r2.wrong)>0){const lessWrong=r1.wrong<r2.wrong?r1:r2;insights.push({type:'good',text:`⚠️ <b>${lessWrong.name}</b> made fewer mistakes (${Math.min(r1.wrong,r2.wrong)} vs ${Math.max(r1.wrong,r2.wrong)} wrong)`});}
-    if(Math.abs(r1.skipped-r2.skipped)>0){const lessSkip=r1.skipped<r2.skipped?r1:r2;insights.push({type:'neutral',text:`⏭️ <b>${lessSkip.name}</b> skipped fewer questions (${Math.min(r1.skipped,r2.skipped)} vs ${Math.max(r1.skipped,r2.skipped)})`});}
-    if(diff<=5)insights.push({type:'neutral',text:`🤝 Very close contest! Only ${diff}% separates these students.`});
-    if(diff>=30)insights.push({type:'bad',text:`📉 Large performance gap of ${diff}%. <b>${loser.name}</b> needs to improve significantly.`});
+    const win=p1Wins?r1:r2,lose=p1Wins?r2:r1,diff=Math.abs(r1.pct-r2.pct);
+    ins.push({t:'good',tx:`🏆 <b>${win.name}</b> leads by <b>${diff}%</b> (${win.marks} vs ${lose.marks} marks)`});
+    if(Math.abs(r1.correct-r2.correct)>0)ins.push({t:'neutral',tx:`✅ Correct: <b>${r1.name} ${r1.correct}</b> vs <b>${r2.name} ${r2.correct}</b>`});
+    if(Math.abs(r1.wrong-r2.wrong)>0){const lw=r1.wrong<r2.wrong?r1:r2;ins.push({t:'good',tx:`⚠️ <b>${lw.name}</b> made fewer mistakes (${Math.min(r1.wrong,r2.wrong)} vs ${Math.max(r1.wrong,r2.wrong)})`});}
+    if(diff<=5)ins.push({t:'neutral',tx:`🤝 Very close! Only ${diff}% separates them.`});
+    if(diff>=30)ins.push({t:'bad',tx:`📉 Large gap of ${diff}%. <b>${lose.name}</b> needs more practice.`});
   }else{
-    insights.push({type:'neutral',text:`🤝 <b>Perfect tie!</b> Both students scored ${r1.pct}% with ${r1.marks} marks.`});
+    ins.push({t:'neutral',tx:`🤝 <b>Perfect tie!</b> Both scored ${r1.pct}% with ${r1.marks} marks.`});
   }
 
+  // Use saved details if available
+  const det1=r1.details||[];
+  const det2=r2.details||[];
+  const hasDetails=det1.length>0&&det2.length>0;
+
   cont.innerHTML=`
-    <!-- Header Cards -->
     <div class="cmp-header">
       <div class="cmp-player p1">
-        <div class="cmp-player-ini">${r1.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</div>
+        <div class="cmp-player-ini">${ini(r1.name)}</div>
         <div class="cmp-player-name">${r1.name}</div>
         <span class="cmp-player-score">${r1.pct}%</span>
         <div class="cmp-player-sub">${r1.marks}/${r1.max} marks • ${r1.examName}</div>
         ${(p1Wins||tie)?`<div class="cmp-winner-badge">👑 ${tie?'Tied':'Winner'}</div>`:''}
       </div>
-
-      <div class="cmp-mid">
-        <div class="cmp-mid-icon">⚔️</div>
-        <div style="font-weight:800;font-size:1.4rem;color:var(--gl)">VS</div>
-        <div style="font-size:.75rem;color:var(--g);text-align:center">${r1.total} Questions</div>
-      </div>
-
+      <div class="cmp-mid"><div class="cmp-mid-icon">⚔️</div><div style="font-weight:800;font-size:1.4rem;color:var(--gl)">VS</div><div style="font-size:.75rem;color:var(--g)">${r1.total} Questions</div></div>
       <div class="cmp-player p2">
-        <div class="cmp-player-ini">${r2.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</div>
+        <div class="cmp-player-ini">${ini(r2.name)}</div>
         <div class="cmp-player-name">${r2.name}</div>
         <span class="cmp-player-score">${r2.pct}%</span>
         <div class="cmp-player-sub">${r2.marks}/${r2.max} marks • ${r2.examName}</div>
@@ -922,7 +1584,6 @@ function renderComparison(r1,r2){
       </div>
     </div>
 
-    <!-- Stats Comparison Bars -->
     <div class="chart-box" style="margin-bottom:1.5rem">
       <h3>📊 Head-to-Head Stats</h3>
       <div style="display:flex;justify-content:space-between;margin-bottom:1rem;font-size:.8rem;font-weight:700">
@@ -930,422 +1591,341 @@ function renderComparison(r1,r2){
         <span style="color:var(--s)">● ${r2.name}</span>
       </div>
       ${metrics.map(m=>{
-        const max=Math.max(m.v1,m.v2)||1;
-        const pct1=Math.round((m.v1/max)*100);
-        const pct2=Math.round((m.v2/max)*100);
-        let w1=p1Wins,w2=!p1Wins;
-        if(m.lowerBetter){w1=m.v1<m.v2;w2=m.v2<m.v1;}else{w1=m.v1>m.v2;w2=m.v2>m.v1;}
+        const mx=Math.max(m.v1,m.v2)||1;
+        const p1=Math.round((m.v1/mx)*100),p2=Math.round((m.v2/mx)*100);
+        const w1=m.lb?m.v1<m.v2:m.v1>m.v2,w2=m.lb?m.v2<m.v1:m.v2>m.v1;
         return `<div class="cmp-bar-row">
           <div class="cmp-bar-wrap left">
             <div class="cmp-bar-pct" style="color:var(--pl)">${m.v1}${m.unit}</div>
-            <div class="cmp-bar-bg"><div class="cmp-bar-fill p1" style="width:${pct1}%"></div></div>
-            ${w1?'<span style="color:var(--gold);font-size:.8rem">★</span>':'<span style="width:1rem"></span>'}
+            <div class="cmp-bar-bg"><div class="cmp-bar-fill p1" style="width:${p1}%"></div></div>
+            ${w1?'<span style="color:var(--gold)">★</span>':'<span style="width:1rem"></span>'}
           </div>
           <div class="cmp-bar-label">${m.icon} ${m.label}</div>
           <div class="cmp-bar-wrap right">
-            ${w2?'<span style="color:var(--gold);font-size:.8rem">★</span>':'<span style="width:1rem"></span>'}
-            <div class="cmp-bar-bg"><div class="cmp-bar-fill p2" style="width:${pct2}%"></div></div>
+            ${w2?'<span style="color:var(--gold)">★</span>':'<span style="width:1rem"></span>'}
+            <div class="cmp-bar-bg"><div class="cmp-bar-fill p2" style="width:${p2}%"></div></div>
             <div class="cmp-bar-pct" style="color:var(--s)">${m.v2}${m.unit}</div>
           </div>
         </div>`;
       }).join('')}
     </div>
 
-    <!-- Radar Chart -->
     <div class="analytics-grid" style="margin-bottom:1.5rem">
+      <div class="chart-box"><h3>🕸️ Performance Radar</h3><div class="chart-wrap"><canvas id="cmpRadar"></canvas></div></div>
       <div class="chart-box">
-        <h3>🕸️ Performance Radar</h3>
-        <div class="chart-wrap"><canvas id="cmpRadar"></canvas></div>
-      </div>
-
-      <!-- Score Doughnut Comparison -->
-      <div class="chart-box">
-        <h3>🥧 Correct/Wrong/Skipped</h3>
+        <h3>🥧 Correct / Wrong / Skipped</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;height:260px">
-          <div style="position:relative">
-            <div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--pl);margin-bottom:.3rem">${r1.name.split(' ')[0]}</div>
-            <canvas id="cmpPie1"></canvas>
-          </div>
-          <div style="position:relative">
-            <div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--s);margin-bottom:.3rem">${r2.name.split(' ')[0]}</div>
-            <canvas id="cmpPie2"></canvas>
-          </div>
+          <div><div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--pl);margin-bottom:.3rem">${r1.name.split(' ')[0]}</div><canvas id="cmpPie1"></canvas></div>
+          <div><div style="text-align:center;font-size:.8rem;font-weight:700;color:var(--s);margin-bottom:.3rem">${r2.name.split(' ')[0]}</div><canvas id="cmpPie2"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- Question-by-Question Comparison -->
     <div class="chart-box" style="margin-bottom:1.5rem">
-      <h3>🔍 Question-by-Question Comparison</h3>
-      <div style="display:flex;gap:1rem;margin-bottom:.8rem;font-size:.8rem;flex-wrap:wrap">
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(16,185,129,.3);display:inline-block"></span>Correct</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(239,68,68,.3);display:inline-block"></span>Wrong</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(245,158,11,.3);display:inline-block"></span>Skipped</span>
-      </div>
-      <div style="overflow-x:auto">
-        <div class="cmp-qa-grid" style="grid-template-columns:1fr 50px 1fr;min-width:400px">
-          <div class="cmp-qa-head" style="color:var(--pl)">${r1.name.split(' ')[0]}</div>
-          <div class="cmp-qa-head">Q#</div>
-          <div class="cmp-qa-head" style="color:var(--s)">${r2.name.split(' ')[0]}</div>
-          ${Array.from({length:r1.total}).map((_,i)=>{
-            // We only have totals, not per-question from Firestore
-            // Show based on marks comparison
-            const mk1=i<r1.correct?'ok':i<r1.correct+r1.wrong?'no':'sk';
-            const mk2=i<r2.correct?'ok':i<r2.correct+r2.wrong?'no':'sk';
-            const icon={ok:'✅',no:'❌',sk:'⏭️'};
-            return `<div class="cmp-qa-cell ${mk1}">${icon[mk1]}</div><div class="cmp-qa-qnum">Q${i+1}</div><div class="cmp-qa-cell ${mk2}">${icon[mk2]}</div>`;
-          }).join('')}
+      <h3>🔍 Question-by-Question</h3>
+      ${hasDetails?`
+        <div style="display:flex;gap:1rem;margin-bottom:.8rem;font-size:.8rem;flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(16,185,129,.3);display:inline-block"></span>Correct</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(239,68,68,.3);display:inline-block"></span>Wrong</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:rgba(245,158,11,.3);display:inline-block"></span>Skipped</span>
         </div>
-      </div>
-      <p style="color:var(--gl);font-size:.75rem;margin-top:.5rem;font-style:italic">* Note: Per-question breakdown is estimated from totals. For exact Q-by-Q comparison, detailed answer storage can be added.</p>
+        <div style="overflow-x:auto">
+          <div class="cmp-qa-grid" style="grid-template-columns:1fr 50px 1fr;min-width:400px">
+            <div class="cmp-qa-head" style="color:var(--pl)">${r1.name.split(' ')[0]}</div>
+            <div class="cmp-qa-head">Q#</div>
+            <div class="cmp-qa-head" style="color:var(--s)">${r2.name.split(' ')[0]}</div>
+            ${det1.map((d1,i)=>{
+              const d2=det2[i]||{st:'sk'};
+              const icon={ok:'✅',no:'❌',sk:'⏭️'};
+              return `<div class="cmp-qa-cell ${d1.st}">${icon[d1.st]}</div><div class="cmp-qa-qnum">Q${i+1}</div><div class="cmp-qa-cell ${d2.st}">${icon[d2.st]}</div>`;
+            }).join('')}
+          </div>
+        </div>`
+      :`<p style="color:var(--gl);font-size:.85rem;font-style:italic;padding:.5rem">Per-question data not available for older submissions. New submissions will show exact Q-by-Q comparison.</p>`}
     </div>
 
-    <!-- Insights -->
     <div class="chart-box" style="margin-bottom:1.5rem">
       <h3>💡 Key Insights</h3>
-      ${insights.map(ins=>`<div class="cmp-insight ${ins.type}">${ins.text}</div>`).join('')}
+      ${ins.map(i=>`<div class="cmp-insight ${i.t}">${i.tx}</div>`).join('')}
     </div>
 
-    <!-- Export Comparison -->
     <div class="exp-btns">
-      <button class="exp-btn exp-pdf" onclick="exportComparisonPDF('${r1.name}','${r2.name}')">📄 Export Comparison PDF</button>
-      <button class="exp-btn exp-excel" onclick="exportComparisonExcel()">📊 Export Excel</button>
-    </div>
-  `;
+      <button class="exp-btn exp-pdf" onclick="exportCmpPDF('${r1.name}','${r2.name}')">📄 Export PDF</button>
+      <button class="exp-btn exp-excel" onclick="exportCmpExcel('${r1.id}','${r2.id}')">📊 Export Excel</button>
+    </div>`;
 
-  // Render comparison charts
   setTimeout(()=>renderCmpCharts(r1,r2),100);
 }
 
+function ini(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
+
 function renderCmpCharts(r1,r2){
-  // Destroy old
   ['cmpRadar','cmpPie1','cmpPie2'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
-
-  const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}}}};
-
-  // Radar Chart
-  const radarCtx=document.getElementById('cmpRadar');
-  if(radarCtx){
-    const max=r1.total||1;
-    S.charts.cmpRadar=new Chart(radarCtx,{
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:10}}}}};
+  const mx=r1.total||1;
+  const rc=document.getElementById('cmpRadar');
+  if(rc){
+    S.charts.cmpRadar=new Chart(rc,{
       type:'radar',
       data:{
-        labels:['Score %','Accuracy %','Correct','Wrong (inv)','Marks %'],
+        labels:['Score %','Accuracy %','Correct','Wrong(inv)','Marks %'],
         datasets:[
-          {label:r1.name.split(' ')[0],data:[r1.pct,r1.acc,Math.round((r1.correct/max)*100),Math.round((1-r1.wrong/max)*100),Math.round((r1.marks/r1.max)*100)],borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',pointBackgroundColor:'#6366f1',pointRadius:4,borderWidth:2},
-          {label:r2.name.split(' ')[0],data:[r2.pct,r2.acc,Math.round((r2.correct/max)*100),Math.round((1-r2.wrong/max)*100),Math.round((r2.marks/r2.max)*100)],borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.15)',pointBackgroundColor:'#0ea5e9',pointRadius:4,borderWidth:2}
+          {label:r1.name.split(' ')[0],data:[r1.pct,r1.acc,Math.round((r1.correct/mx)*100),Math.round((1-r1.wrong/mx)*100),Math.round((r1.marks/r1.max)*100)],borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',pointBackgroundColor:'#6366f1',pointRadius:4,borderWidth:2},
+          {label:r2.name.split(' ')[0],data:[r2.pct,r2.acc,Math.round((r2.correct/mx)*100),Math.round((1-r2.wrong/mx)*100),Math.round((r2.marks/r2.max)*100)],borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.15)',pointBackgroundColor:'#0ea5e9',pointRadius:4,borderWidth:2}
         ]
       },
-      options:{...baseOpts,scales:{r:{ticks:{color:'#64748b',backdropColor:'transparent',font:{size:9}},grid:{color:'rgba(255,255,255,.08)'},pointLabels:{color:'#94a3b8',font:{size:10}},min:0,max:100}}}
+      options:{...base,scales:{r:{ticks:{color:'#64748b',backdropColor:'transparent',font:{size:9}},grid:{color:'rgba(255,255,255,.08)'},pointLabels:{color:'#94a3b8',font:{size:10}},min:0,max:100}}}
     });
   }
-
-  // Pie charts
   ['cmpPie1','cmpPie2'].forEach((id,idx)=>{
     const r=idx===0?r1:r2;
     const ctx=document.getElementById(id);
     if(ctx){
       S.charts[id]=new Chart(ctx,{
         type:'doughnut',
-        data:{
-          labels:['Correct','Wrong','Skipped'],
-          datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]
-        },
-        options:{...baseOpts,cutout:'60%',plugins:{legend:{display:false}}}
+        data:{labels:['Correct','Wrong','Skipped'],datasets:[{data:[r.correct,r.wrong,r.skipped],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},
+        options:{...base,cutout:'60%',plugins:{legend:{display:false}}}
       });
     }
   });
 }
 
-// Export Comparison PDF
-window.exportComparisonPDF=function(n1,n2){
-  if(!window.jspdf)return toast('PDF library not loaded','er');
+window.exportCmpPDF=function(n1,n2){
+  if(typeof window.jspdf==='undefined')return toast('PDF library not loaded','er');
   const{jsPDF}=window.jspdf;
   const pdf=new jsPDF();
   const W=pdf.internal.pageSize.getWidth();
   let y=18;
   pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
   pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
-  pdf.text('⚔️ Student Comparison Report',W/2,12,{align:'center'});
+  pdf.text('Student Comparison Report',W/2,12,{align:'center'});
   pdf.setFontSize(9);pdf.setFont('helvetica','normal');
   pdf.text(new Date().toLocaleString(),W/2,20,{align:'center'});
   y=40;
-  // Get current result data from page
-  const s1Name=document.getElementById('cmpS1').selectedOptions[0]?.text||n1;
-  const s2Name=document.getElementById('cmpS2').selectedOptions[0]?.text||n2;
-  pdf.setTextColor(129,140,248);pdf.setFontSize(12);pdf.setFont('helvetica','bold');
-  pdf.text(n1+' VS '+n2,W/2,y,{align:'center'});
-  y+=10;
-  pdf.setTextColor(100,116,139);pdf.setFontSize(9);pdf.setFont('helvetica','normal');
-  pdf.text('Generated by OMR Scanner Pro',W/2,y,{align:'center'});
+  const allRes=S.cache.cmp.data||[];
+  const r1=allRes.find(r=>r.name===n1);
+  const r2=allRes.find(r=>r.name===n2);
+  pdf.setTextColor(129,140,248);pdf.setFontSize(14);pdf.setFont('helvetica','bold');
+  pdf.text(`${n1}  VS  ${n2}`,W/2,y,{align:'center'});y+=8;
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.setTextColor(100,116,139);
+  pdf.text(`Exam: ${r1?.examName||'N/A'}`,W/2,y,{align:'center'});y+=14;
+  if(r1&&r2){
+    const cols=[14,60,110,160];
+    pdf.setFillColor(30,41,59);pdf.rect(10,y-5,W-20,10,'F');
+    pdf.setTextColor(148,163,184);pdf.setFontSize(8);pdf.setFont('helvetica','bold');
+    ['Metric',n1.slice(0,18),n2.slice(0,18),'Winner'].forEach((h,i)=>pdf.text(h,cols[i],y));
+    y+=8;
+    const metrics=[
+      {l:'Score %',v1:r1.pct,v2:r2.pct,u:'%',lb:false},
+      {l:'Marks',v1:r1.marks,v2:r2.marks,u:'',lb:false},
+      {l:'Correct',v1:r1.correct,v2:r2.correct,u:'',lb:false},
+      {l:'Wrong',v1:r1.wrong,v2:r2.wrong,u:'',lb:true},
+      {l:'Skipped',v1:r1.skipped,v2:r2.skipped,u:'',lb:true},
+      {l:'Accuracy',v1:r1.acc,v2:r2.acc,u:'%',lb:false}
+    ];
+    pdf.setFont('helvetica','normal');
+    metrics.forEach((m,idx)=>{
+      if(y>270){pdf.addPage();y=14;}
+      if(idx%2===0){pdf.setFillColor(20,30,50);pdf.rect(10,y-4,W-20,8,'F');}
+      const w1=m.lb?m.v1<m.v2:m.v1>m.v2,w2=m.lb?m.v2<m.v1:m.v2>m.v1;
+      const winner=w1?n1:w2?n2:'Tie';
+      pdf.setTextColor(200,200,200);pdf.text(m.l,cols[0],y);
+      pdf.setTextColor(129,140,248);pdf.text(`${m.v1}${m.u}`,cols[1],y);
+      pdf.setTextColor(14,165,233);pdf.text(`${m.v2}${m.u}`,cols[2],y);
+      pdf.setTextColor(winner==='Tie'?[245,158,11]:winner===n1?[129,140,248]:[14,165,233]);
+      pdf.text(winner,cols[3],y);y+=8;
+    });
+    y+=6;
+    const winner=r1.pct>r2.pct?n1:r2.pct>r1.pct?n2:null;
+    pdf.setFontSize(11);pdf.setFont('helvetica','bold');
+    if(winner){pdf.setTextColor(251,191,36);pdf.text(`Winner: ${winner}`,W/2,y,{align:'center'});}
+    else{pdf.setTextColor(245,158,11);pdf.text('Result: Perfect Tie!',W/2,y,{align:'center'});}
+  }
   pdf.save(`Comparison_${n1}_vs_${n2}.pdf`);
   toast('PDF exported!','ok');
 };
 
-window.exportComparisonExcel=function(){
-  toast('Select specific exam result data first','wa');
+window.exportCmpExcel=function(s1id,s2id){
+  const allRes=S.cache.cmp.data||[];
+  const r1=allRes.find(r=>r.id===s1id);
+  const r2=allRes.find(r=>r.id===s2id);
+  if(!r1||!r2)return toast('Run comparison first','wa');
+  const wb=XLSX.utils.book_new();
+  const data=[
+    ['Student Comparison Report'],['Exam',r1.examName||'N/A'],['Generated',new Date().toLocaleString()],[''],
+    ['Metric',r1.name,r2.name,'Winner'],
+    ['Score %',r1.pct,r2.pct,r1.pct>r2.pct?r1.name:r2.pct>r1.pct?r2.name:'Tie'],
+    ['Marks',r1.marks,r2.marks,r1.marks>r2.marks?r1.name:r2.marks>r1.marks?r2.name:'Tie'],
+    ['Correct',r1.correct,r2.correct,r1.correct>r2.correct?r1.name:r2.correct>r1.correct?r2.name:'Tie'],
+    ['Wrong',r1.wrong,r2.wrong,r1.wrong<r2.wrong?r1.name:r2.wrong<r1.wrong?r2.name:'Tie'],
+    ['Skipped',r1.skipped,r2.skipped,r1.skipped<r2.skipped?r1.name:r2.skipped<r1.skipped?r2.name:'Tie'],
+    ['Accuracy %',r1.acc,r2.acc,r1.acc>r2.acc?r1.name:r2.acc>r1.acc?r2.name:'Tie']
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:16},{wch:20},{wch:20},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws,'Comparison');
+  XLSX.writeFile(wb,`Comparison_${r1.name}_vs_${r2.name}.xlsx`);
+  toast('Excel exported!','ok');
 };
 
-// ═══════════════════════════════════════════════════════════
-// ─── FEATURE 24: DIFFICULTY RATING ─────────────────────────
-// ═══════════════════════════════════════════════════════════
+// ─── DIFFICULTY RATING ───────────────────────────────────
+function seededRand(seed){const x=Math.sin(seed+1)*10000;return x-Math.floor(x);}
 
 window.loadDifficulty=async function(){
   const eid=document.getElementById('diffExam').value;
   const cont=document.getElementById('diffContent');
   if(!eid){cont.innerHTML='<div class="emp" style="padding:3rem 0"><span class="ei">🎯</span><p>Select exam above</p></div>';return;}
-
   const now=Date.now();
-  if(S.cache.diff.data&&S.cache.diff.key===eid&&(now-S.cache.diff.ts<CACHE_DIFF)){
-    renderDifficulty(S.cache.diff.data);return;
-  }
-
-  cont.innerHTML='<div class="emp" style="padding:3rem 0"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Calculating difficulty ratings...</p></div>';
-
+  if(S.cache.diff.data&&S.cache.diff.key===eid&&(now-S.cache.diff.ts<CACHE.DIFF)){renderDifficulty(S.cache.diff.data);return;}
+  cont.innerHTML=`<div class="emp" style="padding:3rem 0">${SPIN}<p>Calculating difficulty ratings...</p></div>`;
   try{
-    // Load all results for this exam
     const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
     const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
     const key=S.keys.find(k=>k.id===eid);
+    if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet for this exam.</p></div>';return;}
+    if(!key?.questions){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Answer key not found</p></div>';return;}
 
-    if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet. Need attempts to calculate difficulty.</p></div>';return;}
-    if(!key||!key.questions){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Answer key not found</p></div>';return;}
-
-    // Calculate difficulty for each question
-    // Since we store only totals, we compute difficulty from score distribution
-    // A smarter approach: use pct distribution to estimate per-question difficulty
     const totalAttempts=results.length;
     const avgPct=results.reduce((s,r)=>s+(r.pct||0),0)/totalAttempts;
     const avgCorrect=results.reduce((s,r)=>s+(r.correct||0),0)/totalAttempts;
     const avgWrong=results.reduce((s,r)=>s+(r.wrong||0),0)/totalAttempts;
-    const avgSkipped=results.reduce((s,r)=>s+(r.skipped||0),0)/totalAttempts;
     const totalQ=key.questions.length;
 
-    // Build per-question difficulty estimates using score distribution
-    // We simulate difficulty by distributing correct/wrong/skipped across questions
-    // weighted by question marks and overall performance
-    const qDifficulty=key.questions.map((q,i)=>{
-      // Estimate correctRate based on position and overall performance
-      // Questions at end tend to be harder; use position + score correlation
-      const positionFactor=1-(i/totalQ)*0.3; // questions later = slightly harder
-      const baseCorrectRate=avgCorrect/totalQ;
-      const estimatedCorrectRate=Math.min(1,Math.max(0,baseCorrectRate*positionFactor+(Math.random()*.1-.05)));
-      const estimatedWrongRate=Math.min(1-estimatedCorrectRate,avgWrong/totalQ*(1+(1-positionFactor)));
-      const estimatedSkipRate=Math.max(0,1-estimatedCorrectRate-estimatedWrongRate);
+    // Check if we have per-question details
+    const hasDetails=results.some(r=>r.details&&r.details.length>0);
+    let qDifficulty;
 
-      // Discrimination index: how well this question separates top and bottom scorers
-      const topScorers=results.filter(r=>r.pct>=60);
-      const bottomScorers=results.filter(r=>r.pct<40);
-      const topCorrectRate=topScorers.length?avgCorrect/totalQ*1.3:estimatedCorrectRate;
-      const bottomCorrectRate=bottomScorers.length?avgCorrect/totalQ*0.6:estimatedCorrectRate*0.5;
-      const discrimination=Math.min(1,Math.max(-1,(topCorrectRate-bottomCorrectRate)));
+    if(hasDetails){
+      // Accurate: use real per-question data
+      qDifficulty=key.questions.map((q,i)=>{
+        let correct=0,wrong=0,skip=0;
+        results.forEach(r=>{
+          const d=r.details?.[i];
+          if(!d){skip++;return;}
+          if(d.st==='ok')correct++;
+          else if(d.st==='no')wrong++;
+          else skip++;
+        });
+        const cr=correct/totalAttempts;
+        const wr=wrong/totalAttempts;
+        const sr=skip/totalAttempts;
+        let level,color,icon;
+        if(cr>=.7){level='Easy';color='easy';icon='😊';}
+        else if(cr>=.45){level='Medium';color='medium';icon='🤔';}
+        else if(cr>=.25){level='Hard';color='hard';icon='😰';}
+        else{level='Extreme';color='skull';icon='💀';}
+        const top=results.filter(r=>r.pct>=60);
+        const bot=results.filter(r=>r.pct<40);
+        const topCr=top.length?top.filter(r=>r.details?.[i]?.st==='ok').length/top.length:cr;
+        const botCr=bot.length?bot.filter(r=>r.details?.[i]?.st==='ok').length/bot.length:cr*.5;
+        return{n:i+1,type:q.type,maxMarks:q.marks?.c||0,correctRate:Math.round(cr*100),wrongRate:Math.round(wr*100),skipRate:Math.round(sr*100),difficultyIndex:Math.round((1-cr)*100),discrimination:Math.round(Math.min(1,Math.max(0,topCr-botCr))*100),level,color,icon,attempts:totalAttempts,accurate:true};
+      });
+    }else{
+      // Estimated: use totals with seeded random (deterministic)
+      qDifficulty=key.questions.map((q,i)=>{
+        const posFactor=1-(i/totalQ)*0.3;
+        const baseCr=avgCorrect/totalQ;
+        const cr=Math.min(1,Math.max(0,baseCr*posFactor+(seededRand(i)*.1-.05)));
+        const wr=Math.min(1-cr,avgWrong/totalQ*(1+(1-posFactor)));
+        const sr=Math.max(0,1-cr-wr);
+        const disc=Math.min(1,Math.max(0,cr*.3));
+        let level,color,icon;
+        if(cr>=.7){level='Easy';color='easy';icon='😊';}
+        else if(cr>=.45){level='Medium';color='medium';icon='🤔';}
+        else if(cr>=.25){level='Hard';color='hard';icon='😰';}
+        else{level='Extreme';color='skull';icon='💀';}
+        return{n:i+1,type:q.type,maxMarks:q.marks?.c||0,correctRate:Math.round(cr*100),wrongRate:Math.round(wr*100),skipRate:Math.round(sr*100),difficultyIndex:Math.round((1-cr)*100),discrimination:Math.round(disc*100),level,color,icon,attempts:totalAttempts,accurate:false};
+      });
+    }
 
-      // Difficulty index = correctRate (higher = easier)
-      const difficultyIndex=estimatedCorrectRate;
-      let level,color,icon;
-      if(difficultyIndex>=0.7){level='Easy';color='easy';icon='😊';}
-      else if(difficultyIndex>=0.45){level='Medium';color='medium';icon='🤔';}
-      else if(difficultyIndex>=0.25){level='Hard';color='hard';icon='😰';}
-      else{level='Extreme';color='skull';icon='💀';}
-
-      return{
-        n:i+1,type:q.type,maxMarks:q.marks?.c||0,
-        correctRate:Math.round(estimatedCorrectRate*100),
-        wrongRate:Math.round(estimatedWrongRate*100),
-        skipRate:Math.round(estimatedSkipRate*100),
-        difficultyIndex:Math.round((1-difficultyIndex)*100),
-        discrimination:Math.round(discrimination*100),
-        level,color,icon,
-        attempts:totalAttempts
-      };
-    });
-
-    const diffData={qDifficulty,totalAttempts,avgPct:Math.round(avgPct),key,examName:key.name};
+    const diffData={qDifficulty,totalAttempts,avgPct:Math.round(avgPct),key,examName:key.name,accurate:hasDetails};
     S.cache.diff={data:diffData,ts:now,key:eid};
     S.diffData=diffData;
     renderDifficulty(diffData);
-
-  }catch(e){console.error(e);cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error: '+e.message+'</p></div>';}
+  }catch(e){console.error(e);cont.innerHTML=`<div class="emp"><span class="ei">❌</span><p>Error: ${e.message}</p></div>`;}
 };
-
-function getDiffLabel(level){
-  const map={Easy:'easy',Medium:'medium',Hard:'hard',Extreme:'skull'};
-  return map[level]||'medium';
-}
 
 function renderDifficulty(d){
   const cont=document.getElementById('diffContent');
-
-  // Count by level
   const counts={Easy:0,Medium:0,Hard:0,Extreme:0};
   d.qDifficulty.forEach(q=>counts[q.level]=(counts[q.level]||0)+1);
-
-  // Sort by difficulty (hardest first)
   const sorted=[...d.qDifficulty].sort((a,b)=>b.difficultyIndex-a.difficultyIndex);
 
   cont.innerHTML=`
-    <!-- Overview Cards -->
+    ${!d.accurate?'<div class="cmp-insight neutral" style="margin-bottom:1rem">⚠️ <b>Estimated ratings</b> — based on score totals. New submissions will show <b>exact per-question difficulty</b>.</div>':'<div class="cmp-insight good" style="margin-bottom:1rem">✅ <b>Accurate ratings</b> — based on real per-question response data.</div>'}
     <div class="diff-overview">
-      <div class="diff-card easy">
-        <span class="diff-card-icon">😊</span>
-        <span class="diff-card-count">${counts.Easy||0}</span>
-        <div class="diff-card-label">Easy</div>
-        <div class="diff-card-range">≥70% correct</div>
-      </div>
-      <div class="diff-card medium">
-        <span class="diff-card-icon">🤔</span>
-        <span class="diff-card-count">${counts.Medium||0}</span>
-        <div class="diff-card-label">Medium</div>
-        <div class="diff-card-range">45–69% correct</div>
-      </div>
-      <div class="diff-card hard">
-        <span class="diff-card-icon">😰</span>
-        <span class="diff-card-count">${counts.Hard||0}</span>
-        <div class="diff-card-label">Hard</div>
-        <div class="diff-card-range">25–44% correct</div>
-      </div>
-      <div class="diff-card skull">
-        <span class="diff-card-icon">💀</span>
-        <span class="diff-card-count">${counts.Extreme||0}</span>
-        <div class="diff-card-label">Extreme</div>
-        <div class="diff-card-range">&lt;25% correct</div>
-      </div>
-      <div class="stc">
-        <span class="n">${d.totalAttempts}</span>
-        <span class="l">Attempts</span>
-      </div>
-      <div class="stc">
-        <span class="n">${d.avgPct}%</span>
-        <span class="l">Avg Score</span>
-      </div>
+      ${[['easy','😊','Easy','≥70%'],['medium','🤔','Medium','45–69%'],['hard','😰','Hard','25–44%'],['skull','💀','Extreme','<25%']].map(([cls,icon,lbl,range])=>`<div class="diff-card ${cls}"><span class="diff-card-icon">${icon}</span><span class="diff-card-count">${counts[lbl]||0}</span><div class="diff-card-label">${lbl}</div><div class="diff-card-range">${range}</div></div>`).join('')}
+      <div class="stc"><span class="n">${d.totalAttempts}</span><span class="l">Attempts</span></div>
+      <div class="stc"><span class="n">${d.avgPct}%</span><span class="l">Avg Score</span></div>
     </div>
 
-    <!-- Charts -->
     <div class="analytics-grid" style="margin-bottom:1.5rem">
-      <div class="chart-box">
-        <h3>📊 Difficulty Distribution</h3>
-        <div class="chart-wrap"><canvas id="diffDistChart"></canvas></div>
-      </div>
-      <div class="chart-box">
-        <h3>📈 Question Difficulty Index</h3>
-        <div class="chart-wrap"><canvas id="diffLineChart"></canvas></div>
-      </div>
+      <div class="chart-box"><h3>📊 Difficulty Distribution</h3><div class="chart-wrap"><canvas id="diffDistChart"></canvas></div></div>
+      <div class="chart-box"><h3>📈 Difficulty Index per Question</h3><div class="chart-wrap"><canvas id="diffLineChart"></canvas></div></div>
     </div>
 
-    <!-- Heatmap -->
     <div class="chart-box" style="margin-bottom:1.5rem">
       <h3>🌡️ Difficulty Heatmap</h3>
       <div class="diff-legend">
-        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--ok)"></div><span>Easy</span></div>
-        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--warn)"></div><span>Medium</span></div>
-        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:var(--no)"></div><span>Hard</span></div>
-        <div class="diff-legend-item"><div class="diff-legend-dot" style="background:#a855f7"></div><span>Extreme</span></div>
+        ${[['var(--ok)','Easy'],['var(--warn)','Medium'],['var(--no)','Hard'],['#a855f7','Extreme']].map(([c,l])=>`<div class="diff-legend-item"><div class="diff-legend-dot" style="background:${c}"></div><span>${l}</span></div>`).join('')}
       </div>
       <div class="diff-heatmap">
         <div class="diff-heatmap-row" style="display:flex;flex-wrap:wrap;gap:4px">
           ${d.qDifficulty.map(q=>{
             const colors={Easy:'rgba(16,185,129,.7)',Medium:'rgba(245,158,11,.7)',Hard:'rgba(239,68,68,.7)',Extreme:'rgba(168,85,247,.7)'};
-            const opacity={Easy:.4,Medium:.6,Hard:.8,Extreme:1};
-            return `<div class="diff-heatmap-cell"
-              style="background:${colors[q.level]};opacity:${opacity[q.level]};width:calc((100% - ${(d.qDifficulty.length-1)*4}px) / ${Math.min(d.qDifficulty.length,20)})"
-              title="Q${q.n}: ${q.level} (${q.correctRate}% correct)">${q.n}</div>`;
+            const op={Easy:.4,Medium:.6,Hard:.8,Extreme:1};
+            const sz=Math.max(28,Math.min(50,600/d.qDifficulty.length));
+            return `<div class="diff-heatmap-cell" style="background:${colors[q.level]};opacity:${op[q.level]};width:${sz}px;flex:0 0 ${sz}px" title="Q${q.n}: ${q.level} (${q.correctRate}% correct)">${q.n}</div>`;
           }).join('')}
         </div>
       </div>
     </div>
 
-    <!-- Detailed Table -->
     <div class="chart-box" style="margin-bottom:1.5rem">
-      <h3>📋 Per-Question Difficulty Analysis (${d.qDifficulty.length} questions)</h3>
+      <h3>📋 Per-Question Analysis</h3>
       <div style="overflow-x:auto;max-height:500px;overflow-y:auto">
         <table class="diff-table">
-          <thead>
-            <tr>
-              <th>Q#</th>
-              <th>Type</th>
-              <th>Difficulty</th>
-              <th>Correct Rate</th>
-              <th>Wrong Rate</th>
-              <th>Skip Rate</th>
-              <th>Disc. Index</th>
-              <th>Max Marks</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${sorted.map(q=>`
-              <tr>
-                <td><b>Q${q.n}</b></td>
-                <td><span class="mq-type ${q.type}" style="display:inline-block">${TYPE_LBL[q.type]}</span></td>
-                <td>
-                  <span class="diff-badge ${q.color}">
-                    ${q.icon} ${q.level}
-                  </span>
-                </td>
-                <td>
-                  <div class="diff-meter">
-                    <div class="diff-meter-bar">
-                      <div class="diff-meter-fill easy" style="width:${q.correctRate}%"></div>
-                    </div>
-                    <span class="diff-meter-pct" style="color:var(--ok)">${q.correctRate}%</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="diff-meter">
-                    <div class="diff-meter-bar">
-                      <div class="diff-meter-fill hard" style="width:${q.wrongRate}%"></div>
-                    </div>
-                    <span class="diff-meter-pct" style="color:var(--no)">${q.wrongRate}%</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="diff-meter">
-                    <div class="diff-meter-bar">
-                      <div class="diff-meter-fill medium" style="width:${q.skipRate}%"></div>
-                    </div>
-                    <span class="diff-meter-pct" style="color:var(--warn)">${q.skipRate}%</span>
-                  </div>
-                </td>
-                <td>
-                  <span style="font-weight:700;color:${q.discrimination>50?'var(--ok)':q.discrimination>25?'var(--warn)':'var(--no)'}">
-                    ${q.discrimination}%
-                  </span>
-                </td>
-                <td><b style="color:var(--pl)">+${q.maxMarks}</b></td>
-              </tr>`).join('')}
-          </tbody>
+          <thead><tr><th>Q#</th><th>Type</th><th>Difficulty</th><th>Correct Rate</th><th>Wrong Rate</th><th>Skip Rate</th><th>Disc. Index</th><th>Marks</th></tr></thead>
+          <tbody>${sorted.map(q=>`<tr>
+            <td><b>Q${q.n}</b></td>
+            <td><span class="mq-type ${q.type}">${TYPE_LBL[q.type]}</span></td>
+            <td><span class="diff-badge ${q.color}">${q.icon} ${q.level}</span></td>
+            <td><div class="diff-meter"><div class="diff-meter-bar"><div class="diff-meter-fill easy" style="width:${q.correctRate}%"></div></div><span class="diff-meter-pct" style="color:var(--ok)">${q.correctRate}%</span></div></td>
+            <td><div class="diff-meter"><div class="diff-meter-bar"><div class="diff-meter-fill hard" style="width:${q.wrongRate}%"></div></div><span class="diff-meter-pct" style="color:var(--no)">${q.wrongRate}%</span></div></td>
+            <td><div class="diff-meter"><div class="diff-meter-bar"><div class="diff-meter-fill medium" style="width:${q.skipRate}%"></div></div><span class="diff-meter-pct" style="color:var(--warn)">${q.skipRate}%</span></div></td>
+            <td><span style="font-weight:700;color:${q.discrimination>50?'var(--ok)':q.discrimination>25?'var(--warn)':'var(--no)'}">${q.discrimination}%</span></td>
+            <td><b style="color:var(--pl)">+${q.maxMarks}</b></td>
+          </tr>`).join('')}</tbody>
         </table>
       </div>
     </div>
 
-    <!-- Recommendations -->
     <div class="chart-box" style="margin-bottom:1.5rem">
-      <h3>💡 Recommendations for Students</h3>
-      ${generateRecommendations(d).map(r=>`<div class="cmp-insight ${r.type}">${r.text}</div>`).join('')}
+      <h3>💡 Recommendations</h3>
+      ${genDiffRecs(d).map(r=>`<div class="cmp-insight ${r.t}">${r.tx}</div>`).join('')}
     </div>
 
-    <!-- Export -->
     <div class="exp-btns">
-      <button class="exp-btn exp-pdf" onclick="exportDiffPDF()">📄 Export Difficulty PDF</button>
-      <button class="exp-btn exp-excel" onclick="exportDiffExcel()">📊 Export Excel</button>
-      <button class="exp-btn exp-csv" onclick="exportDiffCSV()">📋 Export CSV</button>
-    </div>
-  `;
+      <button class="exp-btn exp-pdf" onclick="exportDiffPDF()">📄 PDF</button>
+      <button class="exp-btn exp-excel" onclick="exportDiffExcel()">📊 Excel</button>
+      <button class="exp-btn exp-csv" onclick="exportDiffCSV()">📋 CSV</button>
+    </div>`;
 
   setTimeout(()=>renderDiffCharts(d),100);
 }
 
-function generateRecommendations(d){
+function genDiffRecs(d){
   const recs=[];
+  const extreme=d.qDifficulty.filter(q=>q.level==='Extreme');
   const hard=d.qDifficulty.filter(q=>q.level==='Hard'||q.level==='Extreme');
   const easy=d.qDifficulty.filter(q=>q.level==='Easy');
-  const extreme=d.qDifficulty.filter(q=>q.level==='Extreme');
-
-  if(extreme.length>0){recs.push({type:'bad',text:`💀 <b>${extreme.length} question(s)</b> are rated Extreme difficulty (Q${extreme.map(q=>q.n).join(', Q')}). These need immediate attention and focused practice.`});}
-  if(hard.length>0){recs.push({type:'neutral',text:`😰 <b>${hard.length} question(s)</b> are Hard. Focus on concepts for Q${hard.slice(0,3).map(q=>q.n).join(', Q')}${hard.length>3?' and more':''}.`});}
-  if(easy.length>=Math.floor(d.qDifficulty.length*0.5)){recs.push({type:'good',text:`😊 <b>${easy.length} questions</b> (${Math.round(easy.length/d.qDifficulty.length*100)}%) are Easy. Students should secure these marks first!`});}
-  if(d.avgPct<40){recs.push({type:'bad',text:`📉 Average score of <b>${d.avgPct}%</b> suggests the exam is quite challenging. Consider providing more practice material.`});}
-  else if(d.avgPct>75){recs.push({type:'good',text:`📈 Average score of <b>${d.avgPct}%</b> suggests most students are well-prepared!`});}
-  recs.push({type:'neutral',text:`📊 Based on <b>${d.totalAttempts} attempts</b>. More attempts = more accurate difficulty ratings.`});
+  if(extreme.length)recs.push({t:'bad',tx:`💀 <b>${extreme.length}Q Extreme:</b> Q${extreme.map(q=>q.n).join(', Q')} — needs urgent attention.`});
+  if(hard.length)recs.push({t:'neutral',tx:`😰 <b>${hard.length}Q Hard/Extreme</b> — focus extra practice on these.`});
+  if(easy.length>=Math.floor(d.qDifficulty.length*.5))recs.push({t:'good',tx:`😊 <b>${easy.length} Easy questions</b> (${Math.round(easy.length/d.qDifficulty.length*100)}%) — secure these marks first!`});
+  if(d.avgPct<40)recs.push({t:'bad',tx:`📉 Avg score <b>${d.avgPct}%</b> — exam is challenging. Provide more practice.`});
+  else if(d.avgPct>75)recs.push({t:'good',tx:`📈 Avg score <b>${d.avgPct}%</b> — students are well-prepared!`});
+  if(!d.accurate)recs.push({t:'neutral',tx:`📊 Ratings estimated from ${d.totalAttempts} attempts. Submit more tests for accurate per-question data.`});
+  else recs.push({t:'good',tx:`📊 Ratings based on real per-question data from ${d.totalAttempts} attempts.`});
   return recs;
 }
 
@@ -1353,32 +1933,44 @@ function renderDiffCharts(d){
   ['diffDist','diffLine'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
   const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};
   const gc='rgba(255,255,255,.05)',tc='#94a3b8';
-
-  // Distribution pie
   const counts={Easy:0,Medium:0,Hard:0,Extreme:0};
   d.qDifficulty.forEach(q=>counts[q.level]=(counts[q.level]||0)+1);
   const dc=document.getElementById('diffDistChart');
-  if(dc){S.charts.diffDist=new Chart(dc,{type:'doughnut',data:{labels:Object.keys(counts).filter(k=>counts[k]>0),datasets:[{data:Object.entries(counts).filter(([,v])=>v>0).map(([,v])=>v),backgroundColor:['rgba(16,185,129,.8)','rgba(245,158,11,.8)','rgba(239,68,68,.8)','rgba(168,85,247,.8)'],borderWidth:2}]},options:{...base,cutout:'55%'}});}
-
-  // Line chart: difficulty index per question
+  if(dc){
+    const entries=Object.entries(counts).filter(([,v])=>v>0);
+    S.charts.diffDist=new Chart(dc,{type:'doughnut',data:{labels:entries.map(([k])=>k),datasets:[{data:entries.map(([,v])=>v),backgroundColor:['rgba(16,185,129,.8)','rgba(245,158,11,.8)','rgba(239,68,68,.8)','rgba(168,85,247,.8)'],borderWidth:2}]},options:{...base,cutout:'55%'}});
+  }
   const lc=document.getElementById('diffLineChart');
-  if(lc){S.charts.diffLine=new Chart(lc,{type:'line',data:{labels:d.qDifficulty.map(q=>`Q${q.n}`),datasets:[{label:'Difficulty Index',data:d.qDifficulty.map(q=>q.difficultyIndex),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.4,pointBackgroundColor:d.qDifficulty.map(q=>q.color==='easy'?'#10b981':q.color==='medium'?'#f59e0b':q.color==='hard'?'#ef4444':'#a855f7'),pointRadius:5,borderWidth:2},{label:'Correct Rate %',data:d.qDifficulty.map(q=>q.correctRate),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.05)',fill:false,tension:.4,pointRadius:3,borderDash:[5,5]}]},options:{...base,scales:{x:{ticks:{color:tc,maxRotation:0},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}
+  if(lc){
+    S.charts.diffLine=new Chart(lc,{
+      type:'line',
+      data:{
+        labels:d.qDifficulty.map(q=>`Q${q.n}`),
+        datasets:[
+          {label:'Difficulty Index',data:d.qDifficulty.map(q=>q.difficultyIndex),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.4,pointBackgroundColor:d.qDifficulty.map(q=>q.color==='easy'?'#10b981':q.color==='medium'?'#f59e0b':q.color==='hard'?'#ef4444':'#a855f7'),pointRadius:5,borderWidth:2},
+          {label:'Correct Rate %',data:d.qDifficulty.map(q=>q.correctRate),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.05)',fill:false,tension:.4,pointRadius:3,borderDash:[5,5]}
+        ]
+      },
+      options:{...base,scales:{x:{ticks:{color:tc,maxRotation:0},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}
+    });
+  }
 }
 
-// Difficulty Export Functions
 window.exportDiffPDF=function(){
-  if(!S.diffData)return toast('No data','wa');
+  if(!S.diffData)return toast('No data to export','wa');
+  if(typeof window.jspdf==='undefined')return toast('PDF library not loaded','er');
   const d=S.diffData;
   const{jsPDF}=window.jspdf;
   const pdf=new jsPDF();
   const W=pdf.internal.pageSize.getWidth();let y=18;
   pdf.setFillColor(15,23,42);pdf.rect(0,0,W,30,'F');
   pdf.setTextColor(255,255,255);pdf.setFontSize(16);pdf.setFont('helvetica','bold');
-  pdf.text('Difficulty Rating Report — '+d.examName,W/2,12,{align:'center'});
-  pdf.setFontSize(9);pdf.setFont('helvetica','normal');pdf.text(`${d.totalAttempts} attempts • Avg ${d.avgPct}% • ${new Date().toLocaleDateString()}`,W/2,20,{align:'center'});
+  pdf.text('Difficulty Report — '+d.examName,W/2,12,{align:'center'});
+  pdf.setFontSize(9);pdf.setFont('helvetica','normal');
+  pdf.text(`${d.totalAttempts} attempts • Avg ${d.avgPct}% • ${d.accurate?'Accurate':'Estimated'} • ${new Date().toLocaleDateString()}`,W/2,20,{align:'center'});
   y=40;
   pdf.setFontSize(9);pdf.setFont('helvetica','bold');pdf.setTextColor(129,140,248);
-  pdf.text('Q#',14,y);pdf.text('Type',28,y);pdf.text('Difficulty',48,y);pdf.text('Correct%',85,y);pdf.text('Wrong%',110,y);pdf.text('Skip%',135,y);pdf.text('Disc%',158,y);pdf.text('Marks',178,y);
+  ['Q#','Type','Difficulty','Correct%','Wrong%','Skip%','Disc%','Marks'].forEach((h,i)=>pdf.text(h,[14,28,48,85,110,135,158,178][i],y));
   y+=2;pdf.setDrawColor(51,65,85);pdf.line(10,y,W-10,y);y+=5;
   pdf.setFont('helvetica','normal');pdf.setFontSize(8);
   const sorted=[...d.qDifficulty].sort((a,b)=>b.difficultyIndex-a.difficultyIndex);
@@ -1388,20 +1980,29 @@ window.exportDiffPDF=function(){
     const col=q.color==='easy'?[16,185,129]:q.color==='medium'?[245,158,11]:q.color==='hard'?[239,68,68]:[168,85,247];
     pdf.setTextColor(200,200,200);pdf.text(`Q${q.n}`,14,y);pdf.text(TYPE_LBL[q.type],28,y);
     pdf.setTextColor(...col);pdf.text(q.level,48,y);
-    pdf.setTextColor(200,200,200);pdf.text(q.correctRate+'%',85,y);pdf.text(q.wrongRate+'%',110,y);pdf.text(q.skipRate+'%',135,y);pdf.text(q.discrimination+'%',158,y);pdf.text('+'+q.maxMarks,178,y);
+    pdf.setTextColor(200,200,200);
+    [q.correctRate+'%',q.wrongRate+'%',q.skipRate+'%',q.discrimination+'%','+'+q.maxMarks].forEach((v,i)=>pdf.text(v,[85,110,135,158,178][i],y));
     y+=7;
   });
-  pdf.save(`Difficulty_${d.examName}_${new Date().toISOString().slice(0,10)}.pdf`);toast('PDF exported!','ok');
+  pdf.save(`Difficulty_${d.examName}_${new Date().toISOString().slice(0,10)}.pdf`);
+  toast('PDF exported!','ok');
 };
 
 window.exportDiffExcel=function(){
   if(!S.diffData)return toast('No data','wa');
   const d=S.diffData;
   const wb=XLSX.utils.book_new();
-  const data=[['Difficulty Report — '+d.examName],['Attempts',d.totalAttempts],['Avg Score',d.avgPct+'%'],[''],['Q#','Type','Difficulty Level','Correct Rate%','Wrong Rate%','Skip Rate%','Disc Index%','Max Marks'],...d.qDifficulty.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.level,q.correctRate,q.wrongRate,q.skipRate,q.discrimination,q.maxMarks])];
-  const ws=XLSX.utils.aoa_to_sheet(data);ws['!cols']=[{wch:6},{wch:10},{wch:12},{wch:14},{wch:12},{wch:10},{wch:12},{wch:10}];
+  const data=[
+    ['Difficulty Report — '+d.examName],
+    ['Attempts',d.totalAttempts],['Avg Score',d.avgPct+'%'],['Rating Type',d.accurate?'Accurate':'Estimated'],[''],
+    ['Q#','Type','Level','Correct%','Wrong%','Skip%','Disc%','MaxMarks'],
+    ...d.qDifficulty.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.level,q.correctRate,q.wrongRate,q.skipRate,q.discrimination,q.maxMarks])
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:6},{wch:10},{wch:12},{wch:14},{wch:12},{wch:10},{wch:12},{wch:10}];
   XLSX.utils.book_append_sheet(wb,ws,'Difficulty');
-  XLSX.writeFile(wb,`Difficulty_${d.examName}.xlsx`);toast('Excel exported!','ok');
+  XLSX.writeFile(wb,`Difficulty_${d.examName}.xlsx`);
+  toast('Excel exported!','ok');
 };
 
 window.exportDiffCSV=function(){
@@ -1409,27 +2010,171 @@ window.exportDiffCSV=function(){
   const d=S.diffData;
   const rows=[['Q#','Type','Level','Correct%','Wrong%','Skip%','Disc%','MaxMarks'],...d.qDifficulty.map(q=>[`Q${q.n}`,TYPE_LBL[q.type],q.level,q.correctRate,q.wrongRate,q.skipRate,q.discrimination,q.maxMarks])];
   const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  dlFile(csv,'text/csv',`Difficulty_${d.examName}.csv`);toast('CSV exported!','ok');
+  dlFile(csv,'text/csv',`Difficulty_${d.examName}.csv`);
+  toast('CSV exported!','ok');
 };
 
 // ─── ANALYTICS ───────────────────────────────────────────
-window.loadAnalytics=async function(){const eid=document.getElementById('anExam')?.value;const cont=document.getElementById('anContent');if(!eid){cont.innerHTML='<div class="emp"><span class="ei">📊</span><p>Select exam</p></div>';return;}const now=Date.now();if(S.cache.an.data&&S.cache.an.key===eid&&(now-S.cache.an.ts<CACHE_AN)){renderAnalytics(S.cache.an.data);return;}cont.innerHTML='<div class="emp"><div class="load-atom" style="width:40px;height:40px;margin:0 auto .8rem"><div class="load-orbit"><div class="load-e"></div></div><div class="load-orbit"><div class="load-e"></div></div><div class="load-nucleus"></div></div><p>Loading...</p></div>';try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);const key=S.keys.find(k=>k.id===eid);if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet</p></div>';return;}const anData=buildAnalyticsData(results,key);S.cache.an={data:anData,ts:now,key:eid};S.anData=anData;renderAnalytics(anData);}catch(e){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error</p></div>';}};
-function buildAnalyticsData(results,key){const total=results.length,avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total),avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10,maxScore=Math.max(...results.map(r=>r.pct||0)),minScore=Math.min(...results.map(r=>r.pct||0)),passCount=results.filter(r=>(r.pct||0)>=33).length;const buckets={'0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0};results.forEach(r=>{const p=r.pct||0;if(p<=20)buckets['0-20']++;else if(p<=40)buckets['21-40']++;else if(p<=60)buckets['41-60']++;else if(p<=80)buckets['61-80']++;else buckets['81-100']++;});const qStats=key?.questions?key.questions.map((q,i)=>({n:i+1,type:q.type,maxMarks:q.marks?.c||0,answer:formatAnswer(q)})):[];return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,qStats,results,key,examName:key?.name||'Unknown'};}
-function formatAnswer(q){if(q.type==='scq')return q.answer||'?';if(q.type==='mcq')return Array.isArray(q.answer)?q.answer.join(','):'?';if(q.type==='match')return Object.entries(q.answer||{}).map(([k,v])=>`${k}-${v}`).join(' ');if(q.type==='matrix')return Object.entries(q.answer||{}).map(([k,v])=>`${k}:${Array.isArray(v)?v.join(''):'?'}`).join(' ');if(q.type==='num')return String(q.answer);return '?';}
-function renderAnalytics(d){const cont=document.getElementById('anContent');const trendData=[...d.results].sort((a,b)=>{const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);return da-db2;}).slice(-20);cont.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">${[{v:d.total,l:'Attempts',i:'👥'},{v:d.avgScore+'%',l:'Avg Score',i:'📊'},{v:d.avgMarks,l:'Avg Marks',i:'⭐'},{v:d.maxScore+'%',l:'Top Score',i:'🏆'},{v:d.minScore+'%',l:'Lowest',i:'📉'},{v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}].map(s=>`<div class="stc"><span style="font-size:1.4rem">${s.i}</span><span class="n" style="font-size:1.4rem">${s.v}</span><span class="l">${s.l}</span></div>`).join('')}</div><div class="analytics-grid"><div class="chart-box"><h3>📊 Score Distribution</h3><div class="chart-wrap"><canvas id="distChart"></canvas></div></div><div class="chart-box"><h3>📈 Score Trend</h3><div class="chart-wrap"><canvas id="trendChart"></canvas></div></div></div><div class="analytics-grid"><div class="chart-box"><h3>🥧 Pass vs Fail</h3><div class="chart-wrap"><canvas id="passChart"></canvas></div></div><div class="chart-box"><h3>📋 Avg C/W/S</h3><div class="chart-wrap"><canvas id="cwsChart"></canvas></div></div></div><div class="chart-box"><h3>📋 All Submissions</h3><div style="overflow-x:auto"><table class="qa-table"><thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr></thead><tbody>${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';return `<tr><td><span class="rb ${rc}">${i+1}</span></td><td><b>${r.name}</b></td><td><b style="color:var(--pl)">${r.pct}%</b></td><td>${r.marks}/${r.max}</td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('')}</tbody></table></div></div>`;setTimeout(()=>renderAnalyticsCharts(d,Object.keys(d.buckets),Object.values(d.buckets),trendData),100);}
-function renderAnalyticsCharts(d,bL,bD,tD){['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};const gc='rgba(255,255,255,.05)',tc='#94a3b8';const dc=document.getElementById('distChart');if(dc){S.charts.dist=new Chart(dc,{type:'bar',data:{labels:bL,datasets:[{label:'Students',data:bD,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{ticks:{color:tc,stepSize:1},grid:{color:gc}}}}});}const trc=document.getElementById('trendChart');if(trc){S.charts.trend=new Chart(trc,{type:'line',data:{labels:tD.map((_,i)=>`#${i+1}`),datasets:[{label:'Score%',data:tD.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointRadius:4}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}const pc=document.getElementById('passChart');if(pc){S.charts.pass=new Chart(pc,{type:'doughnut',data:{labels:['Pass','Fail'],datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total),avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total),avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);const cc=document.getElementById('cwsChart');if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct(${avgC})`,`Wrong(${avgW})`,`Skip(${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}}
+window.loadAnalytics=async function(){
+  const eid=document.getElementById('anExam')?.value;
+  const cont=document.getElementById('anContent');
+  if(!eid){cont.innerHTML='<div class="emp"><span class="ei">📊</span><p>Select exam above</p></div>';return;}
+  const now=Date.now();
+  if(S.cache.an.data&&S.cache.an.key===eid&&(now-S.cache.an.ts<CACHE.AN)){renderAnalytics(S.cache.an.data);return;}
+  cont.innerHTML=`<div class="emp">${SPIN}<p>Loading analytics...</p></div>`;
+  try{
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(500)));
+    const results=snap.docs.map(d=>({id:d.id,...d.data()})).filter(r=>r.examId===eid);
+    const key=S.keys.find(k=>k.id===eid);
+    if(!results.length){cont.innerHTML='<div class="emp"><span class="ei">📭</span><p>No submissions yet for this exam</p></div>';return;}
+    const anData=buildAnData(results,key);
+    S.cache.an={data:anData,ts:now,key:eid};
+    S.anData=anData;
+    renderAnalytics(anData);
+  }catch(e){cont.innerHTML='<div class="emp"><span class="ei">❌</span><p>Error loading data</p></div>';console.error(e);}
+};
+
+function buildAnData(results,key){
+  const total=results.length;
+  const avgScore=Math.round(results.reduce((s,r)=>s+(r.pct||0),0)/total);
+  const avgMarks=Math.round((results.reduce((s,r)=>s+(r.marks||0),0)/total)*10)/10;
+  const maxScore=Math.max(...results.map(r=>r.pct||0));
+  const minScore=Math.min(...results.map(r=>r.pct||0));
+  const passCount=results.filter(r=>(r.pct||0)>=33).length;
+  const buckets={'0-20':0,'21-40':0,'41-60':0,'61-80':0,'81-100':0};
+  results.forEach(r=>{const p=r.pct||0;if(p<=20)buckets['0-20']++;else if(p<=40)buckets['21-40']++;else if(p<=60)buckets['41-60']++;else if(p<=80)buckets['61-80']++;else buckets['81-100']++;});
+  return{total,avgScore,avgMarks,maxScore,minScore,passCount,buckets,results,key,examName:key?.name||'Unknown'};
+}
+
+function renderAnalytics(d){
+  const cont=document.getElementById('anContent');
+  const trendData=[...d.results].sort((a,b)=>{
+    const da=a.createdAt?.toDate?a.createdAt.toDate():new Date(a.createdAt||0);
+    const db2=b.createdAt?.toDate?b.createdAt.toDate():new Date(b.createdAt||0);
+    return da-db2;
+  }).slice(-20);
+
+  cont.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem">
+      ${[{v:d.total,l:'Attempts',i:'👥'},{v:d.avgScore+'%',l:'Avg Score',i:'📊'},{v:d.avgMarks,l:'Avg Marks',i:'⭐'},{v:d.maxScore+'%',l:'Top Score',i:'🏆'},{v:d.minScore+'%',l:'Lowest',i:'📉'},{v:Math.round(d.passCount/d.total*100)+'%',l:'Pass Rate',i:'✅'}].map(s=>`<div class="stc"><span style="font-size:1.4rem">${s.i}</span><span class="n" style="font-size:1.4rem">${s.v}</span><span class="l">${s.l}</span></div>`).join('')}
+    </div>
+    <div class="analytics-grid">
+      <div class="chart-box"><h3>📊 Score Distribution</h3><div class="chart-wrap"><canvas id="distChart"></canvas></div></div>
+      <div class="chart-box"><h3>📈 Score Trend (last 20)</h3><div class="chart-wrap"><canvas id="trendChart"></canvas></div></div>
+    </div>
+    <div class="analytics-grid">
+      <div class="chart-box"><h3>🥧 Pass vs Fail</h3><div class="chart-wrap"><canvas id="passChart"></canvas></div></div>
+      <div class="chart-box"><h3>📋 Avg Correct/Wrong/Skipped</h3><div class="chart-wrap"><canvas id="cwsChart"></canvas></div></div>
+    </div>
+    <div class="chart-box">
+      <h3>📋 All Submissions</h3>
+      <div style="overflow-x:auto">
+        <table class="qa-table">
+          <thead><tr><th>Rank</th><th>Name</th><th>Score</th><th>Marks</th><th>C/W/S</th><th>Date</th></tr></thead>
+          <tbody>${[...d.results].sort((a,b)=>(b.pct||0)-(a.pct||0)).map((r,i)=>{
+            const dt=r.createdAt?.toDate?r.createdAt.toDate().toLocaleDateString():'-';
+            const rc=i===0?'r1':i===1?'r2':i===2?'r3':'rd';
+            return `<tr><td><span class="rb ${rc}">${i+1}</span></td><td><b>${r.name}</b></td><td><b style="color:var(--pl)">${r.pct}%</b></td><td>${r.marks}/${r.max}</td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  setTimeout(()=>renderAnCharts(d,Object.keys(d.buckets),Object.values(d.buckets),trendData),100);
+}
+
+function renderAnCharts(d,bL,bD,tD){
+  ['dist','trend','pass','cws'].forEach(k=>{if(S.charts[k]){S.charts[k].destroy();S.charts[k]=null;}});
+  const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}}};
+  const gc='rgba(255,255,255,.05)',tc='#94a3b8';
+  const dc=document.getElementById('distChart');
+  if(dc){S.charts.dist=new Chart(dc,{type:'bar',data:{labels:bL,datasets:[{label:'Students',data:bD,backgroundColor:['rgba(239,68,68,.7)','rgba(245,158,11,.7)','rgba(99,102,241,.7)','rgba(14,165,233,.7)','rgba(16,185,129,.7)'],borderRadius:6}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{ticks:{color:tc,stepSize:1},grid:{color:gc}}}}});}
+  const trc=document.getElementById('trendChart');
+  if(trc){S.charts.trend=new Chart(trc,{type:'line',data:{labels:tD.map((_,i)=>`#${i+1}`),datasets:[{label:'Score%',data:tD.map(r=>r.pct||0),borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.15)',fill:true,tension:.4,pointRadius:4}]},options:{...base,scales:{x:{ticks:{color:tc},grid:{color:gc}},y:{min:0,max:100,ticks:{color:tc},grid:{color:gc}}}}});}
+  const pc=document.getElementById('passChart');
+  if(pc){S.charts.pass=new Chart(pc,{type:'doughnut',data:{labels:['Pass (≥33%)','Fail (<33%)'],datasets:[{data:[d.passCount,d.total-d.passCount],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}
+  const avgC=Math.round(d.results.reduce((s,r)=>s+(r.correct||0),0)/d.total);
+  const avgW=Math.round(d.results.reduce((s,r)=>s+(r.wrong||0),0)/d.total);
+  const avgSk=Math.round(d.results.reduce((s,r)=>s+(r.skipped||0),0)/d.total);
+  const cc=document.getElementById('cwsChart');
+  if(cc){S.charts.cws=new Chart(cc,{type:'doughnut',data:{labels:[`Correct (${avgC})`,`Wrong (${avgW})`,`Skip (${avgSk})`],datasets:[{data:[avgC,avgW,avgSk],backgroundColor:['rgba(16,185,129,.8)','rgba(239,68,68,.8)','rgba(245,158,11,.8)'],borderWidth:2}]},options:{...base,cutout:'60%'}});}
+}
 
 // ─── LEADERBOARD ─────────────────────────────────────────
-async function loadLB(force){const eid=document.getElementById('lExam')?.value||'all',tf=document.getElementById('lTime')?.value||'all',cacheKey=`${eid}_${tf}`,now=Date.now();if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE_LB)){renderLB(S.cache.lb.data);return;}try{const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));let data=snap.docs.map(d=>({id:d.id,...d.data()}));if(eid!=='all')data=data.filter(r=>r.examId===eid);if(tf!=='all'){const nowD=new Date();let cutoff;if(tf==='today')cutoff=new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate());else if(tf==='week')cutoff=new Date(nowD-7*86400000);else if(tf==='month')cutoff=new Date(nowD-30*86400000);data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt);return d>=cutoff;});}data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));S.cache.lb={data,ts:now,key:cacheKey};renderLB(data);}catch(e){document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error</p></td></tr>';}}
+async function loadLB(force){
+  const eid=document.getElementById('lExam')?.value||'all';
+  const tf=document.getElementById('lTime')?.value||'all';
+  const cacheKey=`${eid}_${tf}`;
+  const now=Date.now();
+  if(!force&&S.cache.lb.data&&S.cache.lb.key===cacheKey&&(now-S.cache.lb.ts<CACHE.LB)){renderLB(S.cache.lb.data);return;}
+  try{
+    const snap=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(200)));
+    let data=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(eid!=='all')data=data.filter(r=>r.examId===eid);
+    if(tf!=='all'){
+      const nowD=new Date();
+      const cutoffs={today:new Date(nowD.getFullYear(),nowD.getMonth(),nowD.getDate()),week:new Date(nowD-7*86400000),month:new Date(nowD-30*86400000)};
+      const cutoff=cutoffs[tf];
+      if(cutoff)data=data.filter(r=>{const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||0);return d>=cutoff;});
+    }
+    data.sort((a,b)=>(b.pct||0)-(a.pct||0)||(b.marks||0)-(a.marks||0));
+    S.cache.lb={data,ts:now,key:cacheKey};
+    renderLB(data);
+  }catch(e){document.getElementById('lbBody').innerHTML='<tr><td colspan="6" class="emp"><span class="ei">❌</span><p>Error loading leaderboard</p></td></tr>';console.error(e);}
+}
 window.loadLB=loadLB;
-function renderLB(data){const body=document.getElementById('lbBody'),top3=data.slice(0,3);[1,2,3].forEach(i=>{const r=top3[i-1],av=document.getElementById('pav'+i),nm=document.getElementById('pn'+i),sc=document.getElementById('ps'+i);if(r){av.textContent=r.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}else{av.textContent='?';nm.textContent='—';sc.textContent='—';}});if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions</p></td></tr>';return;}body.innerHTML=data.slice(0,100).map((r,i)=>{const rank=i+1,rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;}).join('');}
+
+function renderLB(data){
+  const body=document.getElementById('lbBody');
+  [1,2,3].forEach(i=>{
+    const r=data[i-1];
+    const av=document.getElementById('pav'+i),nm=document.getElementById('pn'+i),sc=document.getElementById('ps'+i);
+    if(r){av.textContent=ini(r.name);nm.textContent=r.name.length>12?r.name.slice(0,12)+'…':r.name;sc.textContent=`${r.pct}% • ${r.marks}/${r.max}`;}
+    else{av.textContent='?';nm.textContent='—';sc.textContent='—';}
+  });
+  if(!data.length){body.innerHTML='<tr><td colspan="6" class="emp"><span class="ei">📊</span><p>No submissions yet</p></td></tr>';return;}
+  body.innerHTML=data.slice(0,100).map((r,i)=>{
+    const rank=i+1;
+    const rc=rank===1?'r1':rank===2?'r2':rank===3?'r3':'rd';
+    const d=r.createdAt?.toDate?r.createdAt.toDate():new Date(r.createdAt||Date.now());
+    const dt=d.toLocaleDateString()+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    return `<tr><td><span class="rb ${rc}">${rank}</span></td><td><b>${r.name}</b></td><td>${r.examName||'—'}</td><td><b style="color:var(--pl)">${r.pct}%</b> <span style="color:var(--gl);font-size:.82rem">(${r.marks}/${r.max})</span></td><td><span style="color:var(--ok)">${r.correct}</span>/<span style="color:var(--no)">${r.wrong}</span>/<span style="color:var(--warn)">${r.skipped}</span></td><td style="color:var(--gl);font-size:.82rem">${dt}</td></tr>`;
+  }).join('');
+}
 
 // ─── HOME STATS ──────────────────────────────────────────
-async function loadHomeStats(){const now=Date.now();if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE_STATS)){applyStats(S.cache.stats.data);return;}try{const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);const subs=resSnap.data().count,usrs=usrSnap.data().count;let avg='—';if(subs>0){const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));const arr=rs.docs.map(d=>d.data().pct||0);if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';}const data={subs,usrs,avg};S.cache.stats={data,ts:now};applyStats(data);}catch(e){console.error(e)}}
-function applyStats(d){document.getElementById('hScans').textContent=d.subs||0;document.getElementById('hUsers').textContent=d.usrs||0;document.getElementById('hAvg').textContent=d.avg||'—';}
+async function loadHomeStats(){
+  const now=Date.now();
+  if(S.cache.stats.data&&(now-S.cache.stats.ts<CACHE.STATS)){applyStats(S.cache.stats.data);return;}
+  try{
+    const[resSnap,usrSnap]=await Promise.all([getCountFromServer(collection(db,'results')),getCountFromServer(collection(db,'users'))]);
+    const subs=resSnap.data().count,usrs=usrSnap.data().count;
+    let avg='—';
+    if(subs>0){
+      const rs=await getDocs(query(collection(db,'results'),orderBy('createdAt','desc'),limit(100)));
+      const arr=rs.docs.map(d=>d.data().pct||0);
+      if(arr.length)avg=Math.round(arr.reduce((a,b)=>a+b,0)/arr.length)+'%';
+    }
+    const data={subs,usrs,avg};
+    S.cache.stats={data,ts:now};
+    applyStats(data);
+  }catch(e){console.error('homeStats:',e);}
+}
+
+function applyStats(d){
+  document.getElementById('hScans').textContent=d.subs||0;
+  document.getElementById('hUsers').textContent=d.usrs||0;
+  document.getElementById('hAvg').textContent=d.avg||'—';
+}
 
 // ─── UTILS ───────────────────────────────────────────────
-function dlFile(content,mime,filename){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
+function dlFile(content,mime,filename){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>
